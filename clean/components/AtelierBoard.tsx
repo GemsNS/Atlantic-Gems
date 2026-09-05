@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { services, type ServiceKey } from "@/lib/site";
 
-const BOARD: ServiceKey[] = ["custom", "repair", "setting", "watches"];
+const BOARD: ServiceKey[] = ["custom", "repair", "setting", "appraisals", "watches"];
 
 export function AtelierBoard() {
   const [active, setActive] = useState<ServiceKey>("custom");
@@ -46,7 +46,7 @@ export function AtelierBoard() {
             <li key={p}>{p}</li>
           ))}
         </ul>
-        <Link href={`/contact?type=${current.key}`} className="btn btn-primary">
+        <Link href={`/contact?type=${current.enquiryType}`} className="btn btn-primary">
           {current.cta}
         </Link>
       </div>

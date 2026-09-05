@@ -21,9 +21,14 @@ export default function GemstonesPage() {
               a remount; trade buyers can enquire about parcels and pricing.
             </p>
             <p>
+              If we do not have the stone you need, we procure it. Tell us the type, colour, size
+              and budget and we source to that brief, confirming the disclosure details before
+              you commit.
+            </p>
+            <p>
               Every stone is quoted individually. When we quote, we state what we know about
               treatment, origin and any accompanying report, and we say plainly when something
-              is not known.
+              is not known. See our Certification &amp; Disclosure Policy for exactly how.
             </p>
           </>
         }

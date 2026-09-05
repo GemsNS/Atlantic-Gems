@@ -21,7 +21,17 @@ const ATTRIBUTION = [
   /powered by (next|vercel|shopify)/i,
 ];
 
+// Private strings (e.g. the client's street address) must never reach a page.
+// Supplied at scan time so nothing private is stored in the repository:
+//   PRIVATE_STRINGS="street name,postal code" SCAN_BASE_URL=... npm run scan
+const PRIVATE = (process.env.PRIVATE_STRINGS ?? "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean)
+  .map((s) => new RegExp(s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
+
 const DRAFT_COPY = [
+  ...PRIVATE,
   /lorem ipsum/i,
   /\bipsum\b/i,
   /\btodo\b/i,
@@ -85,8 +95,11 @@ const ROUTES = [
   "/repair-restoration",
   "/stone-setting",
   "/watches",
+  "/appraisals-consignment",
   "/contact",
   "/privacy",
+  "/policies/disclosure",
+  "/policies/wholesale-terms",
   "/wholesale/login",
   "/nope-404",
 ];

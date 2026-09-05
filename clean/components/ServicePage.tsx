@@ -13,7 +13,7 @@ interface ServicePageProps {
 export function ServicePage({ serviceKey, intro, process, aside, children }: ServicePageProps) {
   const service = services.find((s) => s.key === serviceKey);
   if (!service) return null;
-  const enquiryType = serviceKey === "gemstones" ? "gemstones" : serviceKey;
+  const enquiryType = service.enquiryType;
 
   return (
     <>

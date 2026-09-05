@@ -63,7 +63,7 @@ export default async function ContactPage({
               <p>
                 {site.city}, {site.region}, {site.country}
                 <br />
-                {site.address ?? "Viewings and drop-off by appointment."}
+                {site.locationNote}
               </p>
             </div>
             <div>

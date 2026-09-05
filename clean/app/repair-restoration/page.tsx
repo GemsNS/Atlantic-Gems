@@ -19,8 +19,9 @@ export default function RepairPage() {
             intake so its condition is on record.
           </p>
           <p>
-            We will tell you when a repair is not worth the cost, or when a piece should be left
-            as it is.
+            Ring resizing, polishing, repair and full restoration of older pieces are all carried
+            out here. We will tell you when a repair is not worth the cost, or when a piece should
+            be left as it is.
           </p>
         </>
       }

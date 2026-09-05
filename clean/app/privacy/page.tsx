@@ -21,12 +21,15 @@ export default function PrivacyPage() {
       </section>
 
       <section className="section">
-        <div className="wrap prose">
+        <div className="wrap">
+          <div className="prose">
           <h2>Who we are</h2>
           <p>
-            {site.name} is a fine jewellery house, gem wholesaler and atelier in {site.city},{" "}
-            {site.region}, {site.country}. Questions about this policy or about your information
-            can be sent to <a href={`mailto:${site.email}`}>{site.email}</a>.
+            {site.name} (registered name {site.legalName}, Registration No.{" "}
+            {site.registrationNumber}) is a fine jewellery house, gem wholesaler and atelier
+            operating by appointment in {site.city}, {site.region}, {site.country}. Questions
+            about this policy or about your information can be sent to{" "}
+            <a href={`mailto:${site.email}`}>{site.email}</a>.
           </p>
 
           <h2>What we collect</h2>
@@ -36,7 +39,8 @@ export default function PrivacyPage() {
               number if you give it, and the content of your message.
             </li>
             <li>
-              <strong>Repairs, setting and custom work:</strong> a description of the item,
+              <strong>Repairs, setting, appraisals, consignment and custom work:</strong> a
+              description of the item,
               photographs taken at intake, serial or reference numbers where relevant, and the
               details needed to quote, carry out and return the work.
             </li>
@@ -101,6 +105,7 @@ export default function PrivacyPage() {
             We may update this policy as the business or the law changes. The current version is
             always published on this page.
           </p>
+          </div>
         </div>
       </section>
     </>

@@ -17,8 +17,8 @@ export function SiteFooter() {
             <p>{site.tagline}</p>
             <p style={{ marginTop: 10 }}>
               {site.city}, {site.region}, {site.country}
-              {site.address ? <br /> : null}
-              {site.address}
+              <br />
+              {site.locationNote}
             </p>
           </div>
           <div>
@@ -68,10 +68,13 @@ export function SiteFooter() {
         </div>
         <div className="footer-bottom">
           <span>
-            © {year} {site.name}. All rights reserved.
+            © {year} {site.name} ({site.legalName}, Registration No. {site.registrationNumber}).
+            All rights reserved.
           </span>
-          <span>
+          <span style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
             <Link href="/privacy">Privacy</Link>
+            <Link href="/policies/disclosure">Disclosure policy</Link>
+            <Link href="/policies/wholesale-terms">Trade terms</Link>
           </span>
         </div>
       </div>
