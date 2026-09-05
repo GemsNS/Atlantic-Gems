@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { WHOLESALE_COOKIE, verifySessionToken } from "@/lib/security/session";
 import { CSRF_COOKIE, randomToken } from "@/lib/security/csrf";
 
-function buildCsp(nonce: string): string {
+function buildCsp(nonce: string, https: boolean): string {
   const isDev = process.env.NODE_ENV !== "production";
   return [
     "default-src 'self'",
@@ -17,14 +17,18 @@ function buildCsp(nonce: string): string {
     "form-action 'self'",
     "base-uri 'self'",
     "object-src 'none'",
-    "upgrade-insecure-requests",
+    // Only meaningful once the site is served over TLS; on plain HTTP it
+    // would upgrade same-origin fetches to https and break them.
+    ...(https ? ["upgrade-insecure-requests"] : []),
   ].join("; ");
 }
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const nonce = randomToken(16);
-  const csp = buildCsp(nonce);
+  const https =
+    req.nextUrl.protocol === "https:" || req.headers.get("x-forwarded-proto") === "https";
+  const csp = buildCsp(nonce, https);
 
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set("x-nonce", nonce);
