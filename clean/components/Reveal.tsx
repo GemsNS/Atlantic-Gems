@@ -39,7 +39,12 @@ export function Reveal({
       { threshold: 0.15 },
     );
     io.observe(el);
-    return () => io.disconnect();
+    // Safety net: never leave content hidden if the observer does not fire.
+    const fallback = window.setTimeout(() => el.classList.add("is-visible"), 2500);
+    return () => {
+      io.disconnect();
+      window.clearTimeout(fallback);
+    };
   }, []);
 
   const props = {

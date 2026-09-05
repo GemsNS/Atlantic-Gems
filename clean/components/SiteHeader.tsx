@@ -1,6 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
-import { BrandMark } from "@/components/BrandMark";
 import { services, site } from "@/lib/site";
+import mark from "@/public/brand/mark.jpg";
 
 const links = [
   ...services.map((s) => ({ href: s.href, label: s.title })),
@@ -12,7 +13,7 @@ export function SiteHeader() {
     <header className="header">
       <div className="wrap header-inner">
         <Link href="/" className="brand" aria-label={`${site.name} home`}>
-          <BrandMark className="brand-mark" />
+          <Image src={mark} alt="" className="brand-mark" width={40} height={40} priority />
           <span>{site.name}</span>
         </Link>
 

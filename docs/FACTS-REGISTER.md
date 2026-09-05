@@ -51,3 +51,13 @@ Last public check: 2026-09-05
 - @atlanticgems on Instagram — Silver Spring, MD, unrelated
 - @atlanticgem on Instagram — "FINE GEMSTONES", unrelated
 - Atlantic Jewellery Appraisals / Appraiser — Halifax, unrelated business
+
+## Brand assets (CLIENT, locked)
+| Asset | File | Status | Notes |
+|---|---|---|---|
+| Wordmark with tagline | source/originals/wordmark-header.jpg (1678x670) | CLIENT | "ATLANTIC GEMS" in blue with green teardrop gem and blue diamond; tagline "ROUGH AND FACETED GEMSTONES". Served unmodified at clean/public/brand/wordmark.jpg |
+| Logo mark | source/originals/logo-mark.jpg (1000x1000) | CLIENT | Green teardrop, blue diamond, green swoosh on white. Served unmodified at clean/public/brand/mark.jpg and as the favicon |
+| Brand blue | #1055B8 (sampled) | CLIENT | Dominant blue in both files; site primary accent |
+| Brand green | #0B6A4C (sampled) | CLIENT | Dominant green in both files; site secondary accent |
+| Client tagline | "Rough and faceted gemstones" | CLIENT | Appears in wordmark only; site headline carries the full-house positioning per brief |
+| Vector / transparent versions | — | UNKNOWN | Only JPEGs on white supplied; request SVG/PNG masters from client |

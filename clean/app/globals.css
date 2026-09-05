@@ -1,34 +1,47 @@
-/* ---------- Palette & tokens ---------- */
+/* ---------- Palette & tokens ----------
+   Brand colours are sampled from the client's locked wordmark and mark
+   (source/originals). Blue and green are theirs; neutrals are ours.        */
 :root {
-  --ink: #0a1014;
-  --ink-2: #111a21;
-  --ink-3: #182530;
-  --sea: #16323a;
-  --slate: #2a3a44;
-  --mist: #8fa1ac;
-  --fog: #c5cfd5;
-  --parchment: #f2ede4;
-  --linen: #e6dfd2;
-  --paper: #faf7f1;
+  --brand-blue: #1055b8;
+  --brand-blue-hi: #3b7be0;
+  --brand-blue-deep: #0b3f8f;
+  --brand-green: #0b6a4c;
+  --brand-green-hi: #1f9a72;
 
+  --paper: #ffffff;
+  --paper-2: #f4f7fb;
+  --paper-3: #e9eff7;
+  --ink: #0e1c33;
+  --ink-2: #2b3a52;
+  --muted: #5b6980;
+  --line: rgba(16, 85, 184, 0.16);
+  --line-strong: rgba(16, 85, 184, 0.32);
+  --panel: #ffffff;
+
+  /* Jewellery metal, used only inside the emblem artwork. */
   --gold: #c8a55a;
   --gold-2: #e6c986;
   --brass: #9a7b3c;
 
   --ruby: #a6152f;
-  --ruby-hi: #ff5c7a;
-  --sapphire: #1e4f9c;
-  --sapphire-hi: #6da4ff;
-  --emerald: #0f7a55;
-  --emerald-hi: #58d3a0;
-  --diamond: #cfdde8;
+  --ruby-hi: #ff7a90;
+  --sapphire: #1055b8;
+  --sapphire-hi: #8fbfff;
+  --emerald: #0b6a4c;
+  --emerald-hi: #7fe6b8;
+  --diamond: #7f9bbd;
   --diamond-hi: #ffffff;
 
-  --bg: var(--ink);
-  --fg: var(--parchment);
-  --muted: var(--mist);
-  --line: rgba(200, 165, 90, 0.22);
-  --panel: rgba(255, 255, 255, 0.035);
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --text-2: var(--ink-2);
+  --accent: var(--brand-blue);
+  --accent-2: var(--brand-green);
+
+  /* Legacy aliases kept for inline styles. */
+  --parchment: var(--ink);
+  --fog: var(--ink-2);
+  --mist: var(--muted);
 
   --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
   --font-body: var(--font-manrope), "Manrope", "Segoe UI", sans-serif;
@@ -46,7 +59,7 @@
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
@@ -59,7 +72,7 @@ body {
   font-family: var(--font-body);
   font-size: 1.0625rem;
   line-height: 1.6;
-  font-weight: 350;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -75,7 +88,7 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--gold-2);
+  outline: 2px solid var(--brand-blue);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -84,8 +97,8 @@ a {
   position: absolute;
   left: 12px;
   top: -60px;
-  background: var(--gold);
-  color: var(--ink);
+  background: var(--brand-blue);
+  color: #fff;
   padding: 10px 14px;
   z-index: 100;
   font-weight: 600;
@@ -103,6 +116,7 @@ h4 {
   line-height: 1.05;
   letter-spacing: -0.01em;
   margin: 0;
+  color: var(--ink);
 }
 
 p {
@@ -119,13 +133,13 @@ p {
   font-size: 0.75rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 600;
+  color: var(--brand-green);
+  font-weight: 700;
 }
 
 .lede {
   font-size: clamp(1.05rem, 1.4vw, 1.25rem);
-  color: var(--fog);
+  color: var(--ink-2);
   max-width: 58ch;
 }
 
@@ -134,7 +148,7 @@ p {
   align-items: center;
   gap: 10px;
   padding: 14px 24px;
-  border: 1px solid var(--gold);
+  border: 1px solid var(--brand-blue);
   border-radius: var(--radius);
   font-weight: 600;
   font-size: 0.9375rem;
@@ -146,22 +160,22 @@ p {
     transform 0.3s var(--ease);
   cursor: pointer;
   background: transparent;
-  color: var(--fg);
+  color: var(--brand-blue);
   font-family: var(--font-body);
 }
 .btn:hover {
   transform: translateY(-1px);
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--gold-2), var(--gold) 55%, var(--brass));
-  color: var(--ink);
+  background: linear-gradient(135deg, var(--brand-blue-hi), var(--brand-blue) 55%, var(--brand-blue-deep));
+  color: #fff;
   border-color: transparent;
 }
 .btn-primary:hover {
-  filter: brightness(1.05);
+  filter: brightness(1.06);
 }
 .btn-ghost:hover {
-  background: rgba(200, 165, 90, 0.08);
+  background: rgba(16, 85, 184, 0.06);
 }
 .btn-small {
   padding: 10px 16px;
@@ -173,10 +187,10 @@ p {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: linear-gradient(180deg, rgba(10, 16, 20, 0.92), rgba(10, 16, 20, 0.75));
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(200, 165, 90, 0.12);
+  border-bottom: 1px solid var(--line);
 }
 .header-inner {
   display: flex;
@@ -192,11 +206,13 @@ p {
   font-family: var(--font-display);
   font-size: 1.5rem;
   letter-spacing: 0.04em;
+  color: var(--brand-blue-deep);
 }
 .brand-mark {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   flex: none;
+  object-fit: contain;
 }
 .nav {
   display: flex;
@@ -207,13 +223,13 @@ p {
   padding: 10px 12px;
   font-size: 0.875rem;
   letter-spacing: 0.04em;
-  color: var(--fog);
+  color: var(--ink-2);
   border-radius: var(--radius);
   transition: color 0.2s;
 }
 .nav a:hover,
 .nav a[aria-current="page"] {
-  color: var(--gold-2);
+  color: var(--brand-blue);
 }
 .nav .nav-cta {
   margin-left: 8px;
@@ -225,11 +241,12 @@ p {
   list-style: none;
   cursor: pointer;
   padding: 10px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius);
   font-size: 0.875rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--brand-blue);
 }
 .nav-mobile summary::-webkit-details-marker {
   display: none;
@@ -237,7 +254,7 @@ p {
 .nav-mobile[open] .nav-mobile-panel {
   position: absolute;
   inset: 72px 0 auto 0;
-  background: var(--ink-2);
+  background: var(--paper);
   border-bottom: 1px solid var(--line);
   padding: 16px var(--gutter) 24px;
   display: grid;
@@ -246,7 +263,7 @@ p {
 .nav-mobile-panel a {
   padding: 12px 8px;
   font-size: 1.05rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--paper-3);
 }
 
 @media (max-width: 960px) {
@@ -267,18 +284,18 @@ p {
   overflow: hidden;
   isolation: isolate;
   background:
-    radial-gradient(1200px 700px at 78% 40%, rgba(22, 50, 58, 0.75), transparent 60%),
-    radial-gradient(900px 600px at 15% 90%, rgba(30, 79, 156, 0.18), transparent 60%),
-    linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+    radial-gradient(1100px 650px at 80% 40%, rgba(16, 85, 184, 0.1), transparent 60%),
+    radial-gradient(800px 560px at 12% 95%, rgba(11, 106, 76, 0.09), transparent 60%),
+    var(--paper);
 }
 .hero-grid {
   position: absolute;
   inset: 0;
   z-index: -3;
-  opacity: 0.35;
+  opacity: 0.6;
   background-image:
-    linear-gradient(to right, rgba(200, 165, 90, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(200, 165, 90, 0.07) 1px, transparent 1px);
+    linear-gradient(to right, rgba(16, 85, 184, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 85, 184, 0.07) 1px, transparent 1px);
   background-size: 96px 96px;
   mask-image: radial-gradient(ellipse at 70% 45%, black 20%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse at 70% 45%, black 20%, transparent 75%);
@@ -290,24 +307,24 @@ p {
   height: 46vmax;
   border-radius: 50%;
   filter: blur(70px);
-  opacity: 0.5;
-  mix-blend-mode: screen;
+  opacity: 0.9;
+  mix-blend-mode: multiply;
   animation: drift 26s ease-in-out infinite alternate;
 }
 .caustic-a {
-  background: radial-gradient(circle, rgba(30, 79, 156, 0.45), transparent 60%);
+  background: radial-gradient(circle, rgba(16, 85, 184, 0.16), transparent 60%);
   top: -10%;
   right: 5%;
 }
 .caustic-b {
-  background: radial-gradient(circle, rgba(15, 122, 85, 0.3), transparent 60%);
+  background: radial-gradient(circle, rgba(11, 106, 76, 0.14), transparent 60%);
   bottom: -20%;
   right: 30%;
   animation-delay: -9s;
   animation-duration: 32s;
 }
 .caustic-c {
-  background: radial-gradient(circle, rgba(200, 165, 90, 0.22), transparent 60%);
+  background: radial-gradient(circle, rgba(59, 123, 224, 0.12), transparent 60%);
   top: 30%;
   left: -15%;
   animation-delay: -17s;
@@ -329,11 +346,11 @@ p {
   bottom: 0;
   height: 96px;
   background:
-    linear-gradient(180deg, transparent, rgba(10, 16, 20, 0.9)),
+    linear-gradient(180deg, transparent, rgba(244, 247, 251, 0.95)),
     repeating-linear-gradient(
       90deg,
-      rgba(230, 201, 134, 0.05) 0px,
-      rgba(230, 201, 134, 0.05) 1px,
+      rgba(16, 85, 184, 0.06) 0px,
+      rgba(16, 85, 184, 0.06) 1px,
       transparent 1px,
       transparent 3px
     );
@@ -348,43 +365,33 @@ p {
   padding-block: clamp(48px, 8vh, 96px);
 }
 .hero-copy {
-  position: relative;
-  z-index: 1;
+  /* No stacking context here so the wordmark blends with the hero backdrop. */
+  position: static;
 }
 .hero-copy .eyebrow {
   margin-bottom: 22px;
 }
-.hero-name {
-  font-size: clamp(3.2rem, 8.2vw, 7rem);
-  font-weight: 300;
-  letter-spacing: 0.01em;
-  line-height: 0.95;
-  background: linear-gradient(120deg, var(--parchment) 0%, var(--gold-2) 55%, var(--parchment) 100%);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: name-sheen 14s linear infinite;
+.hero-wordmark {
+  margin: 0;
+  width: min(100%, 560px);
 }
-@keyframes name-sheen {
-  from {
-    background-position: 0% 0;
-  }
-  to {
-    background-position: 200% 0;
-  }
+.hero-wordmark img {
+  width: 100%;
+  height: auto;
+  /* Client file is a JPEG on white; multiply lets the tinted hero show
+     through the white without modifying the asset itself. */
+  mix-blend-mode: multiply;
 }
-.hero-name em {
-  font-style: italic;
-  font-weight: 300;
+.brand-mark {
+  mix-blend-mode: multiply;
 }
 .hero-head {
   margin-top: 28px;
   font-size: clamp(1.5rem, 2.6vw, 2.1rem);
   font-weight: 400;
   line-height: 1.25;
-  color: var(--fg);
-  max-width: 24ch;
+  color: var(--ink);
+  max-width: 26ch;
 }
 .hero-sub {
   margin-top: 18px;
@@ -401,7 +408,7 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 22px;
-  color: var(--mist);
+  color: var(--muted);
   font-size: 0.8125rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -413,7 +420,7 @@ p {
   height: 5px;
   margin-right: 10px;
   transform: rotate(45deg);
-  background: var(--gold);
+  background: var(--brand-green);
   vertical-align: 2px;
 }
 
@@ -436,12 +443,12 @@ p {
   background: linear-gradient(
     105deg,
     transparent 40%,
-    rgba(255, 255, 255, 0.06) 47%,
-    rgba(255, 255, 255, 0.22) 50%,
-    rgba(255, 255, 255, 0.06) 53%,
+    rgba(255, 255, 255, 0.25) 47%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0.25) 53%,
     transparent 60%
   );
-  mix-blend-mode: screen;
+  mix-blend-mode: overlay;
   animation: sweep 9s var(--ease) infinite;
 }
 @keyframes sweep {
@@ -459,14 +466,14 @@ p {
     opacity 0.5s var(--ease);
 }
 .facet:hover {
-  filter: brightness(1.45) saturate(1.2);
+  filter: brightness(1.35) saturate(1.2);
 }
 .ring-metal {
   stroke: url(#metalGrad);
 }
 .bezel-tick {
-  stroke: var(--gold);
-  opacity: 0.55;
+  stroke: var(--brand-blue);
+  opacity: 0.5;
 }
 .bezel-ring {
   animation: bezel-turn 120s linear infinite;
@@ -495,7 +502,7 @@ p {
 /* ---------- Sections ---------- */
 .section {
   padding-block: clamp(64px, 9vw, 120px);
-  border-top: 1px solid rgba(200, 165, 90, 0.1);
+  border-top: 1px solid var(--line);
 }
 .section-head {
   display: grid;
@@ -505,22 +512,22 @@ p {
 }
 .section-title {
   font-size: clamp(2rem, 4vw, 3.2rem);
-  font-weight: 300;
+  font-weight: 400;
 }
 .section-alt {
-  background: linear-gradient(180deg, var(--ink-2), var(--ink));
+  background: linear-gradient(180deg, var(--paper-2), var(--paper));
 }
 
-/* House reveal strip */
+/* House strip */
 .house {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1px;
-  background: rgba(200, 165, 90, 0.12);
-  border: 1px solid rgba(200, 165, 90, 0.12);
+  background: var(--line);
+  border: 1px solid var(--line);
 }
 .house a {
-  background: var(--ink);
+  background: var(--paper);
   padding: 28px 24px 32px;
   display: grid;
   gap: 10px;
@@ -530,7 +537,7 @@ p {
   transition: background-color 0.4s var(--ease);
 }
 .house a:hover {
-  background: var(--ink-3);
+  background: var(--paper-2);
 }
 .house a::after {
   content: "";
@@ -538,8 +545,8 @@ p {
   left: 24px;
   right: 24px;
   bottom: 0;
-  height: 1px;
-  background: linear-gradient(90deg, var(--gold), transparent);
+  height: 2px;
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-green) 70%, transparent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.5s var(--ease);
@@ -549,16 +556,18 @@ p {
 }
 .house h3 {
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: 500;
+  color: var(--brand-blue-deep);
 }
 .house p {
-  color: var(--mist);
+  color: var(--muted);
   font-size: 0.9375rem;
 }
 .house .idx {
   font-size: 0.75rem;
   letter-spacing: 0.2em;
-  color: var(--gold);
+  color: var(--brand-green);
+  font-weight: 700;
 }
 @media (max-width: 1000px) {
   .house {
@@ -611,12 +620,12 @@ p {
   width: min(100%, 460px);
   justify-self: center;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.05), transparent 70%);
+  background: radial-gradient(circle at 50% 45%, rgba(16, 85, 184, 0.08), transparent 70%);
 }
 .explorer-stage svg {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 30px 50px rgba(14, 28, 51, 0.25));
   transition: filter 0.6s var(--ease);
 }
 .stone-tabs {
@@ -630,10 +639,10 @@ p {
   align-items: center;
   gap: 10px;
   padding: 10px 16px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: 999px;
-  background: transparent;
-  color: var(--fog);
+  background: var(--paper);
+  color: var(--ink-2);
   font-family: var(--font-body);
   font-size: 0.9rem;
   cursor: pointer;
@@ -647,19 +656,19 @@ p {
   height: 10px;
   transform: rotate(45deg);
   background: var(--stone);
-  box-shadow: 0 0 12px var(--stone-hi);
+  box-shadow: 0 0 10px var(--stone-hi);
 }
 .stone-tab[aria-selected="true"] {
-  border-color: var(--gold);
-  color: var(--parchment);
-  background: rgba(200, 165, 90, 0.08);
+  border-color: var(--brand-blue);
+  color: var(--brand-blue-deep);
+  background: rgba(16, 85, 184, 0.06);
 }
 .explorer-panel h3 {
   font-size: clamp(2rem, 3.6vw, 2.8rem);
-  font-weight: 300;
+  font-weight: 400;
 }
 .explorer-panel .family {
-  color: var(--gold);
+  color: var(--brand-green);
   font-family: var(--font-display);
   font-style: italic;
   font-size: 1.25rem;
@@ -667,7 +676,7 @@ p {
 }
 .explorer-panel p {
   margin-top: 18px;
-  color: var(--fog);
+  color: var(--ink-2);
 }
 .facts {
   margin: 24px 0 0;
@@ -678,7 +687,7 @@ p {
   gap: 14px 24px;
 }
 .facts li {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-strong);
   padding-top: 10px;
 }
 .facts .k {
@@ -686,17 +695,17 @@ p {
   font-size: 0.72rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--mist);
+  color: var(--muted);
 }
 .facts .v {
   font-size: 1rem;
-  color: var(--fg);
+  color: var(--ink);
 }
 .explorer-note {
   margin-top: 22px;
   font-size: 0.9rem;
-  color: var(--mist);
-  border-left: 2px solid var(--gold);
+  color: var(--muted);
+  border-left: 2px solid var(--brand-green);
   padding-left: 14px;
 }
 .explorer-panel .btn {
@@ -717,21 +726,21 @@ p {
   min-width: 0;
   grid-template-columns: 320px minmax(0, 1fr);
   gap: 1px;
-  background: rgba(200, 165, 90, 0.14);
-  border: 1px solid rgba(200, 165, 90, 0.14);
+  background: var(--line);
+  border: 1px solid var(--line);
 }
 .atelier-list {
   display: grid;
   min-width: 0;
-  background: var(--ink);
+  background: var(--paper);
 }
 .atelier-list button {
   text-align: left;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid rgba(200, 165, 90, 0.1);
+  border-bottom: 1px solid var(--line);
   padding: 26px 26px;
-  color: var(--fog);
+  color: var(--ink-2);
   font-family: var(--font-display);
   font-size: 1.5rem;
   cursor: pointer;
@@ -747,20 +756,21 @@ p {
   border-bottom: 0;
 }
 .atelier-list button[aria-selected="true"] {
-  color: var(--parchment);
-  background: linear-gradient(90deg, rgba(200, 165, 90, 0.12), transparent);
+  color: var(--brand-blue-deep);
+  background: linear-gradient(90deg, rgba(16, 85, 184, 0.08), transparent);
 }
 .atelier-list button small {
   font-family: var(--font-body);
   font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--brand-green);
+  font-weight: 700;
 }
 .atelier-panel {
   background:
-    radial-gradient(600px 300px at 90% 0%, rgba(200, 165, 90, 0.1), transparent 70%),
-    var(--ink-2);
+    radial-gradient(600px 300px at 90% 0%, rgba(16, 85, 184, 0.1), transparent 70%),
+    var(--paper-2);
   padding: clamp(28px, 4vw, 56px);
   display: grid;
   align-content: start;
@@ -769,7 +779,7 @@ p {
 }
 .atelier-panel h3 {
   font-size: clamp(2rem, 3.5vw, 2.8rem);
-  font-weight: 300;
+  font-weight: 400;
 }
 .atelier-panel ul {
   margin: 8px 0 0;
@@ -777,7 +787,7 @@ p {
   list-style: none;
   display: grid;
   gap: 10px;
-  color: var(--fog);
+  color: var(--ink-2);
 }
 .atelier-panel li::before {
   content: "";
@@ -786,7 +796,7 @@ p {
   height: 6px;
   margin-right: 12px;
   transform: rotate(45deg);
-  background: var(--gold);
+  background: var(--brand-green);
 }
 .atelier-panel .btn {
   justify-self: start;
@@ -804,7 +814,7 @@ p {
   }
   .atelier-list button {
     border-bottom: 0;
-    border-right: 1px solid rgba(200, 165, 90, 0.1);
+    border-right: 1px solid var(--line);
     font-size: 1.15rem;
     padding: 18px 16px;
     flex-direction: column;
@@ -817,12 +827,12 @@ p {
 .page-hero {
   padding-block: clamp(56px, 9vw, 110px) clamp(40px, 6vw, 72px);
   background:
-    radial-gradient(900px 400px at 85% 10%, rgba(22, 50, 58, 0.7), transparent 70%),
-    var(--ink);
+    radial-gradient(900px 400px at 85% 10%, rgba(16, 85, 184, 0.1), transparent 70%),
+    var(--paper);
 }
 .page-hero h1 {
   font-size: clamp(2.6rem, 6vw, 4.6rem);
-  font-weight: 300;
+  font-weight: 400;
   margin-top: 14px;
 }
 .page-hero .lede {
@@ -851,13 +861,13 @@ p {
 .points li {
   padding: 16px 18px;
   border: 1px solid var(--line);
-  background: var(--panel);
-  color: var(--fog);
+  background: var(--paper-2);
+  color: var(--ink-2);
 }
 .aside-card {
   border: 1px solid var(--line);
   padding: 28px;
-  background: linear-gradient(180deg, rgba(200, 165, 90, 0.08), transparent);
+  background: linear-gradient(180deg, rgba(16, 85, 184, 0.06), var(--paper));
   display: grid;
   gap: 14px;
   align-content: start;
@@ -866,8 +876,11 @@ p {
   font-size: 1.5rem;
 }
 .aside-card p {
-  color: var(--fog);
+  color: var(--ink-2);
   font-size: 0.95rem;
+}
+.aside-card a:not(.btn) {
+  color: var(--brand-blue);
 }
 @media (max-width: 860px) {
   .two-col {
@@ -890,26 +903,24 @@ p {
   font-size: 0.8rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--mist);
+  color: var(--muted);
+  font-weight: 600;
 }
 .field input,
 .field select,
 .field textarea {
   width: 100%;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(200, 165, 90, 0.28);
-  color: var(--fg);
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
   padding: 14px 14px;
   font: inherit;
   border-radius: var(--radius);
 }
-.field select option {
-  color: #111;
-}
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  outline: 2px solid var(--gold-2);
+  outline: 2px solid var(--brand-blue);
   outline-offset: 0;
   border-color: transparent;
 }
@@ -917,8 +928,9 @@ p {
   min-height: 160px;
   resize: vertical;
 }
-.field .error {
-  color: #ff9aa9;
+.field .error,
+.form > .error {
+  color: #b3122e;
   font-size: 0.875rem;
 }
 .check {
@@ -926,26 +938,30 @@ p {
   gap: 12px;
   align-items: flex-start;
   font-size: 0.95rem;
-  color: var(--fog);
+  color: var(--ink-2);
 }
 .check input {
   width: 18px;
   height: 18px;
   margin-top: 4px;
-  accent-color: var(--gold);
+  accent-color: var(--brand-blue);
   flex: none;
 }
 .form-status {
   padding: 16px 18px;
   border: 1px solid var(--line);
-  background: var(--panel);
-  color: var(--fg);
+  background: var(--paper-2);
+  color: var(--ink);
 }
 .form-status.ok {
-  border-color: var(--emerald-hi);
+  border-color: var(--brand-green);
 }
 .form-status.err {
-  border-color: #ff9aa9;
+  border-color: #b3122e;
+}
+.form-status a {
+  color: var(--brand-blue);
+  text-decoration: underline;
 }
 .hp {
   position: absolute;
@@ -971,10 +987,10 @@ p {
 }
 .contact-side p,
 .contact-side a {
-  color: var(--fog);
+  color: var(--ink-2);
 }
 .contact-side a:hover {
-  color: var(--gold-2);
+  color: var(--brand-blue);
 }
 @media (max-width: 900px) {
   .contact-grid {
@@ -982,7 +998,7 @@ p {
   }
 }
 
-/* ---------- Prose (privacy etc.) ---------- */
+/* ---------- Prose ---------- */
 .prose {
   max-width: 72ch;
 }
@@ -992,7 +1008,7 @@ p {
 }
 .prose p,
 .prose li {
-  color: var(--fog);
+  color: var(--ink-2);
 }
 .prose p + p {
   margin-top: 12px;
@@ -1001,7 +1017,7 @@ p {
   padding-left: 20px;
 }
 .prose a {
-  color: var(--gold-2);
+  color: var(--brand-blue);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -1016,7 +1032,7 @@ p {
   padding: 14px 0;
   border-bottom: 1px solid var(--line);
   font-size: 0.875rem;
-  color: var(--mist);
+  color: var(--muted);
 }
 .lookbook {
   display: grid;
@@ -1025,7 +1041,7 @@ p {
 }
 .lookbook-card {
   border: 1px solid var(--line);
-  background: var(--panel);
+  background: var(--paper);
   padding: 20px;
   display: grid;
   gap: 10px;
@@ -1035,29 +1051,42 @@ p {
   gap: 8px;
 }
 .empty {
-  border: 1px dashed var(--line);
+  border: 1px dashed var(--line-strong);
   padding: 40px;
   text-align: center;
-  color: var(--mist);
+  color: var(--muted);
   display: grid;
   gap: 12px;
   justify-items: center;
+  background: var(--paper-2);
 }
 .login-card {
   max-width: 480px;
   border: 1px solid var(--line);
   padding: clamp(24px, 4vw, 40px);
-  background: var(--panel);
+  background: var(--paper);
   display: grid;
   gap: 20px;
+  box-shadow: 0 20px 50px rgba(14, 28, 51, 0.06);
+}
+.text-2 {
+  color: var(--ink-2);
+}
+.muted {
+  color: var(--muted);
+}
+.link {
+  color: var(--brand-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* ---------- Footer ---------- */
 .footer {
-  border-top: 1px solid rgba(200, 165, 90, 0.16);
+  border-top: 1px solid var(--line);
   padding: 56px 0 40px;
-  background: var(--ink);
-  color: var(--mist);
+  background: var(--paper-2);
+  color: var(--ink-2);
   font-size: 0.9rem;
 }
 .footer-grid {
@@ -1070,7 +1099,7 @@ p {
   font-size: 0.72rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--brand-green);
   margin-bottom: 14px;
 }
 .footer ul {
@@ -1081,21 +1110,21 @@ p {
   gap: 8px;
 }
 .footer a:hover {
-  color: var(--gold-2);
+  color: var(--brand-blue);
 }
 .footer .brand {
-  color: var(--parchment);
   margin-bottom: 12px;
 }
 .footer-bottom {
   margin-top: 40px;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
   font-size: 0.8rem;
+  color: var(--muted);
 }
 @media (max-width: 860px) {
   .footer-grid {
@@ -1115,7 +1144,6 @@ p {
   }
   .caustic,
   .hero-sweep,
-  .hero-name,
   .bezel-ring {
     animation: none !important;
   }
