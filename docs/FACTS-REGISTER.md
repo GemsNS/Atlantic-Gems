@@ -21,7 +21,7 @@ Last public check: 2026-09-05
 ## Channels
 | Channel | Value | Status | Notes |
 |---|---|---|---|
-| Website | atlanticgems.ca | VERIFIED | Shopify "Opening soon" holding page; password-gated; email signup only |
+| Website | atlanticgems.ca | VERIFIED | Holding page only. Client confirmed: no store planned on that platform; domain placeholder to be repointed to this build |
 | Instagram | @atlanticgemsca | VERIFIED | Display name "Atlantic Gems"; 0 followers, 3 following at check time |
 | Facebook | facebook.com/61574878435021 (vanity /p/Atlantic-Gems-61574878435021/) | VERIFIED | Only page title readable without login |
 
