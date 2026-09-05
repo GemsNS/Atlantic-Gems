@@ -1,6 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
-import { BrandMark } from "@/components/BrandMark";
 import { services, site } from "@/lib/site";
+import mark from "@/public/brand/mark.jpg";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -10,7 +11,7 @@ export function SiteFooter() {
         <div className="footer-grid">
           <div>
             <div className="brand">
-              <BrandMark className="brand-mark" />
+              <Image src={mark} alt="" className="brand-mark" width={40} height={40} />
               <span>{site.name}</span>
             </div>
             <p>{site.tagline}</p>

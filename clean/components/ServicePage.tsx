@@ -38,7 +38,7 @@ export function ServicePage({ serviceKey, intro, process, aside, children }: Ser
                 <ol className="points" style={{ counterReset: "step" }}>
                   {process.map((p) => (
                     <li key={p.title}>
-                      <strong style={{ display: "block", color: "var(--parchment)", marginBottom: 6 }}>
+                      <strong style={{ display: "block", color: "var(--ink)", marginBottom: 6 }}>
                         {p.title}
                       </strong>
                       {p.body}

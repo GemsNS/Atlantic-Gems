@@ -68,7 +68,7 @@ export default async function WholesalePage() {
                       </li>
                     ))}
                   </ul>
-                  {item.note ? <p style={{ color: "var(--mist)" }}>{item.note}</p> : null}
+                  {item.note ? <p className="muted">{item.note}</p> : null}
                 </article>
               ))}
             </div>

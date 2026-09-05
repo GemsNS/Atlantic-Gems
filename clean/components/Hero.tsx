@@ -1,12 +1,14 @@
+import Image from "next/image";
 import Link from "next/link";
 import { FacetedStone, OUTER } from "@/components/GemGeometry";
 import { services, site } from "@/lib/site";
+import wordmark from "@/public/brand/wordmark.jpg";
 
 /**
  * Hero composition: one faceted stone held in a four-prong setting on a ring
  * shank, framed by a watch bezel minute track. Gem materiality, setting craft
- * and watch detail in a single crystalline emblem. Line art, not product
- * photography, so nothing is misrepresented.
+ * and watch detail in a single emblem. Line art, not product photography, so
+ * nothing is misrepresented. Colours follow the client's locked brand.
  */
 function HouseEmblem() {
   const ticks = Array.from({ length: 60 }, (_, i) => i);
@@ -17,7 +19,7 @@ function HouseEmblem() {
     <svg viewBox="0 0 600 600" role="img" aria-labelledby="emblem-title emblem-desc">
       <title id="emblem-title">Atlantic Gems house emblem</title>
       <desc id="emblem-desc">
-        A faceted stone held by four prongs on a ring, framed by a watch bezel.
+        A faceted blue stone held by four prongs on a ring, framed by a watch bezel.
       </desc>
       <defs>
         <linearGradient id="metalGrad" x1="0" y1="0" x2="1" y2="1">
@@ -27,18 +29,17 @@ function HouseEmblem() {
           <stop offset="1" stopColor="#e6c986" />
         </linearGradient>
         <radialGradient id="glow" cx="0.5" cy="0.45" r="0.5">
-          <stop offset="0" stopColor="#6da4ff" stopOpacity="0.35" />
-          <stop offset="1" stopColor="#6da4ff" stopOpacity="0" />
+          <stop offset="0" stopColor="#1055b8" stopOpacity="0.16" />
+          <stop offset="1" stopColor="#1055b8" stopOpacity="0" />
         </radialGradient>
       </defs>
 
-      {/* Soft caustic behind the stone */}
       <circle cx={cx} cy={cy - 40} r="190" fill="url(#glow)" />
 
       {/* Watch bezel: minute track and indices */}
       <g className="bezel-ring">
-        <circle cx={cx} cy={cy} r={rOuter} fill="none" stroke="#c8a55a" strokeOpacity="0.45" />
-        <circle cx={cx} cy={cy} r={rOuter - 26} fill="none" stroke="#c8a55a" strokeOpacity="0.18" />
+        <circle cx={cx} cy={cy} r={rOuter} fill="none" stroke="#1055b8" strokeOpacity="0.4" />
+        <circle cx={cx} cy={cy} r={rOuter - 26} fill="none" stroke="#1055b8" strokeOpacity="0.15" />
         {ticks.map((i) => {
           const a = (i / 60) * Math.PI * 2;
           const long = i % 5 === 0;
@@ -58,7 +59,7 @@ function HouseEmblem() {
         })}
       </g>
 
-      {/* Ring shank: lower arc under the stone */}
+      {/* Ring shank */}
       <path
         className="ring-metal"
         d="M 118 330 C 118 470, 482 470, 482 330"
@@ -70,24 +71,23 @@ function HouseEmblem() {
         d="M 118 330 C 118 470, 482 470, 482 330"
         fill="none"
         stroke="#fff"
-        strokeOpacity="0.35"
+        strokeOpacity="0.5"
         strokeWidth="2"
         strokeLinecap="round"
         transform="translate(0,-5)"
       />
 
-      {/* Gallery / seat beneath the stone */}
+      {/* Seat beneath the stone */}
       <polygon
         points="200,330 400,330 380,362 220,362"
-        fill="#1a1408"
+        fill="#3d3116"
         stroke="url(#metalGrad)"
         strokeWidth="2"
       />
 
-      {/* The stone */}
-      <FacetedStone id="hero" base="#1e4f9c" highlight="#8fbfff" />
+      <FacetedStone id="hero" base="#1055b8" highlight="#9cc4ff" />
 
-      {/* Four prongs at the stone corners */}
+      {/* Four prongs */}
       {[OUTER[0], OUTER[1], OUTER[4], OUTER[5]].map((p, i) =>
         p ? (
           <g key={i}>
@@ -127,8 +127,13 @@ export function Hero() {
           <p className="eyebrow">
             {site.city}, {site.region}
           </p>
-          <h1 id="hero-title" className="hero-name">
-            Atlantic <em>Gems</em>
+          <h1 id="hero-title" className="hero-wordmark">
+            <Image
+              src={wordmark}
+              alt="Atlantic Gems. Rough and faceted gemstones."
+              priority
+              sizes="(max-width: 900px) 90vw, 560px"
+            />
           </h1>
           <p className="hero-head">
             Gemstones, custom jewellery, repair and stone setting under one roof.

@@ -29,7 +29,7 @@ export default async function WholesaleLoginPage({
           <div>
             <p className="eyebrow">Trade access</p>
             <h1 style={{ fontSize: "2.2rem", marginTop: 10 }}>Sign in</h1>
-            <p style={{ color: "var(--fog)", marginTop: 12 }}>
+            <p className="text-2" style={{ marginTop: 12 }}>
               Enter the access phrase provided to your business. Trade pricing and parcels are
               confidential.
             </p>
@@ -72,9 +72,9 @@ export default async function WholesaleLoginPage({
             </div>
           </form>
 
-          <p style={{ color: "var(--mist)", fontSize: "0.9rem" }}>
+          <p className="muted" style={{ fontSize: "0.9rem" }}>
             Not yet a trade client?{" "}
-            <Link href="/contact?type=wholesale" style={{ color: "var(--gold-2)" }}>
+            <Link href="/contact?type=wholesale" className="link">
               Request access
             </Link>
             .

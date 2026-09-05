@@ -28,7 +28,7 @@ const STONES = [
     key: "sapphire",
     name: "Sapphire",
     family: "Corundum, blue and fancy colours",
-    base: "#1e4f9c",
+    base: "#1055b8",
     hi: "#8fbfff",
     copy:
       "Corundum in every colour other than red. Blue is the classic, with fancy colours enquired for by name.",
@@ -58,8 +58,8 @@ const STONES = [
     key: "diamond",
     name: "Diamond",
     family: "Crystalline carbon",
-    base: "#9fb6c8",
-    hi: "#ffffff",
+    base: "#7f9bbd",
+    hi: "#f4f9ff",
     copy:
       "Tell us whether you require natural or laboratory-grown material and the grading you expect; we confirm what is available before quoting.",
     facts: [
