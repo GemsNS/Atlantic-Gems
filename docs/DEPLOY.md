@@ -69,3 +69,41 @@ SCAN_BASE_URL=https://atlanticgems.ca npm run scan                              
 ## Domain
 
 `atlanticgems.ca` currently points at a placeholder holding page. Repoint DNS (A/AAAA or CNAME) to the new host once the post-deploy checks pass on a staging hostname.
+
+## GitHub Pages (static preview)
+
+GitHub Pages is static hosting. It cannot run middleware, API routes, the
+passphrase-gated trade area or the per-request CSP nonce. The static build
+therefore ships the public site only, with these substitutions:
+
+| Server build | Static (Pages) build |
+|---|---|
+| Contact form posts to `/api/contact` with CSRF and rate limiting | Form composes an email in the visitor's mail app (`ContactFormStatic`) |
+| `/wholesale` gated by passphrase, `/wholesale/login` | `/wholesale` is a "request trade access" page; login route removed |
+| Nonce CSP and security headers from middleware | Meta CSP (`'unsafe-inline'` scripts); Pages sets no custom headers |
+| Indexable, sitemap listed | `noindex` and `robots.txt` disallow all until the real domain is used |
+
+Static variants live in `clean/static-overlay/` and replace their server
+counterparts only inside the static build. Build and publish:
+
+```bash
+cd clean
+npm run build:static                 # writes clean/.static-build/out (basePath /Atlantic-Gems)
+# publish the out/ folder to the gh-pages branch
+cd ..
+git worktree add --detach .gh-pages-wt
+cd .gh-pages-wt
+git checkout --orphan gh-pages 2>/dev/null || git checkout gh-pages
+git rm -rfq . 2>/dev/null; rm -rf ./*
+cp -r ../clean/.static-build/out/. .
+git add -A && git commit -m "Static preview build" && git push -f origin gh-pages
+cd .. && git worktree remove --force .gh-pages-wt
+```
+
+Then in GitHub: Settings → Pages → Source "Deploy from a branch" → `gh-pages` / `/ (root)`.
+The preview URL is `https://gemsns.github.io/Atlantic-Gems/`.
+
+Notes:
+- The repository is private. GitHub Pages on a private repository requires a paid GitHub plan; on a free plan the repository must be public for Pages to publish. The repository contains no private client data (the address is deliberately excluded), so making it public is safe, but it is the client's decision.
+- For a custom domain on Pages, rebuild with `STATIC_BASE_PATH= npm run build:static` and add a `CNAME` file to `out/`.
+- Force-pushing `gh-pages` is expected: it is a generated artifact branch, not source. `main` is never force-pushed.

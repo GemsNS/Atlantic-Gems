@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "scan": "node scripts/scan-strings.mjs",
-    "check": "npm run typecheck && npm run lint && npm run scan && npm run build"
+    "check": "npm run typecheck && npm run lint && npm run scan && npm run build",
+    "build:static": "node scripts/build-static.mjs",
+    "export:policies": "node scripts/export-policies.mjs"
   },
   "dependencies": {
     "next": "15.5.2",
