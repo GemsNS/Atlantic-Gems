@@ -59,22 +59,25 @@ function HouseEmblem() {
         })}
       </g>
 
-      {/* Ring shank */}
-      <path
+      {/* Ring band, seen from above and in front; the stone hides the far side */}
+      <ellipse
         className="ring-metal"
-        d="M 118 330 C 118 470, 482 470, 482 330"
+        cx="300"
+        cy="345"
+        rx="182"
+        ry="100"
         fill="none"
-        strokeWidth="16"
-        strokeLinecap="round"
+        strokeWidth="18"
       />
-      <path
-        d="M 118 330 C 118 470, 482 470, 482 330"
+      <ellipse
+        cx="300"
+        cy="341"
+        rx="182"
+        ry="100"
         fill="none"
         stroke="#fff"
-        strokeOpacity="0.5"
+        strokeOpacity="0.45"
         strokeWidth="2"
-        strokeLinecap="round"
-        transform="translate(0,-5)"
       />
 
       {/* Seat beneath the stone */}
