@@ -19,6 +19,13 @@ const ATTRIBUTION = [
   /generated (by|with) ai/i,
   /built with ai/i,
   /powered by (next|vercel|shopify)/i,
+  // Copy tics that read as machine-written.
+  /\bdelve\b/i,
+  /\belevate your\b/i,
+  /\bunlock(ing)? the\b/i,
+  /\bseamless(ly)?\b/i,
+  /\bcurated\b/i,
+  /\bbespoke\b/i,
 ];
 
 // Private strings (e.g. the client's street address) must never reach a page.

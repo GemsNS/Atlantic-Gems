@@ -13,23 +13,23 @@ export default function HomePage() {
       <section className="section" aria-labelledby="house-title">
         <div className="wrap">
           <div className="section-head">
-            <p className="eyebrow">The house</p>
             <h2 id="house-title" className="section-title">
-              One address for the stone, the piece and its care.
+              Six disciplines. One bench.
             </h2>
             <p className="lede">
-              Loose gemstones for the trade and for private clients, custom work made to your
-              brief, repair and restoration of what you already own, professional setting, and
-              enquiries for fine watches.
+              Most jewellers send work out. Stones, setting, manufacturing, repair, appraisal
+              and watch sourcing are all handled here, by the same people you speak to.
             </p>
           </div>
           <Reveal>
             <div className="house">
-              {services.map((s, i) => (
+              {services.map((s) => (
                 <Link key={s.key} href={s.href}>
-                  <span className="idx">0{i + 1}</span>
                   <h3>{s.title}</h3>
                   <p>{s.short}</p>
+                  <span className="house-more" aria-hidden="true">
+                    →
+                  </span>
                 </Link>
               ))}
             </div>
@@ -40,13 +40,12 @@ export default function HomePage() {
       <section className="section section-alt" aria-labelledby="stones-title">
         <div className="wrap">
           <div className="section-head">
-            <p className="eyebrow">Gemstones</p>
             <h2 id="stones-title" className="section-title">
               Rough and faceted. Quoted stone by stone.
             </h2>
             <p className="lede">
-              Rubies, sapphires, emeralds, diamonds and related stones. Select a category to see
-              how we describe it, then ask for what you need.
+              Rubies, sapphires, emeralds, diamonds and related stones. Choose a category to see
+              how we describe it and what we disclose.
             </p>
           </div>
           <Reveal delay={1}>
@@ -58,13 +57,12 @@ export default function HomePage() {
       <section className="section" aria-labelledby="atelier-title">
         <div className="wrap">
           <div className="section-head">
-            <p className="eyebrow">Atelier</p>
             <h2 id="atelier-title" className="section-title">
-              Bench work, in writing, before anything is touched.
+              Every job starts with a written estimate.
             </h2>
             <p className="lede">
-              Custom commissions, repair and restoration, stone setting and watch enquiries all
-              begin with an assessment and a written estimate.
+              Commissions, repairs, setting, appraisals and watch work are assessed first and
+              quoted in writing. Nothing is touched until you say so.
             </p>
           </div>
           <Reveal delay={1}>
@@ -76,15 +74,12 @@ export default function HomePage() {
       <section className="section section-alt" aria-labelledby="visit-title">
         <div className="wrap two-col">
           <div>
-            <p className="eyebrow">
-              {site.city}, {site.region}
-            </p>
-            <h2 id="visit-title" className="section-title" style={{ marginTop: 12 }}>
-              Private appointments and trade enquiries.
+            <h2 id="visit-title" className="section-title">
+              By appointment in Halifax.
             </h2>
             <p className="lede" style={{ marginTop: 18 }}>
-              Private clients are seen by appointment. Trade buyers can request access to current
-              parcels and pricing through the trade area.
+              Private clients are seen by appointment. Trade buyers can request current parcels
+              and pricing through the trade area.
             </p>
             <div className="hero-ctas">
               <Link href="/contact" className="btn btn-primary">
@@ -106,9 +101,7 @@ export default function HomePage() {
                 {site.social.instagram.handle}
               </a>
             </p>
-            <p>
-              {site.city}, {site.region}, {site.country}
-            </p>
+            <p>{site.locationNote}</p>
           </div>
         </div>
       </section>

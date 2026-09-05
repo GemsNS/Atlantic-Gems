@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { RatesTicker } from "@/components/RatesTicker";
 import { site } from "@/lib/site";
 
 /**
@@ -55,7 +56,8 @@ const META_CSP = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self'",
-  "connect-src 'self'",
+  // Static hosting has no API route, so the ticker reads the public sources directly.
+  "connect-src 'self' https://api.gold-api.com https://www.bankofcanada.ca",
   "object-src 'none'",
   "base-uri 'self'",
 ].join("; ");
@@ -71,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a className="skip-link" href="#main">
           Skip to content
         </a>
+        <RatesTicker />
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />

@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { RatesTicker } from "@/components/RatesTicker";
 import { site } from "@/lib/site";
 
 const cormorant = Cormorant_Garamond({
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a className="skip-link" href="#main">
           Skip to content
         </a>
+        <RatesTicker />
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />

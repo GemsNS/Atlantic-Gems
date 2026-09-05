@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SiteNav } from "@/components/SiteNav";
 import { services, site } from "@/lib/site";
 import mark from "@/public/brand/mark.jpg";
 
@@ -16,29 +17,7 @@ export function SiteHeader() {
           <Image src={mark} alt="" className="brand-mark" width={40} height={40} priority />
           <span>{site.name}</span>
         </Link>
-
-        <nav className="nav" aria-label="Primary">
-          {links.map((l) => (
-            <Link key={l.href} href={l.href}>
-              {l.label}
-            </Link>
-          ))}
-          <Link href="/contact" className="btn btn-primary btn-small nav-cta">
-            Enquire
-          </Link>
-        </nav>
-
-        <details className="nav-mobile">
-          <summary aria-label="Open menu">Menu</summary>
-          <nav className="nav-mobile-panel" aria-label="Primary mobile">
-            {links.map((l) => (
-              <Link key={l.href} href={l.href}>
-                {l.label}
-              </Link>
-            ))}
-            <Link href="/contact">Enquire</Link>
-          </nav>
-        </details>
+        <SiteNav links={links} />
       </div>
     </header>
   );
