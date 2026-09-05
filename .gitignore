@@ -1,0 +1,20 @@
+# dependencies / builds
+node_modules/
+clean/.next/
+clean/out/
+clean/next-env.d.ts
+*.tsbuildinfo
+
+# environment / secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# screenshots / evidence generated locally
+evidence/tmp/
