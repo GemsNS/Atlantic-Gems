@@ -11,8 +11,8 @@ Last public check: 2026-09-05
 |---|---|---|---|
 | Trading name | Atlantic Gems | VERIFIED | atlanticgems.ca, Facebook title, Instagram |
 | Location | Halifax, NS | VERIFIED | Facebook page title "Atlantic Gems \| Halifax NS" |
-| Legal entity name | — | UNKNOWN | client |
-| Street address | — | UNKNOWN | client |
+| Legal entity name | ATLANTIC GEMS (registered name), Registration No. 4699451 | CLIENT | supplied 2026-09-05 |
+| Street address | supplied 2026-09-05, PRIVATE | CLIENT | Bedford, NS (within Halifax Regional Municipality). Client instruction: keep private. Not stored in this repository; never published. Public copy: "by appointment only" |
 | Phone | — | UNKNOWN | client |
 | Support email | support@atlanticgems.ca | CLIENT (brief) | not visible on any public page; confirm before publishing |
 | HST / GST number | — | UNKNOWN | client (never invent) |
@@ -31,11 +31,11 @@ Last public check: 2026-09-05
 | "The best prices on loose rough and faceted gemstones" | VERIFIED | Instagram bio (verbatim) |
 | "Rubies, Sapphires, Emeralds, Diamonds, and more!" | VERIFIED | Instagram bio (verbatim) |
 | Wholesale of rough and faceted rubies, sapphires, emeralds, diamonds | UNVERIFIED | search-engine snippet, likely Facebook intro |
-| Custom jewellery design and fabrication | CLIENT (brief) | no public evidence yet |
-| Repair and restoration | CLIENT (brief) | no public evidence yet |
-| Professional stone setting | CLIENT (brief) | no public evidence yet |
-| High-end watches (sales / service) | CLIENT (brief) | no public evidence yet; brands UNKNOWN |
-| Appraisals, remounts, resizing, polishing, chain repair | UNKNOWN | claim only what client confirms |
+| Custom jewellery design, fabrication and manufacturing | CLIENT | confirmed 2026-09-05 |
+| Repair, restoration, resizing, polishing | CLIENT | confirmed 2026-09-05 |
+| Professional stone setting | CLIENT | confirmed 2026-09-05 |
+| High-end watches (sales, procurement, service) | CLIENT | confirmed 2026-09-05; brands "subject to stock", never list brands or claim dealer status |
+| Appraisals, procurement, consignment sale | CLIENT | confirmed 2026-09-05 ("and more" — claim only the named items) |
 
 ## Explicitly UNKNOWN — do not fabricate
 - Watch brands carried or serviced, and any authorized-dealer status
@@ -61,3 +61,19 @@ Last public check: 2026-09-05
 | Brand green | #0B6A4C (sampled) | CLIENT | Dominant green in both files; site secondary accent |
 | Client tagline | "Rough and faceted gemstones" | CLIENT | Appears in wordmark only; site headline carries the full-house positioning per brief |
 | Vector / transparent versions | — | UNKNOWN | Only JPEGs on white supplied; request SVG/PNG masters from client |
+
+## Policy documents (drafted by us at client request, 2026-09-05)
+Source of truth: `clean/lib/policies.json`, rendered at /policies/disclosure and /policies/wholesale-terms and exported to /package/policies. Content is conservative and makes no certification, origin or Kimberley Process claims.
+
+Numeric defaults chosen by us — client to confirm or change:
+| Term | Default | Where |
+|---|---|---|
+| Quotation validity | 7 days | Wholesale terms, trade page |
+| Procurement deposit | 50%, non-refundable once item secured | Wholesale terms |
+| Memo return period | 7 days | Wholesale terms |
+| Stock return window | 5 business days, sealed and unaltered | Wholesale terms |
+| Consignment settlement | 14 days after cleared payment | Wholesale terms |
+| Consignment commission | not stated; "agreed in writing per item" | Wholesale terms |
+| Independent lab submission | "can be arranged at cost with written agreement" | Disclosure policy |
+
+Still UNKNOWN: HST registration number (business registry number is not an HST number), phone, hours, appraisal credentials (none claimed).

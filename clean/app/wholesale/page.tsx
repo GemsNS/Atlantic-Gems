@@ -77,9 +77,19 @@ export default async function WholesalePage() {
           <div className="aside-card" style={{ marginTop: 40, maxWidth: 640 }}>
             <h3>Trade terms</h3>
             <p>
-              Pricing is quoted in Canadian dollars. Applicable taxes, minimums and payment terms
-              are confirmed on each quotation. Treatment, origin and any report are stated in
-              writing for every stone we sell.
+              Pricing is quoted in Canadian dollars, exclusive of taxes and shipping. Quotations
+              are valid for 7 days and subject to prior sale. Treatment, origin and any report
+              are stated in writing for every stone we sell.
+            </p>
+            <p>
+              <Link href="/policies/wholesale-terms" className="link">
+                Read the full Wholesale &amp; Trade Terms
+              </Link>{" "}
+              and the{" "}
+              <Link href="/policies/disclosure" className="link">
+                Certification &amp; Disclosure Policy
+              </Link>
+              .
             </p>
             <p>
               Questions: <a href={`mailto:${site.email}`}>{site.email}</a>

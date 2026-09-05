@@ -20,7 +20,8 @@ export default function CustomJewelleryPage() {
           </p>
           <p>
             You may bring your own stones, choose from ours, or combine the two. Existing pieces
-            can be remade into something new.
+            can be remade into something new, and we manufacture small runs for designers and
+            retailers who need pieces made to their specification.
           </p>
         </>
       }

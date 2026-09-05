@@ -14,9 +14,10 @@ export default function WatchesPage() {
       intro={
         <>
           <p>
-            We welcome enquiries for the sale and servicing of fine timepieces. Because scope
-            varies by brand and by movement, we confirm what we can take on for each request
-            rather than publishing a general list.
+            We sell, source and arrange servicing for fine timepieces. Brands and models
+            available are subject to current stock, so rather than publish a list that would be
+            out of date, we confirm what is on hand when you ask, and we procure specific
+            references on request.
           </p>
           <p>
             Tell us the brand, model and reference if you have it, and what you would like

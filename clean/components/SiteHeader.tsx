@@ -4,7 +4,7 @@ import { services, site } from "@/lib/site";
 import mark from "@/public/brand/mark.jpg";
 
 const links = [
-  ...services.map((s) => ({ href: s.href, label: s.title })),
+  ...services.map((s) => ({ href: s.href, label: s.navLabel })),
   { href: "/wholesale", label: "Trade" },
 ];
 
