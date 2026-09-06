@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ServicePage } from "@/components/ServicePage";
+import { CommissionPlanner } from "@/components/interactive/CommissionPlanner";
 
 export const metadata: Metadata = {
   title: "Custom Jewellery",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 
 export default function CustomJewelleryPage() {
   return (
+    <>
     <ServicePage
       serviceKey="custom"
       intro={
@@ -40,5 +42,7 @@ export default function CustomJewelleryPage() {
         },
       ]}
     />
+    <CommissionPlanner />
+    </>
   );
 }

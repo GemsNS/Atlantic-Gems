@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ServicePage } from "@/components/ServicePage";
+import { RepairTriage } from "@/components/interactive/RepairTriage";
 
 export const metadata: Metadata = {
   title: "Repair & Restoration",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 
 export default function RepairPage() {
   return (
+    <>
     <ServicePage
       serviceKey="repair"
       intro={
@@ -49,5 +51,7 @@ export default function RepairPage() {
         </>
       }
     />
+    <RepairTriage />
+    </>
   );
 }

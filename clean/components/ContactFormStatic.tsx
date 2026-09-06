@@ -9,7 +9,8 @@ import { enquiryTypes, site, type EnquiryType } from "@/lib/site";
  * transmitted to any third party.
  */
 export function ContactFormStatic() {
-  const [type, setType] = useState<EnquiryType>("gemstones");
+  const [type, setType] = useState<EnquiryType>("jewellery");
+  const [message, setMessage] = useState("");
   const [opened, setOpened] = useState(false);
 
   useEffect(() => {
@@ -84,7 +85,9 @@ export function ContactFormStatic() {
           required
           minLength={10}
           maxLength={4000}
-          placeholder="Tell us about the stone, piece or timepiece, and what you would like done."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Tell us about the piece, stone or timepiece, and what you would like done."
         />
       </div>
 

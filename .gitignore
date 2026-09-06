@@ -21,3 +21,6 @@ evidence/tmp/
 
 # static export build directory
 clean/.static-build/
+
+# inventory data (business records, never commit)
+clean/data/

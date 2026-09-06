@@ -1,6 +1,7 @@
 /**
- * HMAC-signed, expiring session token for the trade area.
- * Edge-runtime compatible (Web Crypto only). Format: <expiresMs>.<hexSig>
+ * HMAC-signed, expiring session tokens. Edge-runtime compatible (Web Crypto).
+ * Format: <purpose>.<expiresMs>.<hexSig>, signature over "<purpose>.<expiresMs>".
+ * Purposes keep a trade session from ever being accepted as an admin session.
  */
 const enc = new TextEncoder();
 
@@ -29,33 +30,39 @@ function fromHex(hex: string): Uint8Array<ArrayBuffer> | null {
   return out;
 }
 
+export type SessionPurpose = "trade" | "admin";
 export const WHOLESALE_COOKIE = "ag_trade";
+export const ADMIN_COOKIE = "ag_admin";
 
-export function sessionHours(): number {
-  const n = Number(process.env.WHOLESALE_SESSION_HOURS ?? "12");
-  return Number.isFinite(n) && n > 0 && n <= 168 ? n : 12;
+export function sessionHours(purpose: SessionPurpose): number {
+  const raw = purpose === "admin" ? process.env.ADMIN_SESSION_HOURS : process.env.WHOLESALE_SESSION_HOURS;
+  const fallback = purpose === "admin" ? 8 : 12;
+  const n = Number(raw ?? fallback);
+  return Number.isFinite(n) && n > 0 && n <= 168 ? n : fallback;
 }
 
-export async function createSessionToken(secret: string): Promise<string> {
-  const expires = Date.now() + sessionHours() * 3600 * 1000;
+export async function createSessionToken(secret: string, purpose: SessionPurpose): Promise<string> {
+  const expires = Date.now() + sessionHours(purpose) * 3600 * 1000;
+  const payload = `${purpose}.${expires}`;
   const key = await hmacKey(secret);
-  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(String(expires)));
-  return `${expires}.${toHex(sig)}`;
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(payload));
+  return `${payload}.${toHex(sig)}`;
 }
 
 export async function verifySessionToken(
   token: string | undefined,
   secret: string | undefined,
+  purpose: SessionPurpose,
 ): Promise<boolean> {
   if (!token || !secret) return false;
-  const [expStr, sigHex] = token.split(".");
-  if (!expStr || !sigHex) return false;
+  const [p, expStr, sigHex] = token.split(".");
+  if (p !== purpose || !expStr || !sigHex) return false;
   const expires = Number(expStr);
   if (!Number.isFinite(expires) || expires < Date.now()) return false;
   const sig = fromHex(sigHex);
   if (!sig) return false;
   const key = await hmacKey(secret);
-  return crypto.subtle.verify("HMAC", key, sig, enc.encode(expStr));
+  return crypto.subtle.verify("HMAC", key, sig, enc.encode(`${p}.${expStr}`));
 }
 
 export async function sha256Hex(input: string): Promise<string> {

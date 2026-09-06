@@ -1,26 +1,37 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { WHOLESALE_COOKIE, verifySessionToken } from "@/lib/security/session";
+import {
+  ADMIN_COOKIE,
+  WHOLESALE_COOKIE,
+  verifySessionToken,
+} from "@/lib/security/session";
 import { CSRF_COOKIE, randomToken } from "@/lib/security/csrf";
 
 function buildCsp(nonce: string, https: boolean): string {
   const isDev = process.env.NODE_ENV !== "production";
   return [
     "default-src 'self'",
-    // Next.js inline runtime scripts receive the nonce automatically.
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
-    // Inline style attributes are used for per-stone CSS variables.
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob:",
+    // Inventory images: our media route, plus eBay's image CDN for imports.
+    "img-src 'self' data: blob: https://i.ebayimg.com",
     "font-src 'self'",
     "connect-src 'self'",
     "frame-ancestors 'none'",
     "form-action 'self'",
     "base-uri 'self'",
     "object-src 'none'",
-    // Only meaningful once the site is served over TLS; on plain HTTP it
-    // would upgrade same-origin fetches to https and break them.
     ...(https ? ["upgrade-insecure-requests"] : []),
   ].join("; ");
+}
+
+function redirectToLogin(req: NextRequest, loginPath: string, csp: string) {
+  const url = req.nextUrl.clone();
+  url.pathname = loginPath;
+  url.search = "";
+  url.searchParams.set("next", req.nextUrl.pathname);
+  const res = NextResponse.redirect(url);
+  res.headers.set("Content-Security-Policy", csp);
+  return res;
 }
 
 export async function middleware(req: NextRequest) {
@@ -29,28 +40,35 @@ export async function middleware(req: NextRequest) {
   const https =
     req.nextUrl.protocol === "https:" || req.headers.get("x-forwarded-proto") === "https";
   const csp = buildCsp(nonce, https);
+  const secret = process.env.SESSION_SECRET;
 
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set("x-nonce", nonce);
   requestHeaders.set("Content-Security-Policy", csp);
 
-  // Gate the trade area. The login page itself stays reachable.
-  if (pathname.startsWith("/wholesale") && !pathname.startsWith("/wholesale/login")) {
-    const token = req.cookies.get(WHOLESALE_COOKIE)?.value;
-    const ok = await verifySessionToken(token, process.env.SESSION_SECRET);
+  // Admin area and admin API: admin session required.
+  const isAdminPage = pathname.startsWith("/admin") && !pathname.startsWith("/admin/login");
+  const isAdminApi =
+    pathname.startsWith("/api/admin") &&
+    !pathname.startsWith("/api/admin/login") &&
+    !pathname.startsWith("/api/admin/logout");
+  if (isAdminPage || isAdminApi) {
+    const ok = await verifySessionToken(req.cookies.get(ADMIN_COOKIE)?.value, secret, "admin");
     if (!ok) {
-      const url = req.nextUrl.clone();
-      url.pathname = "/wholesale/login";
-      url.search = "";
-      url.searchParams.set("next", pathname);
-      const redirect = NextResponse.redirect(url);
-      redirect.headers.set("Content-Security-Policy", csp);
-      return redirect;
+      if (isAdminApi) {
+        return NextResponse.json({ ok: false, message: "Sign in required." }, { status: 401 });
+      }
+      return redirectToLogin(req, "/admin/login", csp);
     }
   }
 
-  // Issue a CSRF token for forms. Pages read it from the request header so it
-  // is available on the very first visit before the cookie round-trips.
+  // Trade area: trade session (or admin session) required.
+  if (pathname.startsWith("/wholesale") && !pathname.startsWith("/wholesale/login")) {
+    const trade = await verifySessionToken(req.cookies.get(WHOLESALE_COOKIE)?.value, secret, "trade");
+    const admin = await verifySessionToken(req.cookies.get(ADMIN_COOKIE)?.value, secret, "admin");
+    if (!trade && !admin) return redirectToLogin(req, "/wholesale/login", csp);
+  }
+
   const existing = req.cookies.get(CSRF_COOKIE)?.value;
   const csrfToken = existing && /^[0-9a-f]{64}$/.test(existing) ? existing : randomToken(32);
   requestHeaders.set("x-csrf-token", csrfToken);
@@ -60,7 +78,7 @@ export async function middleware(req: NextRequest) {
 
   if (csrfToken !== existing) {
     res.cookies.set(CSRF_COOKIE, csrfToken, {
-      httpOnly: false, // read by the form to double-submit
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",
@@ -72,7 +90,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    // Skip static assets and Next internals.
-    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|icon.svg|.*\\.(?:png|jpg|jpeg|webp|avif|svg|woff2?)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|icon.jpg|.*\\.(?:png|jpg|jpeg|webp|avif|svg|woff2?)$).*)",
   ],
 };

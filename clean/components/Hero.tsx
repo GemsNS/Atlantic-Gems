@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CompassHero } from "@/components/CompassHero";
 import wordmark from "@/public/brand/wordmark.jpg";
 
-export function Hero() {
+export function Hero({ shopOpen = false }: { shopOpen?: boolean }) {
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-grid" aria-hidden="true" />
@@ -22,20 +22,24 @@ export function Hero() {
               sizes="(max-width: 900px) 86vw, 560px"
             />
           </h1>
-          <p className="hero-head">
-            The stone, the piece, and everything that happens to it afterwards.
-          </p>
+          <p className="hero-head">Fine jewellery, new and pre-owned. Bought, sold and sourced.</p>
           <p className="hero-sub lede">
-            Loose rough and faceted gemstones for the trade and for private clients. Custom
-            manufacturing, repair, stone setting, appraisals, consignment and fine watch sourcing,
-            all at one bench in Halifax.
+            A Halifax house for jewellery and watches: pieces from our collection, pieces found to
+            your brief, and pieces you want to sell. Behind them, our own bench for custom work,
+            repair, setting, appraisals and loose stones.
           </p>
           <div className="hero-ctas">
-            <Link href="/contact" className="btn btn-primary">
+            {shopOpen ? (
+              <Link href="/inventory" className="btn btn-primary">
+                Browse the collection
+              </Link>
+            ) : (
+              <Link href="/jewellery" className="btn btn-primary">
+                Find a piece
+              </Link>
+            )}
+            <Link href="/contact" className="btn btn-ghost">
               Book a private appointment
-            </Link>
-            <Link href="/contact?type=wholesale" className="btn btn-ghost">
-              Trade enquiries
             </Link>
           </div>
         </div>

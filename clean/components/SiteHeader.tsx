@@ -1,15 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SiteNav } from "@/components/SiteNav";
+import { getSettings } from "@/lib/inventory/store";
 import { services, site } from "@/lib/site";
 import mark from "@/public/brand/mark.jpg";
 
-const links = [
-  ...services.map((s) => ({ href: s.href, label: s.navLabel })),
-  { href: "/wholesale", label: "Trade" },
-];
+export async function SiteHeader() {
+  const settings = await getSettings().catch(() => ({ shopOpen: false }));
+  const links = [
+    ...services.map((s) => ({ href: s.href, label: s.navLabel })),
+    { href: "/wholesale", label: "Trade" },
+  ];
+  if (settings.shopOpen) links.splice(1, 0, { href: "/inventory", label: "Collection" });
 
-export function SiteHeader() {
   return (
     <header className="header">
       <div className="wrap header-inner">

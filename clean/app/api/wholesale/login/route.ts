@@ -46,7 +46,7 @@ export async function POST(req: Request) {
   const actual = await sha256Hex(parsed.data.passphrase);
   if (!safeEqual(actual, expected)) return back(req, "1");
 
-  const token = await createSessionToken(secret);
+  const token = await createSessionToken(secret, "trade");
   const dest = new URL(safeNextPath(parsed.data.next), req.url);
   const res = NextResponse.redirect(dest, 303);
   res.cookies.set(WHOLESALE_COOKIE, token, {
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     path: "/wholesale",
-    maxAge: sessionHours() * 3600,
+    maxAge: sessionHours("trade") * 3600,
   });
   return res;
 }
