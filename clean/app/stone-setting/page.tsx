@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ServicePage } from "@/components/ServicePage";
+import { SettingStyles } from "@/components/interactive/SettingStyles";
 
 export const metadata: Metadata = {
   title: "Stone Setting",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 
 export default function StoneSettingPage() {
   return (
+    <>
     <ServicePage
       serviceKey="setting"
       intro={
@@ -39,5 +41,7 @@ export default function StoneSettingPage() {
         },
       ]}
     />
+    <SettingStyles />
+    </>
   );
 }

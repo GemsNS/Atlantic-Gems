@@ -11,10 +11,12 @@ type Status =
 
 export function ContactForm({
   csrf,
-  defaultType = "gemstones",
+  defaultType = "jewellery",
+  defaultMessage = "",
 }: {
   csrf: string;
   defaultType?: EnquiryType;
+  defaultMessage?: string;
 }) {
   const [status, setStatus] = useState<Status>({ state: "idle" });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -117,7 +119,8 @@ export function ContactForm({
           required
           minLength={10}
           maxLength={4000}
-          placeholder="Tell us about the stone, piece or timepiece, and what you would like done."
+          defaultValue={defaultMessage}
+          placeholder="Tell us about the piece, stone or timepiece, and what you would like done."
         />
         {errors.message ? <span className="error">{errors.message}</span> : null}
       </div>

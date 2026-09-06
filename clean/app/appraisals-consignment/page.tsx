@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ServicePage } from "@/components/ServicePage";
+import { AppraisalGuide } from "@/components/interactive/AppraisalGuide";
 
 export const metadata: Metadata = {
   title: "Appraisals & Consignment",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 
 export default function AppraisalsPage() {
   return (
+    <>
     <ServicePage
       serviceKey="appraisals"
       intro={
@@ -57,5 +59,7 @@ export default function AppraisalsPage() {
         </>
       }
     />
+    <AppraisalGuide />
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ServicePage } from "@/components/ServicePage";
+import { WristSizer } from "@/components/interactive/WristSizer";
 
 export const metadata: Metadata = {
   title: "High-End Watches",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 
 export default function WatchesPage() {
   return (
+    <>
     <ServicePage
       serviceKey="watches"
       intro={
@@ -49,5 +51,7 @@ export default function WatchesPage() {
         </>
       }
     />
+    <WristSizer />
+    </>
   );
 }

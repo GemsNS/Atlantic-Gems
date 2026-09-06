@@ -107,3 +107,32 @@ Notes:
 - The repository is private. GitHub Pages on a private repository requires a paid GitHub plan; on a free plan the repository must be public for Pages to publish. The repository contains no private client data (the address is deliberately excluded), so making it public is safe, but it is the client's decision.
 - For a custom domain on Pages, rebuild with `STATIC_BASE_PATH= npm run build:static` and add a `CNAME` file to `out/`.
 - Force-pushing `gh-pages` is expected: it is a generated artifact branch, not source. `main` is never force-pushed.
+
+## Inventory system
+
+Items live in `DATA_DIR/inventory.json`; settings (shop open/closed, last eBay import) in
+`DATA_DIR/settings.json`; uploaded photographs in `DATA_DIR/uploads/`. Set `DATA_DIR` to a
+persistent path outside the deploy directory and include it in backups. The default shop state
+is **closed**: the public collection page shows a "being prepared" notice and the Collection link
+is hidden until an admin opens the shop.
+
+Admin area: `/admin` (sign in at `/admin/login`). Set `ADMIN_PASSWORD_HASH` with:
+
+```bash
+cd clean && node scripts/hash-password.mjs
+```
+
+Admin sessions are HMAC-signed HttpOnly cookies (8 hours by default). Admin sessions also grant
+access to the trade area. Trade sessions never grant admin access.
+
+Item visibility: `public` (collection page when open), `trade` (gated trade area), `private`
+(admin only). New manual items default to private.
+
+eBay: create an application at developer.ebay.com and set `EBAY_CLIENT_ID`,
+`EBAY_CLIENT_SECRET`, `EBAY_SELLER_USERNAME` (and `EBAY_MARKETPLACE_ID`, default `EBAY_CA`).
+"Import from eBay now" on the admin dashboard pulls the seller's active listings in the Jewelry &
+Watches category, upserts them as `source: ebay` items, and marks ended listings sold. Category,
+metal, stones, description, disclosure and visibility set by hand are preserved across imports.
+
+GitHub Pages build: the admin area, API routes and item pages are excluded; the collection page
+shows the "being prepared" notice.

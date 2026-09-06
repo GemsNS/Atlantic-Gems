@@ -213,7 +213,7 @@ export function CompassHero() {
             <strong>{active.title}.</strong> {active.short}.
           </>
         ) : (
-          <>Six disciplines, one bench. Follow the needle to any point.</>
+          <>Seven disciplines, one bench. Follow the needle to any point.</>
         )}
       </p>
     </div>

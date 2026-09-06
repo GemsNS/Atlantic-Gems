@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
-import { lookbook } from "@/lib/lookbook";
+import { InventoryBrowser } from "@/components/InventoryBrowser";
+import { listItems } from "@/lib/inventory/store";
+import { isVisibleToTrade } from "@/lib/inventory/types";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -14,6 +16,7 @@ export const dynamic = "force-dynamic";
 export default async function WholesalePage() {
   const h = await headers();
   const csrf = h.get("x-csrf-token") ?? "";
+  const items = (await listItems()).filter((i) => isVisibleToTrade(i) && i.status !== "sold");
 
   return (
     <>
@@ -29,67 +32,44 @@ export default async function WholesalePage() {
             </form>
           </div>
           <p className="eyebrow" style={{ marginTop: 40 }}>
-            Wholesale
+            Trade
           </p>
-          <h1>Current parcels</h1>
+          <h1>Current stock and parcels</h1>
           <p className="lede">
-            Rough and faceted rubies, sapphires, emeralds, diamonds and related stones for the
-            trade. Each parcel lists only the facts we can stand behind.
+            Jewellery, watches and loose stones available to the trade. Each entry lists only the
+            facts we can stand behind; ask for anything not stated.
           </p>
         </div>
       </section>
 
       <section className="section">
         <div className="wrap">
-          {lookbook.length === 0 ? (
+          {items.length === 0 ? (
             <div className="empty">
-              <p>No parcels are published at the moment.</p>
-              <p>
-                Current availability and trade pricing are shared directly. Tell us what you are
-                sourcing and we will reply with what we have.
-              </p>
+              <p>No trade stock is published at the moment.</p>
+              <p>Current availability and trade pricing are shared directly. Tell us what you are sourcing.</p>
               <Link href="/contact?type=wholesale" className="btn btn-primary">
                 Request current availability
               </Link>
             </div>
           ) : (
-            <div className="lookbook">
-              {lookbook.map((item) => (
-                <article key={item.id} className="lookbook-card">
-                  <p className="eyebrow">
-                    {item.category} · {item.form}
-                  </p>
-                  <h3>{item.title}</h3>
-                  <ul className="facts">
-                    {item.facts.map((f) => (
-                      <li key={f.label}>
-                        <span className="k">{f.label}</span>
-                        <span className="v">{f.value}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  {item.note ? <p className="muted">{item.note}</p> : null}
-                </article>
-              ))}
-            </div>
+            <InventoryBrowser items={items} hrefBase="/wholesale/item" />
           )}
 
           <div className="aside-card" style={{ marginTop: 40, maxWidth: 640 }}>
             <h3>Trade terms</h3>
             <p>
-              Pricing is quoted in Canadian dollars, exclusive of taxes and shipping. Quotations
-              are valid for 7 days and subject to prior sale. Treatment, origin and any report
-              are stated in writing for every stone we sell.
+              Pricing is quoted in Canadian dollars, exclusive of taxes and shipping. Quotations are
+              valid for 7 days and subject to prior sale.
             </p>
             <p>
               <Link href="/policies/wholesale-terms" className="link">
-                Read the full Wholesale &amp; Trade Terms
+                Wholesale &amp; Trade Terms
               </Link>{" "}
-              and the{" "}
+              ·{" "}
               <Link href="/policies/disclosure" className="link">
                 Certification &amp; Disclosure Policy
               </Link>
-              .
             </p>
             <p>
               Questions: <a href={`mailto:${site.email}`}>{site.email}</a>

@@ -77,3 +77,6 @@ Numeric defaults chosen by us — client to confirm or change:
 | Independent lab submission | "can be arranged at cost with written agreement" | Disclosure policy |
 
 Still UNKNOWN: HST registration number (business registry number is not an HST number), phone, hours, appraisal credentials (none claimed).
+
+## Positioning (client, 2026-09-05)
+Loose gem sales are a secondary business. The main focus is sales and sourcing of brand-new and pre-owned jewellery, with watches. The site leads with jewellery; gemstones remain as a supporting discipline. Inventory is managed in the admin area (manual entries or eBay import) and is private by default until populated.

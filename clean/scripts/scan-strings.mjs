@@ -97,6 +97,9 @@ function scanText(text, label, patterns) {
 // server: SCAN_BASE_URL=http://localhost:3000 npm run scan
 const ROUTES = [
   "/",
+  "/jewellery",
+  "/inventory",
+  "/admin/login",
   "/gemstones",
   "/custom-jewellery",
   "/repair-restoration",

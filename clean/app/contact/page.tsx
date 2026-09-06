@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 function pickType(value: string | string[] | undefined): EnquiryType {
   const v = Array.isArray(value) ? value[0] : value;
   const match = enquiryTypes.find((t) => t.value === v);
-  return match ? match.value : "gemstones";
+  return match ? match.value : "jewellery";
 }
 
 export default async function ContactPage({
@@ -26,6 +26,8 @@ export default async function ContactPage({
   const h = await headers();
   const csrf = h.get("x-csrf-token") ?? "";
   const defaultType = pickType(params.type);
+  const briefRaw = Array.isArray(params.brief) ? params.brief[0] : params.brief;
+  const defaultMessage = (briefRaw ?? "").slice(0, 2000);
 
   return (
     <>
@@ -35,14 +37,14 @@ export default async function ContactPage({
           <h1>Appointments and enquiries</h1>
           <p className="lede">
             Private clients are seen by appointment in {site.city}. Trade buyers, commissions,
-            repairs, setting and watch enquiries all start here.
+            repairs, setting, appraisals and watch enquiries all start here.
           </p>
         </div>
       </section>
 
       <section className="section">
         <div className="wrap contact-grid">
-          <ContactForm csrf={csrf} defaultType={defaultType} />
+          <ContactForm csrf={csrf} defaultType={defaultType} defaultMessage={defaultMessage} />
           <aside className="contact-side">
             <div>
               <h3>Email</h3>
