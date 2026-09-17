@@ -4,7 +4,9 @@ import { Reveal } from "@/components/Reveal";
 import { GemExplorer } from "@/components/GemExplorer";
 import { AtelierBoard } from "@/components/AtelierBoard";
 import { JewelleryPaths } from "@/components/interactive/JewelleryPaths";
-import { PART_CATEGORIES } from "@/lib/parts/types";
+import { PartsCategoryGrid } from "@/components/parts/PartsCategoryNav";
+import { PART_CATEGORIES, type PartCategory } from "@/lib/parts/types";
+import { listParts, isPublicPart } from "@/lib/parts/store";
 import { collectionIsPublic } from "@/lib/inventory/types";
 import { getSettings } from "@/lib/inventory/store";
 import { composeSiteCopy } from "@/lib/site-copy";
@@ -14,6 +16,17 @@ export default async function HomePage() {
   const settings = await getSettings();
   const copy = composeSiteCopy(settings.siteMode, settings.pages, collectionIsPublic(settings));
   const show = (s: (typeof copy.sections)[number]) => copy.sections.includes(s);
+  let partsCounts: Partial<Record<PartCategory, number>> = {};
+  if (show("parts")) {
+    try {
+      const parts = (await listParts()).filter(isPublicPart);
+      partsCounts = Object.fromEntries(
+        PART_CATEGORIES.map((c) => [c.value, parts.filter((p) => p.category === c.value).length]),
+      ) as Partial<Record<PartCategory, number>>;
+    } catch {
+      partsCounts = {};
+    }
+  }
 
   return (
     <>
@@ -29,17 +42,7 @@ export default async function HomePage() {
               <p className="lede">{copy.partsLede}</p>
             </div>
             <Reveal>
-              <div className="house">
-                {PART_CATEGORIES.map((c) => (
-                  <Link key={c.value} href={`/parts/${c.value}`}>
-                    <h3>{c.label}</h3>
-                    <p>{c.blurb}</p>
-                    <span className="house-more" aria-hidden="true">
-                      →
-                    </span>
-                  </Link>
-                ))}
-              </div>
+              <PartsCategoryGrid counts={partsCounts} />
             </Reveal>
             <div className="hero-ctas" style={{ marginTop: 28 }}>
               <Link href="/parts" className="btn btn-primary">

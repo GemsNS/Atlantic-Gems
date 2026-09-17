@@ -5,6 +5,8 @@ import { AdminShell } from "@/components/admin/AdminShell";
 import { listParts } from "@/lib/parts/store";
 import { partCategoryLabel } from "@/lib/parts/types";
 import { formatMoney } from "@/lib/format";
+import { PartPlate } from "@/components/parts/PartPlate";
+import { stockTone } from "@/lib/parts/visuals";
 
 export const metadata: Metadata = { title: "Parts inventory", robots: { index: false, follow: false } };
 export const dynamic = "force-dynamic";
@@ -26,49 +28,34 @@ export default async function AdminPartsPage({
   return (
     <AdminShell csrf={csrf} title="Parts inventory" msg={one(params.msg)} error={one(params.error)}>
       <p className="lede">
-        Demo seed catalogue ships with the parts storefront. Low-stock lines create follow-up tasks.
+        Demo seed catalogue for the parts storefront. Low-stock lines create follow-up tasks.
       </p>
-      <div className="admin-tablewrap" style={{ marginTop: 24 }}>
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>SKU</th>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Stock</th>
-              <th>Price</th>
-              <th>Visibility</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {parts.map((p) => (
-              <tr key={p.id} style={p.stockQty <= p.reorderPoint ? { background: "rgba(166,21,47,0.06)" } : undefined}>
-                <td>{p.sku}</td>
-                <td>
-                  {p.title}
-                  {p.demo ? (
-                    <span className="muted" style={{ marginLeft: 6, fontSize: "0.8rem" }}>
-                      demo
-                    </span>
-                  ) : null}
-                </td>
-                <td>{partCategoryLabel(p.category)}</td>
-                <td>
-                  {p.stockQty}
-                  {p.stockQty <= p.reorderPoint ? " ⚠" : ""}
-                </td>
-                <td>{formatMoney(p.price, p.currency)}</td>
-                <td>{p.visibility}</td>
-                <td>
-                  <Link href={`/parts/item/${p.id}`} target="_blank" rel="noopener">
-                    View
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="part-grid" style={{ marginTop: 28 }}>
+        {parts.map((p) => {
+          const tone = stockTone(p.stockQty, p.reorderPoint);
+          return (
+            <article key={p.id} className="part-card" style={tone === "low" || tone === "out" ? { borderColor: "rgba(166,21,47,0.35)" } : undefined}>
+              <div className="part-card-media">
+                <PartPlate category={p.category} size="md" />
+                <span className={`part-chip part-chip-stock is-${tone}`}>{p.stockQty} on hand</span>
+              </div>
+              <div className="part-card-body">
+                <p className="part-card-meta">
+                  <span>{partCategoryLabel(p.category)}</span>
+                  <span className="part-card-sku">{p.sku}</span>
+                </p>
+                <h3 className="part-card-title">{p.title}</h3>
+                <div className="part-card-foot">
+                  <p className="part-card-price">{formatMoney(p.price, p.currency)}</p>
+                  <span className="part-card-pack">{p.visibility}</span>
+                </div>
+                <Link href={`/parts/item/${p.id}`} target="_blank" rel="noopener" className="link" style={{ marginTop: 8 }}>
+                  View public page
+                </Link>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </AdminShell>
   );

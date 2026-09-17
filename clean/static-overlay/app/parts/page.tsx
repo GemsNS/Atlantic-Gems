@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { requirePage } from "@/lib/require-page";
-import { PART_CATEGORIES } from "@/lib/parts/types";
+import { PART_CATEGORIES, type PartCategory } from "@/lib/parts/types";
 import { listParts, isPublicPart } from "@/lib/parts/store";
-import { formatMoney } from "@/lib/format";
+import { PartCard } from "@/components/parts/PartCard";
+import { PartsCategoryGrid, PartsCategoryRail } from "@/components/parts/PartsCategoryNav";
+import { PartPlate } from "@/components/parts/PartPlate";
+import { Reveal } from "@/components/Reveal";
 
 export const metadata: Metadata = {
   title: "Parts and Tools",
@@ -13,88 +16,87 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-static";
 
+/** Static Pages preview — no cart; quote via contact. */
 export default async function PartsIndexStaticPage() {
   await requirePage("parts");
   const parts = (await listParts()).filter(isPublicPart);
+  const featured = [...parts].sort((a, b) => (b.stockQty || 0) - (a.stockQty || 0)).slice(0, 8);
+  const counts = Object.fromEntries(
+    PART_CATEGORIES.map((c) => [c.value, parts.filter((p) => p.category === c.value).length]),
+  ) as Partial<Record<PartCategory, number>>;
+  const brands = new Set(parts.map((p) => p.brand).filter(Boolean)).size;
+  const inStock = parts.filter((p) => p.stockQty > 0).length;
 
   return (
     <>
-      <section className="page-hero">
-        <div className="wrap">
-          <p className="eyebrow">Parts counter</p>
-          <h1>Shop parts and tools</h1>
-          <p className="lede">
-            Movements, crystals, straps, batteries, findings and bench tools. Demo catalogue —
-            request a quote via contact on this static preview. Unlisted parts: use the contact form.
-          </p>
-          <div className="hero-ctas">
-            <Link href="/contact" className="btn btn-primary">
-              Request a quote
-            </Link>
-            <Link href="/contact" className="btn btn-ghost">
-              Request an unlisted part
-            </Link>
+      <section className="parts-hero">
+        <div className="wrap parts-hero-inner">
+          <div>
+            <p className="eyebrow">Parts counter</p>
+            <h1>Everything for the bench.</h1>
+            <p className="lede">
+              Movements, crystals, straps, batteries, findings and Swiss tools. This static preview
+              has no cart — request a quote by email or contact form.
+            </p>
+            <div className="hero-ctas">
+              <Link href="#catalogue" className="btn btn-primary">
+                Browse catalogue
+              </Link>
+              <Link href="/contact" className="btn btn-ghost">
+                Request a quote
+              </Link>
+            </div>
+            <div className="parts-hero-stats">
+              <div>
+                <strong>{parts.length}</strong>
+                <span>public lines</span>
+              </div>
+              <div>
+                <strong>{inStock}</strong>
+                <span>in stock</span>
+              </div>
+              <div>
+                <strong>{brands || "—"}</strong>
+                <span>brands</span>
+              </div>
+            </div>
+          </div>
+          <div className="parts-hero-aside">
+            <PartPlate category="tools" size="hero" />
           </div>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section" id="catalogue">
         <div className="wrap">
-          <div className="house">
-            {PART_CATEGORIES.map((c) => {
-              const count = parts.filter((p) => p.category === c.value).length;
-              return (
-                <Link key={c.value} href={`/parts/${c.value}`}>
-                  <h3>{c.label}</h3>
-                  <p>
-                    {c.blurb} {count ? `${count} in catalogue.` : ""}
-                  </p>
-                  <span className="house-more" aria-hidden="true">
-                    →
-                  </span>
-                </Link>
-              );
-            })}
+          <div className="parts-toolbar">
+            <div>
+              <h2>Shop by tray</h2>
+              <p>Open a category, or jump from the rail below.</p>
+            </div>
           </div>
+          <PartsCategoryRail counts={counts} />
+          <Reveal>
+            <PartsCategoryGrid counts={counts} />
+          </Reveal>
         </div>
       </section>
 
       <section className="section section-alt">
         <div className="wrap">
-          <div className="section-head">
-            <h2 className="section-title">Featured stock</h2>
-            <p className="lede">A sample of public catalogue lines. Prices are demo placeholders.</p>
+          <div className="parts-toolbar">
+            <div>
+              <h2>On the counter now</h2>
+              <p>Demo prices until the live list is confirmed.</p>
+            </div>
           </div>
-          <div className="admin-tablewrap">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>SKU</th>
-                  <th>Title</th>
-                  <th>Brand</th>
-                  <th>Price</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {parts.slice(0, 12).map((p) => (
-                  <tr key={p.id}>
-                    <td>{p.sku}</td>
-                    <td>
-                      <Link href={`/parts/item/${p.id}`}>{p.title}</Link>
-                    </td>
-                    <td>{p.brand || "—"}</td>
-                    <td>{formatMoney(p.price, p.currency)}</td>
-                    <td>
-                      <Link href={`/parts/item/${p.id}`} className="link">
-                        View
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Reveal>
+            <div className="part-grid">
+              {featured.map((p) => (
+                <PartCard key={p.id} part={p} />
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
     </>

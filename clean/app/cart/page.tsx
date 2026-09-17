@@ -7,9 +7,10 @@ import { getPart } from "@/lib/parts/store";
 import { formatMoney } from "@/lib/format";
 import { createPaymentIntent } from "@/lib/integrations/payments";
 import { getShippingRates } from "@/lib/integrations/shipping";
+import { PartPlate } from "@/components/parts/PartPlate";
 
 export const metadata: Metadata = {
-  title: "Cart",
+  title: "Quote cart",
   robots: { index: false, follow: false },
 };
 
@@ -45,75 +46,79 @@ export default async function CartPage({
 
   return (
     <>
-      <section className="page-hero">
+      <section className="parts-hero" style={{ paddingBottom: 40 }}>
         <div className="wrap">
           <p className="eyebrow">Parts</p>
-          <h1>Cart</h1>
-          <p className="lede">
-            Review lines and request a written quote.{" "}
+          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2.4rem, 5vw, 3.6rem)", fontWeight: 500, margin: "8px 0 12px" }}>
+            Quote cart
+          </h1>
+          <p className="lede" style={{ maxWidth: "36rem" }}>
+            Review the tray, then send a quote request.{" "}
             {pay.status === "unconfigured"
-              ? "Card payment and live shipping rates will appear here when connected."
+              ? "Card payment and live shipping rates appear here when connected."
               : null}
           </p>
           {msg ? (
-            <div className="form-status ok" role="status" style={{ marginTop: 16 }}>
+            <div className="form-status ok" role="status" style={{ marginTop: 16, maxWidth: "36rem" }}>
               {msg}
             </div>
           ) : null}
         </div>
       </section>
+
       <section className="section">
-        <div className="wrap two-col">
+        <div className="wrap cart-layout">
           <div>
             {rows.length === 0 ? (
-              <div className="empty">
+              <div className="cart-empty">
+                <PartPlate category="tools" size="sm" />
                 <p>Your cart is empty.</p>
                 <Link href="/parts" className="btn btn-primary">
                   Browse parts
                 </Link>
               </div>
             ) : (
-              <div className="admin-tablewrap">
-                <table className="admin-table">
-                  <thead>
-                    <tr>
-                      <th>Item</th>
-                      <th>Qty</th>
-                      <th>Price</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows.map(({ line, part }) => (
-                      <tr key={part.id}>
-                        <td>
+              <>
+                <div className="cart-lines">
+                  {rows.map(({ line, part }) => (
+                    <article key={part.id} className="cart-line">
+                      <PartPlate category={part.category} size="sm" />
+                      <div>
+                        <h3 className="cart-line-title">
                           <Link href={`/parts/item/${part.id}`}>{part.title}</Link>
-                          <div className="muted" style={{ fontSize: "0.85rem" }}>
-                            {part.sku}
-                          </div>
-                        </td>
-                        <td>{line.qty}</td>
-                        <td>{formatMoney(part.price, part.currency)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <p style={{ marginTop: 16 }}>
-                  <strong>Estimated subtotal:</strong> {formatMoney(subtotal, "CAD")}
-                </p>
-                <form action="/api/cart/clear" method="post" style={{ marginTop: 12 }}>
+                        </h3>
+                        <p className="cart-line-meta">
+                          {part.sku} · Qty {line.qty} · Pack {part.packSize}
+                        </p>
+                      </div>
+                      <p className="cart-line-price">
+                        {formatMoney(
+                          part.price == null ? null : part.price * line.qty,
+                          part.currency,
+                        )}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+                <div className="cart-subtotal">
+                  <span>Estimated subtotal</span>
+                  <strong>{formatMoney(subtotal, "CAD")}</strong>
+                </div>
+                <form action="/api/cart/clear" method="post" style={{ marginTop: 14 }}>
                   <input type="hidden" name="csrf" value={csrf} />
                   <button className="btn btn-ghost btn-small" type="submit">
                     Clear cart
                   </button>
                 </form>
-              </div>
+              </>
             )}
           </div>
-          <div className="aside-card">
-            <h3>Request a quote</h3>
+
+          <aside className="cart-quote">
+            <h2>Request a quote</h2>
             <p>
-              We will create a CRM quote and reply by email.{" "}
-              {ship.status === "unconfigured" ? "Shipping rates: not connected yet." : null}
+              We create a CRM quote and reply by email.
+              {ship.status === "unconfigured" ? " Shipping rates are not connected yet." : ""}
             </p>
             <form action="/api/cart/checkout" method="post" className="admin-form">
               <input type="hidden" name="csrf" value={csrf} />
@@ -131,17 +136,13 @@ export default async function CartPage({
               </label>
               <label>
                 Notes
-                <textarea name="notes" rows={4} maxLength={2000} />
+                <textarea name="notes" rows={4} maxLength={2000} placeholder="Job numbers, sizes, urgency…" />
               </label>
-              <button
-                className="btn btn-primary"
-                type="submit"
-                disabled={rows.length === 0}
-              >
+              <button className="btn btn-primary" type="submit" disabled={rows.length === 0}>
                 Submit quote request
               </button>
             </form>
-          </div>
+          </aside>
         </div>
       </section>
     </>

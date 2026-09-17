@@ -6,6 +6,10 @@ import { requirePage } from "@/lib/require-page";
 import { getPart, isPublicPart, listParts } from "@/lib/parts/store";
 import { partCategoryLabel } from "@/lib/parts/types";
 import { formatMoney } from "@/lib/format";
+import { PartPlate } from "@/components/parts/PartPlate";
+import { PartCard } from "@/components/parts/PartCard";
+import { AddToCartPanel } from "@/components/parts/AddToCartPanel";
+import { stockLabel, stockTone } from "@/lib/parts/visuals";
 
 export const dynamic = "force-dynamic";
 
@@ -35,68 +39,86 @@ export default async function PartDetailPage({
   if (!part || !isPublicPart(part)) notFound();
   const h = await headers();
   const csrf = h.get("x-csrf-token") ?? "";
+  const tone = stockTone(part.stockQty, part.reorderPoint);
+  const related = (await listParts())
+    .filter((p) => isPublicPart(p) && p.category === part.category && p.id !== part.id)
+    .slice(0, 4);
 
   return (
-    <>
-      <section className="page-hero">
-        <div className="wrap">
-          <p className="eyebrow">
-            <Link href="/parts" className="link">
-              Parts
-            </Link>
-            {" / "}
-            <Link href={`/parts/${part.category}`} className="link">
-              {partCategoryLabel(part.category)}
-            </Link>
+    <section className="section" style={{ borderTop: 0, paddingTop: "clamp(32px, 5vw, 56px)" }}>
+      <div className="wrap part-detail">
+        <div className="part-detail-stage">
+          <PartPlate category={part.category} size="hero" />
+        </div>
+
+        <div>
+          <p className="part-detail-crumb">
+            <Link href="/parts">Parts</Link>
+            <span aria-hidden="true">/</span>
+            <Link href={`/parts/${part.category}`}>{partCategoryLabel(part.category)}</Link>
           </p>
           <h1>{part.title}</h1>
-          <p className="lede">
+          <p className="part-detail-brand">
             {part.brand ? `${part.brand} · ` : ""}
             SKU {part.sku}
             {part.demo ? " · Demo listing" : ""}
           </p>
-        </div>
-      </section>
-      <section className="section">
-        <div className="wrap two-col">
-          <div>
-            <h2>Details</h2>
-            <p>{part.description || "No further description."}</p>
-            <ul className="facts" style={{ marginTop: 24 }}>
-              <li>
-                <span className="k">Pack</span>
-                <span className="v">{part.packSize}</span>
-              </li>
-              <li>
-                <span className="k">Stock</span>
-                <span className="v">{part.stockQty}</span>
-              </li>
-              <li>
-                <span className="k">Price</span>
-                <span className="v">{formatMoney(part.price, part.currency)}</span>
-              </li>
-            </ul>
+
+          <p className="part-detail-price">{formatMoney(part.price, part.currency)}</p>
+          <p className={`part-chip part-chip-stock is-${tone}`} style={{ position: "static" }}>
+            {stockLabel(part.stockQty, part.reorderPoint)}
+          </p>
+
+          <p className="part-detail-desc">{part.description || "No further description on file."}</p>
+
+          <ul className="part-spec">
+            <li>
+              <span className="k">Pack size</span>
+              <span className="v">{part.packSize}</span>
+            </li>
+            <li>
+              <span className="k">On hand</span>
+              <span className="v">{part.stockQty}</span>
+            </li>
+            <li>
+              <span className="k">Category</span>
+              <span className="v">{partCategoryLabel(part.category)}</span>
+            </li>
+            <li>
+              <span className="k">Visibility</span>
+              <span className="v">{part.visibility}</span>
+            </li>
+          </ul>
+
+          <div className="part-buy-panel">
+            <h2>Add to quote</h2>
+            <p>
+              Card checkout is wired but not live yet. Lines go to your cart; submit for a written
+              quotation.
+            </p>
+            <AddToCartPanel csrf={csrf} partId={part.id} disabled={tone === "out"} />
           </div>
-          <div className="aside-card">
-            <h3>Add to quote cart</h3>
-            <p>Card checkout is wired but not live yet. Submit your cart as a quote request.</p>
-            <form action="/api/cart/add" method="post">
-              <input type="hidden" name="csrf" value={csrf} />
-              <input type="hidden" name="partId" value={part.id} />
-              <label>
-                Qty
-                <input type="number" name="qty" min={1} max={999} defaultValue={1} />
-              </label>
-              <button className="btn btn-primary" type="submit" style={{ marginTop: 12 }}>
-                Add to cart
-              </button>
-            </form>
-            <Link href="/cart" className="btn btn-ghost" style={{ marginTop: 10 }}>
-              Go to cart
+        </div>
+      </div>
+
+      {related.length > 0 ? (
+        <div className="wrap" style={{ marginTop: 64 }}>
+          <div className="parts-toolbar">
+            <div>
+              <h2>More in this tray</h2>
+              <p>Related lines from {partCategoryLabel(part.category)}.</p>
+            </div>
+            <Link href={`/parts/${part.category}`} className="btn btn-ghost btn-small">
+              View category
             </Link>
           </div>
+          <div className="part-grid">
+            {related.map((p) => (
+              <PartCard key={p.id} part={p} />
+            ))}
+          </div>
         </div>
-      </section>
-    </>
+      ) : null}
+    </section>
   );
 }
