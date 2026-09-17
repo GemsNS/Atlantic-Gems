@@ -4,110 +4,150 @@ import { Reveal } from "@/components/Reveal";
 import { GemExplorer } from "@/components/GemExplorer";
 import { AtelierBoard } from "@/components/AtelierBoard";
 import { JewelleryPaths } from "@/components/interactive/JewelleryPaths";
+import { PART_CATEGORIES } from "@/lib/parts/types";
+import { collectionIsPublic } from "@/lib/inventory/types";
 import { getSettings } from "@/lib/inventory/store";
-import { services, site } from "@/lib/site";
+import { composeSiteCopy } from "@/lib/site-copy";
+import { site } from "@/lib/site";
 
 export default async function HomePage() {
   const settings = await getSettings();
+  const copy = composeSiteCopy(settings.siteMode, settings.pages, collectionIsPublic(settings));
+  const show = (s: (typeof copy.sections)[number]) => copy.sections.includes(s);
+
   return (
     <>
-      <Hero shopOpen={settings.shopOpen} />
+      <Hero copy={copy} />
 
-      <section className="section" aria-labelledby="jewellery-title">
-        <div className="wrap">
-          <div className="section-head">
-            <h2 id="jewellery-title" className="section-title">
-              Buy, sell, or have it found.
-            </h2>
-            <p className="lede">
-              New and pre-owned fine jewellery is the heart of the house. Choose how you want to work
-              with us.
-            </p>
-          </div>
-          <Reveal>
-            <JewelleryPaths />
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="section section-alt" aria-labelledby="house-title">
-        <div className="wrap">
-          <div className="section-head">
-            <h2 id="house-title" className="section-title">
-              Seven disciplines. One bench.
-            </h2>
-            <p className="lede">
-              Most jewellers send work out. Here, sourcing, manufacturing, repair, setting, appraisal
-              and stones are handled by the same people you speak to.
-            </p>
-          </div>
-          <Reveal>
-            <div className="house">
-              {services.map((s) => (
-                <Link key={s.key} href={s.href}>
-                  <h3>{s.title}</h3>
-                  <p>{s.short}</p>
-                  <span className="house-more" aria-hidden="true">
-                    →
-                  </span>
-                </Link>
-              ))}
+      {show("parts") ? (
+        <section className="section" aria-labelledby="parts-title">
+          <div className="wrap">
+            <div className="section-head">
+              <h2 id="parts-title" className="section-title">
+                {copy.partsTitle}
+              </h2>
+              <p className="lede">{copy.partsLede}</p>
             </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="section" aria-labelledby="atelier-title">
-        <div className="wrap">
-          <div className="section-head">
-            <h2 id="atelier-title" className="section-title">
-              Every job starts with a written estimate.
-            </h2>
-            <p className="lede">
-              Commissions, repairs, setting, appraisals and watch work are assessed first and quoted
-              in writing. Nothing is touched until you say so.
-            </p>
+            <Reveal>
+              <div className="house">
+                {PART_CATEGORIES.map((c) => (
+                  <Link key={c.value} href={`/parts/${c.value}`}>
+                    <h3>{c.label}</h3>
+                    <p>{c.blurb}</p>
+                    <span className="house-more" aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </Reveal>
+            <div className="hero-ctas" style={{ marginTop: 28 }}>
+              <Link href="/parts" className="btn btn-primary">
+                View all parts
+              </Link>
+              <Link
+                href={process.env.NEXT_PUBLIC_STATIC_EXPORT === "1" ? "/contact" : "/cart"}
+                className="btn btn-ghost"
+              >
+                {process.env.NEXT_PUBLIC_STATIC_EXPORT === "1" ? "Request a quote" : "Cart / request quote"}
+              </Link>
+            </div>
           </div>
-          <Reveal delay={1}>
-            <AtelierBoard />
-          </Reveal>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
-      <section className="section section-alt" aria-labelledby="stones-title">
-        <div className="wrap">
-          <div className="section-head">
-            <h2 id="stones-title" className="section-title">
-              And the stones themselves.
-            </h2>
-            <p className="lede">
-              Loose rough and faceted stones for the trade and for commissions. Choose a category to
-              see how we describe it and what we disclose.
-            </p>
+      {show("jewelleryPaths") ? (
+        <section className="section" aria-labelledby="jewellery-title">
+          <div className="wrap">
+            <div className="section-head">
+              <h2 id="jewellery-title" className="section-title">
+                {copy.jewelleryTitle}
+              </h2>
+              <p className="lede">{copy.jewelleryLede}</p>
+            </div>
+            <Reveal>
+              <JewelleryPaths />
+            </Reveal>
           </div>
-          <Reveal delay={1}>
-            <GemExplorer />
-          </Reveal>
-        </div>
-      </section>
+        </section>
+      ) : null}
+
+      {show("house") && copy.services.length > 0 ? (
+        <section className="section section-alt" aria-labelledby="house-title">
+          <div className="wrap">
+            <div className="section-head">
+              <h2 id="house-title" className="section-title">
+                {copy.houseTitle}
+              </h2>
+              <p className="lede">{copy.houseLede}</p>
+            </div>
+            <Reveal>
+              <div className="house">
+                {copy.services.map((s) => (
+                  <Link key={s.key} href={s.href}>
+                    <h3>{s.title}</h3>
+                    <p>{s.short}</p>
+                    <span className="house-more" aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      ) : null}
+
+      {show("atelier") ? (
+        <section className="section" aria-labelledby="atelier-title">
+          <div className="wrap">
+            <div className="section-head">
+              <h2 id="atelier-title" className="section-title">
+                {copy.atelierTitle}
+              </h2>
+              <p className="lede">{copy.atelierLede}</p>
+            </div>
+            <Reveal delay={1}>
+              <AtelierBoard services={copy.services} />
+            </Reveal>
+          </div>
+        </section>
+      ) : null}
+
+      {show("gemstones") ? (
+        <section className="section section-alt" aria-labelledby="stones-title">
+          <div className="wrap">
+            <div className="section-head">
+              <h2 id="stones-title" className="section-title">
+                {copy.stonesTitle}
+              </h2>
+              <p className="lede">{copy.stonesLede}</p>
+            </div>
+            <Reveal delay={1}>
+              <GemExplorer />
+            </Reveal>
+          </div>
+        </section>
+      ) : null}
 
       <section className="section" aria-labelledby="visit-title">
         <div className="wrap two-col">
           <div>
             <h2 id="visit-title" className="section-title">
-              By appointment in Halifax.
+              {copy.visitTitle}
             </h2>
             <p className="lede" style={{ marginTop: 18 }}>
-              Private clients are seen by appointment. Trade buyers can request current stock and
-              pricing through the trade area.
+              {copy.visitLede}
             </p>
             <div className="hero-ctas">
               <Link href="/contact" className="btn btn-primary">
-                Book an appointment
+                Contact us
               </Link>
-              <Link href="/wholesale" className="btn btn-ghost">
-                Trade access
-              </Link>
+              {settings.pages.wholesale ? (
+                <Link href="/wholesale" className="btn btn-ghost">
+                  Trade access
+                </Link>
+              ) : null}
             </div>
           </div>
           <div className="aside-card">

@@ -1,40 +1,17 @@
 import "server-only";
-import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { itemSchema, settingsSchema, type InventoryItem, type Settings } from "./types";
+import { DATA_DIR, readJson, serialize, writeJsonAtomic } from "@/lib/json-store";
+import { detectMode, modePages, PAGE_KEYS, type PageKey, type SiteMode } from "@/lib/site-pages";
+import {
+  itemSchema,
+  settingsSchema,
+  type InventoryItem,
+  type Settings,
+} from "./types";
 
-/**
- * File-backed inventory store. Small jewellery inventories fit comfortably in
- * a JSON document; writes are atomic (temp file + rename) and serialised
- * through an in-process queue. Set DATA_DIR to a persistent path in
- * production (outside the deploy directory, backed up).
- */
-const DATA_DIR = process.env.DATA_DIR ?? path.join(process.cwd(), "data");
 const ITEMS_FILE = path.join(DATA_DIR, "inventory.json");
 const SETTINGS_FILE = path.join(DATA_DIR, "settings.json");
 export const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
-
-let queue: Promise<unknown> = Promise.resolve();
-function serialize<T>(fn: () => Promise<T>): Promise<T> {
-  const next = queue.then(fn, fn);
-  queue = next.catch(() => undefined);
-  return next;
-}
-
-async function readJson<T>(file: string, fallback: T): Promise<T> {
-  try {
-    return JSON.parse(await readFile(file, "utf8")) as T;
-  } catch {
-    return fallback;
-  }
-}
-
-async function writeJsonAtomic(file: string, data: unknown) {
-  await mkdir(path.dirname(file), { recursive: true });
-  const tmp = `${file}.${process.pid}.${Date.now()}.tmp`;
-  await writeFile(tmp, JSON.stringify(data, null, 2), "utf8");
-  await rename(tmp, file);
-}
 
 export async function getSettings(): Promise<Settings> {
   const raw = await readJson<unknown>(SETTINGS_FILE, {});
@@ -42,11 +19,53 @@ export async function getSettings(): Promise<Settings> {
   return parsed.success ? parsed.data : settingsSchema.parse({});
 }
 
-export async function updateSettings(patch: Partial<Settings>): Promise<Settings> {
+export async function updateSettings(patch: Partial<{
+  shopOpen: boolean;
+  siteMode: SiteMode;
+  pages: Partial<Record<PageKey, boolean>>;
+  ebay: Partial<Settings["ebay"]>;
+}>): Promise<Settings> {
   return serialize(async () => {
     const current = await getSettings();
-    const next = settingsSchema.parse({ ...current, ...patch });
-    await writeJsonAtomic(SETTINGS_FILE, next);
+    let siteMode = patch.siteMode ?? current.siteMode;
+    let pages = { ...current.pages };
+
+    if (patch.siteMode && patch.siteMode !== "custom") {
+      pages = modePages(patch.siteMode);
+      siteMode = patch.siteMode;
+    } else if (patch.pages) {
+      pages = { ...pages, ...patch.pages };
+      siteMode = detectMode(pages);
+    }
+
+    const ebay = patch.ebay ? { ...current.ebay, ...patch.ebay, categories: {
+      ...current.ebay.categories,
+      ...(patch.ebay.categories ?? {}),
+    } } : current.ebay;
+
+    const next = settingsSchema.parse({
+      shopOpen: patch.shopOpen ?? current.shopOpen,
+      siteMode,
+      pages,
+      ebay,
+    });
+    // Force custom detection after parse when pages were patched.
+    if (patch.pages && !patch.siteMode) {
+      const forced = { ...next, siteMode: detectMode(next.pages) as SiteMode };
+      await writeJsonAtomic(SETTINGS_FILE, {
+        shopOpen: forced.shopOpen,
+        siteMode: forced.siteMode,
+        pages: forced.pages,
+        ebay: forced.ebay,
+      });
+      return forced;
+    }
+    await writeJsonAtomic(SETTINGS_FILE, {
+      shopOpen: next.shopOpen,
+      siteMode: next.siteMode,
+      pages: next.pages,
+      ebay: next.ebay,
+    });
     return next;
   });
 }
@@ -103,3 +122,5 @@ export async function deleteItem(id: string): Promise<boolean> {
     return true;
   });
 }
+
+export { PAGE_KEYS };

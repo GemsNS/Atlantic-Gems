@@ -1,4 +1,11 @@
 import { z } from "zod";
+import {
+  detectMode,
+  modePages,
+  PAGE_KEYS,
+  type PagesMap,
+  type SiteMode,
+} from "@/lib/site-pages";
 
 export const CATEGORIES = [
   { value: "ring", label: "Ring" },
@@ -71,13 +78,78 @@ export const itemSchema = z.object({
 
 export type InventoryItem = z.infer<typeof itemSchema>;
 
-export const settingsSchema = z.object({
-  /** When false the public collection is hidden. Default closed. */
-  shopOpen: z.boolean().default(false),
-  ebayLastImport: z.string().nullable().default(null),
-  ebayLastResult: z.string().nullable().default(null),
-});
-export type Settings = z.infer<typeof settingsSchema>;
+const pagesSchema = z
+  .object({
+    jewellery: z.boolean(),
+    custom: z.boolean(),
+    repair: z.boolean(),
+    setting: z.boolean(),
+    appraisals: z.boolean(),
+    watches: z.boolean(),
+    gemstones: z.boolean(),
+    collection: z.boolean(),
+    parts: z.boolean(),
+    wholesale: z.boolean(),
+  })
+  .default(modePages("parts-supplier"));
+
+const ebaySettingsSchema = z
+  .object({
+    sellerUsername: z.string().trim().max(80).default(""),
+    storeUrl: z.string().trim().max(500).default(""),
+    syncEnabled: z.boolean().default(false),
+    importToVisibility: z.enum(["public", "trade", "private"]).default("public"),
+    categories: z
+      .object({
+        jewellery: z.boolean().default(true),
+        watches: z.boolean().default(true),
+        looseStones: z.boolean().default(true),
+      })
+      .default({ jewellery: true, watches: true, looseStones: true }),
+    lastImport: z.string().nullable().default(null),
+    lastResult: z.string().nullable().default(null),
+  })
+  .default({});
+
+export const settingsSchema = z
+  .object({
+    /** When false the public collection is hidden. Also gated by pages.collection. */
+    shopOpen: z.boolean().default(false),
+    siteMode: z.enum(["parts-supplier", "atelier", "full-house", "custom"]).default("parts-supplier"),
+    pages: pagesSchema,
+    ebay: ebaySettingsSchema,
+    /** Legacy flat fields — migrated into ebay.* on parse. */
+    ebayLastImport: z.string().nullable().optional(),
+    ebayLastResult: z.string().nullable().optional(),
+  })
+  .transform((raw) => {
+    const pages = { ...raw.pages } as PagesMap;
+    let siteMode = raw.siteMode as SiteMode;
+    if (siteMode !== "custom") {
+      const preset = modePages(siteMode);
+      for (const k of PAGE_KEYS) pages[k] = preset[k];
+    } else {
+      siteMode = detectMode(pages);
+    }
+    const ebay = {
+      ...raw.ebay,
+      lastImport: raw.ebay.lastImport ?? raw.ebayLastImport ?? null,
+      lastResult: raw.ebay.lastResult ?? raw.ebayLastResult ?? null,
+    };
+    // Collection visibility still requires shopOpen for public browse.
+    if (!pages.collection) {
+      // keep shopOpen as stored; public gating uses both
+    }
+    return {
+      shopOpen: raw.shopOpen,
+      siteMode,
+      pages,
+      ebay,
+    };
+  });
+
+export type Settings = z.output<typeof settingsSchema>;
+export type EbaySettings = Settings["ebay"];
 
 export function newId(): string {
   const chars = "abcdefghijkmnpqrstuvwxyz23456789";
@@ -92,4 +164,9 @@ export function isVisibleToPublic(item: InventoryItem): boolean {
 
 export function isVisibleToTrade(item: InventoryItem): boolean {
   return item.visibility === "public" || item.visibility === "trade";
+}
+
+/** Collection is publicly browseable only when the page is on and the shop is open. */
+export function collectionIsPublic(settings: Settings): boolean {
+  return settings.pages.collection && settings.shopOpen;
 }

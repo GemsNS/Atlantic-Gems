@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { requirePage } from "@/lib/require-page";
 import { services, type ServiceKey } from "@/lib/site";
 
 interface ServicePageProps {
@@ -10,7 +11,8 @@ interface ServicePageProps {
   children?: ReactNode;
 }
 
-export function ServicePage({ serviceKey, intro, process, aside, children }: ServicePageProps) {
+export async function ServicePage({ serviceKey, intro, process, aside, children }: ServicePageProps) {
+  await requirePage(serviceKey);
   const service = services.find((s) => s.key === serviceKey);
   if (!service) return null;
   const enquiryType = service.enquiryType;

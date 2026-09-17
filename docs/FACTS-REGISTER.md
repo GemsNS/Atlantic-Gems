@@ -80,3 +80,12 @@ Still UNKNOWN: HST registration number (business registry number is not an HST n
 
 ## Positioning (client, 2026-09-05)
 Loose gem sales are a secondary business. The main focus is sales and sourcing of brand-new and pre-owned jewellery, with watches. The site leads with jewellery; gemstones remain as a supporting discipline. Inventory is managed in the admin area (manual entries or eBay import) and is private by default until populated.
+
+## Site modes & parts catalogue (product, 2026-09-17)
+| Claim | Status | Notes |
+|---|---|---|
+| Default ship mode `parts-supplier` | PRODUCT | Admin Site controls; home/nav copy never mentions disabled services |
+| Parts catalogue SKUs / brands / prices | DEMO ONLY | Seed data in `clean/lib/parts/seed.ts` — not client-approved; mark demo on public pages |
+| Perrin / Renata / Bergeon naming in seed | DEMO | Placeholders for layout only; not an affiliation claim |
+| eBay public store sync | PRODUCT WIRE | Live only when `EBAY_*` env + seller set; watches/jewellery into inventory, never parts |
+| Stripe / shipping / accounting | STUB | Adapters return unconfigured until env keys added |

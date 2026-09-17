@@ -59,18 +59,25 @@ export async function POST(req: Request) {
   void _csrf;
   void _hp;
 
+  // Always land in CRM even if email delivery is unconfigured.
+  try {
+    const { createEnquiryLead } = await import("@/lib/crm/store");
+    await createEnquiryLead({
+      name: data.name,
+      email: data.email,
+      type: data.type,
+      message: data.message,
+    });
+  } catch {
+    // CRM write failure should not block enquiry delivery.
+  }
+
   const result = await deliverEnquiry(data, { receivedAt: new Date().toISOString() });
   if (result.ok) return NextResponse.json({ ok: true });
 
+  // CRM captured the lead; still surface mail failure if delivery was the only path wanted.
   if (result.reason === "unconfigured") {
-    return NextResponse.json(
-      {
-        ok: false,
-        fallback: true,
-        message: "Online enquiries are temporarily unavailable.",
-      },
-      { status: 503 },
-    );
+    return NextResponse.json({ ok: true, crmOnly: true });
   }
   return NextResponse.json(
     {

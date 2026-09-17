@@ -1,10 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
-import { services, site } from "@/lib/site";
+import { getSettings } from "@/lib/inventory/store";
+import { composeSiteCopy } from "@/lib/site-copy";
+import { enabledServices } from "@/lib/site-pages";
+import { site } from "@/lib/site";
 import mark from "@/public/brand/mark.jpg";
 
-export function SiteFooter() {
+export async function SiteFooter() {
   const year = new Date().getFullYear();
+  const settings = await getSettings().catch(() => null);
+  const pages = settings?.pages;
+  const services = pages ? enabledServices(pages) : [];
+  const copy = settings
+    ? composeSiteCopy(settings.siteMode, settings.pages, false)
+    : null;
+  const showParts = pages?.parts ?? true;
+  const showWholesale = pages?.wholesale ?? true;
+
   return (
     <footer className="footer">
       <div className="wrap">
@@ -14,7 +26,7 @@ export function SiteFooter() {
               <Image src={mark} alt="" className="brand-mark" width={40} height={40} />
               <span>{site.name}</span>
             </div>
-            <p>{site.tagline}</p>
+            <p>{copy?.footerBlurb ?? site.tagline}</p>
             <p style={{ marginTop: 10 }}>
               {site.city}, {site.region}, {site.country}
               <br />
@@ -22,8 +34,13 @@ export function SiteFooter() {
             </p>
           </div>
           <div>
-            <h4>The house</h4>
+            <h4>{showParts && services.length === 0 ? "Parts" : "The house"}</h4>
             <ul>
+              {showParts ? (
+                <li>
+                  <Link href="/parts">Parts and tools</Link>
+                </li>
+              ) : null}
               {services.map((s) => (
                 <li key={s.key}>
                   <Link href={s.href}>{s.title}</Link>
@@ -43,11 +60,13 @@ export function SiteFooter() {
                 </li>
               ) : null}
               <li>
-                <Link href="/contact">Private appointment</Link>
+                <Link href="/contact">Contact</Link>
               </li>
-              <li>
-                <Link href="/wholesale">Trade access</Link>
-              </li>
+              {showWholesale ? (
+                <li>
+                  <Link href="/wholesale">Trade access</Link>
+                </li>
+              ) : null}
             </ul>
           </div>
           <div>

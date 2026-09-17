@@ -1,6 +1,18 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+const NAV = [
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/site", label: "Site" },
+  { href: "/admin/accounts", label: "Accounts" },
+  { href: "/admin/pipeline", label: "Pipeline" },
+  { href: "/admin/quotes", label: "Quotes" },
+  { href: "/admin/parts", label: "Parts" },
+  { href: "/admin/jewellery", label: "Jewellery" },
+  { href: "/admin/connect", label: "Connect" },
+  { href: "/admin/follow-ups", label: "Follow-ups" },
+];
+
 export function AdminShell({
   csrf,
   title,
@@ -19,11 +31,11 @@ export function AdminShell({
       <div className="wrap">
         <div className="admin-bar">
           <nav aria-label="Admin" className="admin-nav">
-            <Link href="/admin">Inventory</Link>
-            <Link href="/admin/items/new">Add item</Link>
-            <Link href="/inventory" target="_blank" rel="noopener">
-              View collection
-            </Link>
+            {NAV.map((n) => (
+              <Link key={n.href} href={n.href}>
+                {n.label}
+              </Link>
+            ))}
           </nav>
           <form action="/api/admin/logout" method="post">
             <input type="hidden" name="csrf" value={csrf} />

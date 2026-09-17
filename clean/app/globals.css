@@ -1712,7 +1712,8 @@ p {
 }
 .admin-nav {
   display: flex;
-  gap: 18px;
+  flex-wrap: wrap;
+  gap: 12px 18px;
   font-size: 0.9rem;
 }
 .admin-nav a {

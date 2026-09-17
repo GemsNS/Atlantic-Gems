@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { InventoryBrowser } from "@/components/InventoryBrowser";
 import { listItems } from "@/lib/inventory/store";
 import { isVisibleToTrade } from "@/lib/inventory/types";
+import { requirePage } from "@/lib/require-page";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function WholesalePage() {
+  await requirePage("wholesale");
   const h = await headers();
   const csrf = h.get("x-csrf-token") ?? "";
   const items = (await listItems()).filter((i) => isVisibleToTrade(i) && i.status !== "sold");

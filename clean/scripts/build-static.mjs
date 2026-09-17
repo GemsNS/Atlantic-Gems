@@ -37,7 +37,15 @@ symlinkSync(join(root, "node_modules"), join(build, "node_modules"), "junction")
 cpSync(join(root, "static-overlay"), build, { recursive: true });
 
 // Server-only files cannot exist in a static export.
-for (const p of ["middleware.ts", "app/api", "app/admin", "app/wholesale/login", "app/wholesale/item", "app/inventory/[id]"]) {
+for (const p of [
+  "middleware.ts",
+  "app/api",
+  "app/admin",
+  "app/cart",
+  "app/wholesale/login",
+  "app/wholesale/item",
+  "app/inventory/[id]",
+]) {
   rmSync(join(build, p), { recursive: true, force: true });
 }
 

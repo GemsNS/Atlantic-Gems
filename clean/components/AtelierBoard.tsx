@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { services, type ServiceKey } from "@/lib/site";
+import type { Service, ServiceKey } from "@/lib/site";
 
-const BOARD: ServiceKey[] = ["custom", "repair", "setting", "appraisals", "watches"];
+const BOARD_ORDER: ServiceKey[] = ["custom", "repair", "setting", "appraisals", "watches"];
 
-export function AtelierBoard() {
-  const [active, setActive] = useState<ServiceKey>("custom");
-  const items = BOARD.map((k) => services.find((s) => s.key === k)).filter(
-    (s): s is NonNullable<typeof s> => Boolean(s),
+export function AtelierBoard({ services: available }: { services: Service[] }) {
+  const items = BOARD_ORDER.map((k) => available.find((s) => s.key === k)).filter(
+    (s): s is Service => Boolean(s),
   );
+  const [active, setActive] = useState<ServiceKey>(items[0]?.key ?? "custom");
   const current = items.find((s) => s.key === active) ?? items[0];
   if (!current) return null;
 
@@ -38,15 +38,14 @@ export function AtelierBoard() {
         id="atelier-panel"
         aria-labelledby={`atelier-tab-${current.key}`}
       >
-        <p className="eyebrow">{current.short}</p>
         <h3>{current.title}</h3>
-        <p className="lede">{current.summary}</p>
+        <p>{current.summary}</p>
         <ul>
           {current.points.map((p) => (
             <li key={p}>{p}</li>
           ))}
         </ul>
-        <Link href={`/contact?type=${current.enquiryType}`} className="btn btn-primary">
+        <Link href={current.href} className="btn btn-primary">
           {current.cta}
         </Link>
       </div>

@@ -1,25 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { InventoryBrowser } from "@/components/InventoryBrowser";
 import { getSettings, listItems } from "@/lib/inventory/store";
-import { isVisibleToPublic } from "@/lib/inventory/types";
+import { collectionIsPublic, isVisibleToPublic } from "@/lib/inventory/types";
 import { site } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
+  const open = collectionIsPublic(settings);
   return {
     title: "The Collection",
     description: "New and pre-owned fine jewellery and watches available from Atlantic Gems in Halifax.",
-    robots: settings.shopOpen ? { index: true, follow: true } : { index: false, follow: false },
+    robots: open ? { index: true, follow: true } : { index: false, follow: false },
   };
 }
 
 export default async function InventoryPage() {
   const settings = await getSettings();
+  if (!settings.pages.collection) notFound();
 
-  if (!settings.shopOpen) {
+  if (!collectionIsPublic(settings)) {
     return (
       <>
         <section className="page-hero">

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getItem, getSettings } from "@/lib/inventory/store";
-import { isVisibleToPublic } from "@/lib/inventory/types";
+import { collectionIsPublic, isVisibleToPublic } from "@/lib/inventory/types";
 import { categoryLabel, conditionLabel, formatPrice, statusLabel } from "@/lib/format";
 import { ItemGallery } from "@/components/ItemGallery";
 
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function ItemPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const [settings, item] = await Promise.all([getSettings(), getItem(id)]);
-  if (!settings.shopOpen || !item || !isVisibleToPublic(item)) notFound();
+  if (!collectionIsPublic(settings) || !item || !isVisibleToPublic(item)) notFound();
 
   const facts: [string, string][] = [
     ["Category", categoryLabel(item.category)],

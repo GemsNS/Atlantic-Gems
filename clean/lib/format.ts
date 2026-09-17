@@ -1,6 +1,7 @@
 import { CATEGORIES, CONDITIONS, STATUSES, type InventoryItem } from "@/lib/inventory/types";
 
 const formatters: Record<string, Intl.NumberFormat> = {};
+const moneyFormatters: Record<string, Intl.NumberFormat> = {};
 
 export function formatPrice(item: Pick<InventoryItem, "price" | "currency">): string {
   if (item.price === null) return "Price on request";
@@ -12,6 +13,22 @@ export function formatPrice(item: Pick<InventoryItem, "price" | "currency">): st
     maximumFractionDigits: 0,
   });
   return formatters[key].format(item.price);
+}
+
+/** Parts and quotes often need cents. */
+export function formatMoney(
+  price: number | null | undefined,
+  currency: "CAD" | "USD" = "CAD",
+): string {
+  if (price == null) return "Price on request";
+  moneyFormatters[currency] ??= new Intl.NumberFormat("en-CA", {
+    style: "currency",
+    currency,
+    currencyDisplay: "code",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  return moneyFormatters[currency].format(price);
 }
 
 export function categoryLabel(value: string): string {

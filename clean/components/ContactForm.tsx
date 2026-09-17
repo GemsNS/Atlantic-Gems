@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { enquiryTypes, site, type EnquiryType } from "@/lib/site";
+import { enquiryTypes as allEnquiryTypes, site, type EnquiryType } from "@/lib/site";
 
 type Status =
   | { state: "idle" }
@@ -11,12 +11,14 @@ type Status =
 
 export function ContactForm({
   csrf,
-  defaultType = "jewellery",
+  defaultType = "other",
   defaultMessage = "",
+  types = allEnquiryTypes,
 }: {
   csrf: string;
   defaultType?: EnquiryType;
   defaultMessage?: string;
+  types?: typeof allEnquiryTypes | { value: EnquiryType; label: string }[];
 }) {
   const [status, setStatus] = useState<Status>({ state: "idle" });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -103,7 +105,7 @@ export function ContactForm({
       <div className="field">
         <label htmlFor="type">Enquiry</label>
         <select id="type" name="type" defaultValue={defaultType}>
-          {enquiryTypes.map((t) => (
+          {types.map((t) => (
             <option key={t.value} value={t.value}>
               {t.label}
             </option>

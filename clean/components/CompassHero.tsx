@@ -1,18 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { services, type Service } from "@/lib/site";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { Service } from "@/lib/site";
 
-/**
- * The house compass. A slowly turning bezel with a compass rose whose needle
- * follows the visitor's pointer. The six disciplines sit at the compass
- * points; pointing at one swings the needle to it and names it. Line art
- * only, so nothing is misrepresented as product photography.
- */
-
-const RADIUS_PCT = 47; // marker ring radius as % of the art box
-const MARKER_ANGLES = services.map((_, i) => i * (360 / services.length));
+const RADIUS_PCT = 47;
 
 function polar(angleDeg: number, r: number) {
   const a = ((angleDeg - 90) * Math.PI) / 180;
@@ -25,11 +17,22 @@ function shortestTurn(from: number, to: number) {
   return from + d;
 }
 
-export function CompassHero() {
+export function CompassHero({
+  items,
+  idleCaption,
+}: {
+  items: Service[];
+  idleCaption: string;
+}) {
   const box = useRef<HTMLDivElement | null>(null);
   const [angle, setAngle] = useState(0);
   const [active, setActive] = useState<Service | null>(null);
   const [reduced, setReduced] = useState(false);
+
+  const markerAngles = useMemo(
+    () => items.map((_, i) => (items.length ? i * (360 / items.length) : 0)),
+    [items],
+  );
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -58,7 +61,7 @@ export function CompassHero() {
 
   const activate = (s: Service, i: number) => {
     setActive(s);
-    pointTo(MARKER_ANGLES[i] ?? 0);
+    pointTo(markerAngles[i] ?? 0);
   };
   const deactivate = () => {
     setActive(null);
@@ -98,10 +101,8 @@ export function CompassHero() {
             </linearGradient>
           </defs>
 
-          {/* Dial */}
           <circle cx="300" cy="300" r="262" fill="url(#cDial)" stroke="#1055b8" strokeOpacity="0.25" />
 
-          {/* Turning bezel */}
           <g className="compass-bezel">
             <circle cx="300" cy="300" r="292" fill="none" stroke="#1055b8" strokeOpacity="0.35" strokeWidth="1.5" />
             <circle cx="300" cy="300" r="268" fill="none" stroke="#1055b8" strokeOpacity="0.15" />
@@ -147,7 +148,6 @@ export function CompassHero() {
             })}
           </g>
 
-          {/* Compass rose: four long points, four short */}
           <g className="compass-rose">
             {[0, 90, 180, 270].map((deg) => (
               <g key={`L${deg}`} transform={`rotate(${deg} 300 300)`}>
@@ -164,45 +164,44 @@ export function CompassHero() {
             <circle cx="300" cy="300" r="118" fill="none" stroke="#1055b8" strokeOpacity="0.2" />
           </g>
 
-          {/* Needle */}
           <g className="compass-needle" style={{ transform: `rotate(${angle}deg)` }}>
             <polygon points="300,92 311,300 289,300" fill="url(#cNeedleN)" />
             <polygon points="300,508 311,300 289,300" fill="url(#cNeedleS)" />
             <line x1="300" y1="92" x2="300" y2="508" stroke="#fff" strokeOpacity="0.5" strokeWidth="1" />
           </g>
 
-          {/* Pivot with cap jewel */}
           <circle cx="300" cy="300" r="16" fill="url(#cBrass)" />
           <circle cx="300" cy="300" r="6" fill="#7a1024" />
           <circle cx="298" cy="298" r="2" fill="#ff8aa0" fillOpacity="0.8" />
         </svg>
 
-        {/* Service markers at the compass points */}
-        <ul className="compass-markers" aria-label="What we do">
-          {services.map((s, i) => {
-            const p = polar(MARKER_ANGLES[i] ?? 0, RADIUS_PCT);
-            const isActive = active?.key === s.key;
-            return (
-              <li
-                key={s.key}
-                style={{ left: `${p.x}%`, top: `${p.y}%` }}
-                className={isActive ? "is-active" : undefined}
-              >
-                <Link
-                  href={s.href}
-                  onPointerEnter={() => activate(s, i)}
-                  onPointerLeave={deactivate}
-                  onFocus={() => activate(s, i)}
-                  onBlur={deactivate}
-                  aria-label={s.title}
+        {items.length > 0 ? (
+          <ul className="compass-markers" aria-label="What we do">
+            {items.map((s, i) => {
+              const p = polar(markerAngles[i] ?? 0, RADIUS_PCT);
+              const isActive = active?.key === s.key;
+              return (
+                <li
+                  key={s.key}
+                  style={{ left: `${p.x}%`, top: `${p.y}%` }}
+                  className={isActive ? "is-active" : undefined}
                 >
-                  <span className="marker-dot" aria-hidden="true" />
-                  <span className="marker-label">{s.navLabel}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+                  <Link
+                    href={s.href}
+                    onPointerEnter={() => activate(s, i)}
+                    onPointerLeave={deactivate}
+                    onFocus={() => activate(s, i)}
+                    onBlur={deactivate}
+                    aria-label={s.title}
+                  >
+                    <span className="marker-dot" aria-hidden="true" />
+                    <span className="marker-label">{s.navLabel}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        ) : null}
 
         <div className="hero-sweep" aria-hidden="true" />
       </div>
@@ -213,7 +212,7 @@ export function CompassHero() {
             <strong>{active.title}.</strong> {active.short}.
           </>
         ) : (
-          <>Seven disciplines, one bench. Follow the needle to any point.</>
+          idleCaption
         )}
       </p>
     </div>
