@@ -5,11 +5,12 @@ export function paymentsConfigured(): boolean {
   return Boolean(process.env.STRIPE_SECRET_KEY);
 }
 
-export async function createPaymentIntent(_input: {
+export async function createPaymentIntent(input: {
   amountCents: number;
   currency: string;
   quoteId: string;
 }): Promise<IntegrationResult<{ clientSecret?: string }>> {
+  void input;
   if (!paymentsConfigured()) {
     return {
       status: "unconfigured",

@@ -5,9 +5,10 @@ export function accountingConfigured(): boolean {
   return Boolean(process.env.ACCOUNTING_API_KEY);
 }
 
-export async function syncInvoice(_input: {
+export async function syncInvoice(input: {
   quoteId: string;
 }): Promise<IntegrationResult> {
+  void input;
   if (!accountingConfigured()) {
     return {
       status: "unconfigured",

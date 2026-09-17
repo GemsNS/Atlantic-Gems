@@ -6,7 +6,7 @@ import { PART_CATEGORIES, type PartCategory } from "@/lib/parts/types";
 import { listPartsByCategory, isPublicPart } from "@/lib/parts/store";
 import { formatMoney } from "@/lib/format";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 
 export function generateStaticParams() {
   return PART_CATEGORIES.map((c) => ({ category: c.value }));
@@ -25,7 +25,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function PartsCategoryPage({
+export default async function PartsCategoryStaticPage({
   params,
 }: {
   params: Promise<{ category: string }>;

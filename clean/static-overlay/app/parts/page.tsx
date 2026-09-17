@@ -11,9 +11,9 @@ export const metadata: Metadata = {
     "Watch, clock and jewellery parts, tools, batteries, straps and packaging from Atlantic Gems.",
 };
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 
-export default async function PartsIndexPage() {
+export default async function PartsIndexStaticPage() {
   await requirePage("parts");
   const parts = (await listParts()).filter(isPublicPart);
 
@@ -25,11 +25,11 @@ export default async function PartsIndexPage() {
           <h1>Shop parts and tools</h1>
           <p className="lede">
             Movements, crystals, straps, batteries, findings and bench tools. Demo catalogue —
-            request a quote from your cart. Unlisted parts: use the contact form.
+            request a quote via contact on this static preview. Unlisted parts: use the contact form.
           </p>
           <div className="hero-ctas">
-            <Link href="/cart" className="btn btn-primary">
-              View cart
+            <Link href="/contact" className="btn btn-primary">
+              Request a quote
             </Link>
             <Link href="/contact" className="btn btn-ghost">
               Request an unlisted part

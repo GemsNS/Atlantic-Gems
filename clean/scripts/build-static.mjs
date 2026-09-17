@@ -10,7 +10,17 @@
  *   node scripts/build-static.mjs            # basePath /Atlantic-Gems (project pages)
  *   STATIC_BASE_PATH= node scripts/build-static.mjs   # custom domain, no basePath
  */
-import { cpSync, existsSync, mkdirSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -48,6 +58,25 @@ for (const p of [
 ]) {
   rmSync(join(build, p), { recursive: true, force: true });
 }
+
+/** Remaining force-dynamic pages break `output: "export"`. */
+function rewriteForceStatic(dir) {
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) {
+      rewriteForceStatic(p);
+      continue;
+    }
+    if (!/\.(tsx|ts|jsx|js)$/.test(name)) continue;
+    const src = readFileSync(p, "utf8");
+    const next = src.replaceAll(
+      'export const dynamic = "force-dynamic";',
+      'export const dynamic = "force-static";',
+    );
+    if (next !== src) writeFileSync(p, next);
+  }
+}
+rewriteForceStatic(join(build, "app"));
 
 const npx = process.platform === "win32" ? "npx.cmd" : "npx";
 const result = spawnSync(npx, ["next", "build"], {

@@ -5,10 +5,11 @@ export function shippingConfigured(): boolean {
   return Boolean(process.env.SHIPPING_API_KEY);
 }
 
-export async function getShippingRates(_input: {
+export async function getShippingRates(input: {
   postalCode: string;
   weightGrams?: number;
 }): Promise<IntegrationResult<{ rates: { service: string; amount: number; currency: string }[] }>> {
+  void input;
   if (!shippingConfigured()) {
     return {
       status: "unconfigured",

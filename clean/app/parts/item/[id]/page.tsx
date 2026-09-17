@@ -7,7 +7,7 @@ import { getPart, isPublicPart, listParts } from "@/lib/parts/store";
 import { partCategoryLabel } from "@/lib/parts/types";
 import { formatMoney } from "@/lib/format";
 
-export const dynamic = process.env.STATIC_EXPORT === "1" ? "force-static" : "force-dynamic";
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   const parts = await listParts();
