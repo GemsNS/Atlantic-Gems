@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-label="Illustration of a flat mineral watch crystal. Demo artwork.">
+  <defs>
+    <linearGradient id="bg-crystal-mineral-flat" x1="0" y1="0" x2="0.65" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#d7e6f5"/>
+    </linearGradient>
+    <radialGradient id="pool-crystal-mineral-flat" cx="0.38" cy="0.32" r="0.72">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shadow-crystal-mineral-flat" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#1e4a7a" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#1e4a7a" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="weave-crystal-mineral-flat" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="26" stroke="#1e4a7a" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg-crystal-mineral-flat)"/>
+  <rect width="800" height="800" fill="url(#weave-crystal-mineral-flat)"/>
+  <rect width="800" height="800" fill="url(#pool-crystal-mineral-flat)"/>
+  <rect x="28" y="28" width="744" height="744" rx="18" fill="none" stroke="#1e4a7a" stroke-opacity="0.16"/>
+  <ellipse cx="400" cy="605" rx="230" ry="46" fill="url(#shadow-crystal-mineral-flat)"/>
+  <g transform="translate(400 390)">
+<circle cx="0" cy="0" r="215" fill="#dde8f3" opacity="0.85"/>
+<circle cx="0" cy="0" r="215" fill="none" stroke="#5e7c9c" stroke-opacity="0.5" stroke-width="4"/>
+<circle cx="0" cy="0" r="193.5" fill="none" stroke="#5e7c9c" stroke-opacity="0.3" stroke-width="3"/>
+<path d="M-215 0 a215 25.8 0 0 1 430 0" fill="none" stroke="#5e7c9c" stroke-opacity="0.22" stroke-width="3"/>
+<path d="M-154.79999999999998 -77.39999999999999 a172 172 0 0 1 133.3 -64.5" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round"/>
+<path d="M-107.5 111.8 a167.70000000000002 167.70000000000002 0 0 0 154.79999999999998 38.699999999999996" fill="none" stroke="#ffffff" stroke-opacity="0.45" stroke-width="9" stroke-linecap="round"/>
+<circle cx="0" cy="0" r="77.39999999999999" fill="#ffffff" opacity="0.14"/>
+  </g>
+  <g transform="translate(738 746)">
+    <rect x="-86" y="-20" width="86" height="34" rx="17" fill="#1e4a7a" fill-opacity="0.1"/>
+    <text x="-43" y="3" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="2.4" fill="#1e4a7a" fill-opacity="0.72">DEMO</text>
+  </g>
+</svg>

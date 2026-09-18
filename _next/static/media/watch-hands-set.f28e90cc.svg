@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-label="Illustration of a set of watch hands. Demo artwork.">
+  <defs>
+    <linearGradient id="bg-watch-hands-set" x1="0" y1="0" x2="0.65" y2="1">
+      <stop offset="0" stop-color="#f2f5fa"/>
+      <stop offset="1" stop-color="#d5dde8"/>
+    </linearGradient>
+    <radialGradient id="pool-watch-hands-set" cx="0.38" cy="0.32" r="0.72">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shadow-watch-hands-set" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#33415a" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#33415a" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="weave-watch-hands-set" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="26" stroke="#33415a" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg-watch-hands-set)"/>
+  <rect width="800" height="800" fill="url(#weave-watch-hands-set)"/>
+  <rect width="800" height="800" fill="url(#pool-watch-hands-set)"/>
+  <rect x="28" y="28" width="744" height="744" rx="18" fill="none" stroke="#33415a" stroke-opacity="0.16"/>
+  <ellipse cx="400" cy="605" rx="230" ry="46" fill="url(#shadow-watch-hands-set)"/>
+  <g transform="translate(400 390)">
+<circle cx="0" cy="0" r="248" fill="none" stroke="#33415a" stroke-opacity="0.14" stroke-width="2"/>
+<g transform="translate(-118 30)"><g transform="rotate(-34)"><path d="M-18 40 L-18 -150 Q0 -172 18 -150 L18 40 Z" fill="#b4becb" stroke="#465468" stroke-opacity="0.5" stroke-width="3"/><circle cx="0" cy="0" r="32.4" fill="#8694a6" stroke="#465468" stroke-opacity="0.5" stroke-width="3"/><circle cx="0" cy="0" r="12.24" fill="#f2f5fa"/></g></g>
+<g transform="translate(30 -10)"><g transform="rotate(8)"><path d="M-14 52 L-14 -232 Q0 -250 14 -232 L14 52 Z" fill="#b4becb" stroke="#465468" stroke-opacity="0.5" stroke-width="3"/><circle cx="0" cy="0" r="25.2" fill="#8694a6" stroke="#465468" stroke-opacity="0.5" stroke-width="3"/><circle cx="0" cy="0" r="9.520000000000001" fill="#f2f5fa"/></g></g>
+<g transform="translate(168 54) rotate(26)"><rect x="-4" y="-236" width="8" height="300" rx="4" fill="#b03a4a" stroke="#465468" stroke-opacity="0.35" stroke-width="2"/><circle cx="0" cy="0" r="18" fill="#b03a4a" stroke="#465468" stroke-opacity="0.4" stroke-width="2.6"/><circle cx="0" cy="0" r="6" fill="#f2f5fa"/></g>
+  </g>
+  <g transform="translate(738 746)">
+    <rect x="-86" y="-20" width="86" height="34" rx="17" fill="#33415a" fill-opacity="0.1"/>
+    <text x="-43" y="3" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="2.4" fill="#33415a" fill-opacity="0.72">DEMO</text>
+  </g>
+</svg>

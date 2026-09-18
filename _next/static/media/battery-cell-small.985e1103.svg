@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-label="Illustration of a small silver oxide watch cell. Demo artwork.">
+  <defs>
+    <linearGradient id="bg-battery-cell-small" x1="0" y1="0" x2="0.65" y2="1">
+      <stop offset="0" stop-color="#f2f5fa"/>
+      <stop offset="1" stop-color="#d5dde8"/>
+    </linearGradient>
+    <radialGradient id="pool-battery-cell-small" cx="0.38" cy="0.32" r="0.72">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shadow-battery-cell-small" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#33415a" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#33415a" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="weave-battery-cell-small" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="26" stroke="#33415a" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg-battery-cell-small)"/>
+  <rect width="800" height="800" fill="url(#weave-battery-cell-small)"/>
+  <rect width="800" height="800" fill="url(#pool-battery-cell-small)"/>
+  <rect x="28" y="28" width="744" height="744" rx="18" fill="none" stroke="#33415a" stroke-opacity="0.16"/>
+  <ellipse cx="400" cy="605" rx="230" ry="46" fill="url(#shadow-battery-cell-small)"/>
+  <g transform="translate(400 390)">
+<path d="M-160 -37 a160 54.400000000000006 0 0 0 320 0 v74 a160 54.400000000000006 0 0 1 -320 0 Z" fill="#748295"/>
+<rect x="-160" y="-37" width="320" height="74" fill="#7f8d9f"/>
+<rect x="-160" y="-37" width="80" height="74" fill="#eef2f7" opacity="0.28"/>
+<ellipse cx="0" cy="-37" rx="160" ry="54.400000000000006" fill="#ccd4dd"/>
+<ellipse cx="0" cy="-37" rx="118.4" ry="40" fill="none" stroke="#465468" stroke-opacity="0.3" stroke-width="3"/>
+<ellipse cx="0" cy="-37" rx="73.60000000000001" ry="24.8" fill="#f7f9fb"/>
+<path d="M-25.6 -37 h51.2 M0 -49 v24" stroke="#465468" stroke-opacity="0.5" stroke-width="7" stroke-linecap="round"/>
+<path d="M-160 11.84 a160 54.400000000000006 0 0 0 320 0" fill="none" stroke="#465468" stroke-opacity="0.22" stroke-width="4"/>
+<ellipse cx="0" cy="-37" rx="160" ry="54.400000000000006" fill="none" stroke="#465468" stroke-opacity="0.45" stroke-width="3"/>
+<path d="M-160 -37 v74 a160 54.400000000000006 0 0 0 320 0 v-74" fill="none" stroke="#465468" stroke-opacity="0.45" stroke-width="3"/>
+  </g>
+  <g transform="translate(738 746)">
+    <rect x="-86" y="-20" width="86" height="34" rx="17" fill="#33415a" fill-opacity="0.1"/>
+    <text x="-43" y="3" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="2.4" fill="#33415a" fill-opacity="0.72">DEMO</text>
+  </g>
+</svg>

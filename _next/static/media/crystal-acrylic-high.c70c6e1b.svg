@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-label="Illustration of a high domed acrylic watch crystal. Demo artwork.">
+  <defs>
+    <linearGradient id="bg-crystal-acrylic-high" x1="0" y1="0" x2="0.65" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#d7e6f5"/>
+    </linearGradient>
+    <radialGradient id="pool-crystal-acrylic-high" cx="0.38" cy="0.32" r="0.72">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shadow-crystal-acrylic-high" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#1e4a7a" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#1e4a7a" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="weave-crystal-acrylic-high" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="26" stroke="#1e4a7a" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg-crystal-acrylic-high)"/>
+  <rect width="800" height="800" fill="url(#weave-crystal-acrylic-high)"/>
+  <rect width="800" height="800" fill="url(#pool-crystal-acrylic-high)"/>
+  <rect x="28" y="28" width="744" height="744" rx="18" fill="none" stroke="#1e4a7a" stroke-opacity="0.16"/>
+  <ellipse cx="400" cy="605" rx="230" ry="46" fill="url(#shadow-crystal-acrylic-high)"/>
+  <g transform="translate(400 390)">
+<circle cx="0" cy="0" r="208" fill="#dde8f3" opacity="0.85"/>
+<circle cx="0" cy="0" r="208" fill="none" stroke="#5e7c9c" stroke-opacity="0.5" stroke-width="4"/>
+<path d="M-208 0 a208 128.96 0 0 1 416 0" fill="none" stroke="#5e7c9c" stroke-opacity="0.22" stroke-width="3"/>
+<path d="M-149.76 -74.88 a166.4 166.4 0 0 1 128.96 -62.4" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round"/>
+<path d="M-104 108.16 a162.24 162.24 0 0 0 149.76 37.44" fill="none" stroke="#ffffff" stroke-opacity="0.45" stroke-width="9" stroke-linecap="round"/>
+<circle cx="0" cy="0" r="74.88" fill="#ffffff" opacity="0.14"/>
+  </g>
+  <g transform="translate(738 746)">
+    <rect x="-86" y="-20" width="86" height="34" rx="17" fill="#1e4a7a" fill-opacity="0.1"/>
+    <text x="-43" y="3" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="2.4" fill="#1e4a7a" fill-opacity="0.72">DEMO</text>
+  </g>
+</svg>

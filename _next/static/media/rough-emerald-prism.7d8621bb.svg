@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-label="Illustration of a hexagonal emerald prism in the rough. Demo artwork.">
+  <defs>
+    <linearGradient id="bg-rough-emerald-prism" x1="0" y1="0" x2="0.65" y2="1">
+      <stop offset="0" stop-color="#eef9f3"/>
+      <stop offset="1" stop-color="#c9e7d8"/>
+    </linearGradient>
+    <radialGradient id="pool-rough-emerald-prism" cx="0.38" cy="0.32" r="0.72">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shadow-rough-emerald-prism" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#0d4530" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#0d4530" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="weave-rough-emerald-prism" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="26" stroke="#0d4530" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg-rough-emerald-prism)"/>
+  <rect width="800" height="800" fill="url(#weave-rough-emerald-prism)"/>
+  <rect width="800" height="800" fill="url(#pool-rough-emerald-prism)"/>
+  <rect x="28" y="28" width="744" height="744" rx="18" fill="none" stroke="#0d4530" stroke-opacity="0.16"/>
+  <ellipse cx="400" cy="605" rx="230" ry="46" fill="url(#shadow-rough-emerald-prism)"/>
+  <g transform="translate(400 390)">
+<polygon points="-84.2,-190.8 0.0,-166.8 4.3,268.0 -75.6,222.0" fill="#80d0a9"/>
+<polygon points="0.0,-166.8 84.2,-190.8 86.4,208.0 4.3,268.0" fill="#176444"/>
+<polygon points="-92.9,-234.0 0.0,-282.0 92.9,-234.0 84.2,-190.8 0.0,-166.8 -84.2,-190.8" fill="#449b73"/>
+<polygon points="-92.9,-234.0 0.0,-282.0 0.0,-214.8" fill="#a8e0c5"/>
+<polygon points="0.0,-282.0 92.9,-234.0 0.0,-214.8" fill="#56ab84"/>
+<polygon points="92.9,-234.0 84.2,-190.8 0.0,-166.8 0.0,-214.8" fill="#1b6d4a"/>
+<polygon points="-84.2,-190.8 -92.9,-234.0 0.0,-214.8 0.0,-166.8" fill="#338c64"/>
+<path d="M-83.3 -144.9 L0.5 -118.5 L84.5 -146.5" fill="none" stroke="#0d4530" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-82.3 -99.1 L1.0 -70.2 L84.7 -102.2" fill="none" stroke="#0d4530" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-81.4 -53.2 L1.4 -21.9 L85.0 -57.9" fill="none" stroke="#0d4530" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-80.4 -7.3 L1.9 26.4 L85.2 -13.6" fill="none" stroke="#0d4530" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-79.4 38.5 L2.4 74.8 L85.4 30.8" fill="none" stroke="#0d4530" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-78.5 84.4 L2.9 123.1 L85.7 75.1" fill="none" stroke="#0d4530" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-77.5 130.3 L3.4 171.4 L85.9 119.4" fill="none" stroke="#0d4530" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-76.6 176.1 L3.8 219.7 L86.2 163.7" fill="none" stroke="#0d4530" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-84.24000000000001 -190.8 L0 -166.8 L4.32 268 L-75.60000000000001 222 Z M0 -166.8 L84.24000000000001 -190.8 L86.4 208 L4.32 268 Z" fill="none" stroke="#0d4530" stroke-opacity="0.5" stroke-width="3"/>
+<polygon points="-92.9,-234.0 0.0,-282.0 92.9,-234.0 84.2,-190.8 0.0,-166.8 -84.2,-190.8" fill="none" stroke="#0d4530" stroke-opacity="0.5" stroke-width="3"/>
+  </g>
+  <g transform="translate(738 746)">
+    <rect x="-86" y="-20" width="86" height="34" rx="17" fill="#0d4530" fill-opacity="0.1"/>
+    <text x="-43" y="3" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="2.4" fill="#0d4530" fill-opacity="0.72">DEMO</text>
+  </g>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-label="Illustration of a blue sapphire crystal in the rough. Demo artwork.">
+  <defs>
+    <linearGradient id="bg-rough-sapphire-parcel" x1="0" y1="0" x2="0.65" y2="1">
+      <stop offset="0" stop-color="#eef3fc"/>
+      <stop offset="1" stop-color="#c9daf1"/>
+    </linearGradient>
+    <radialGradient id="pool-rough-sapphire-parcel" cx="0.38" cy="0.32" r="0.72">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shadow-rough-sapphire-parcel" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#16305c" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#16305c" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="weave-rough-sapphire-parcel" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="26" stroke="#16305c" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg-rough-sapphire-parcel)"/>
+  <rect width="800" height="800" fill="url(#weave-rough-sapphire-parcel)"/>
+  <rect width="800" height="800" fill="url(#pool-rough-sapphire-parcel)"/>
+  <rect x="28" y="28" width="744" height="744" rx="18" fill="none" stroke="#16305c" stroke-opacity="0.16"/>
+  <ellipse cx="400" cy="605" rx="230" ry="46" fill="url(#shadow-rough-sapphire-parcel)"/>
+  <g transform="translate(400 390)">
+<polygon points="-103.0,-146.0 0.0,-116.0 8.4,250.0 -86.1,204.0" fill="#98bdea"/>
+<polygon points="0.0,-116.0 103.0,-146.0 107.2,190.0 8.4,250.0" fill="#244b88"/>
+<polygon points="-113.5,-200.0 0.0,-260.0 113.5,-200.0 103.0,-146.0 0.0,-116.0 -103.0,-146.0" fill="#5783c1"/>
+<polygon points="-113.5,-200.0 0.0,-260.0 0.0,-176.0" fill="#bad3f2"/>
+<polygon points="0.0,-260.0 113.5,-200.0 0.0,-176.0" fill="#6b94cd"/>
+<polygon points="113.5,-200.0 103.0,-146.0 0.0,-116.0 0.0,-176.0" fill="#295395"/>
+<polygon points="-103.0,-146.0 -113.5,-200.0 0.0,-176.0 0.0,-116.0" fill="#4572b6"/>
+<path d="M-100.5 -96.0 L1.2 -63.7 L103.6 -98.0" fill="none" stroke="#16305c" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-98.1 -46.0 L2.4 -11.4 L104.2 -50.0" fill="none" stroke="#16305c" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-95.7 4.0 L3.6 40.9 L104.8 -2.0" fill="none" stroke="#16305c" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-93.3 54.0 L4.8 93.1 L105.4 46.0" fill="none" stroke="#16305c" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-90.9 104.0 L6.0 145.4 L106.0 94.0" fill="none" stroke="#16305c" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-88.5 154.0 L7.2 197.7 L106.6 142.0" fill="none" stroke="#16305c" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-102.96000000000001 -146 L0 -116 L8.448 250 L-86.06400000000001 204 Z M0 -116 L102.96000000000001 -146 L107.18400000000001 190 L8.448 250 Z" fill="none" stroke="#16305c" stroke-opacity="0.5" stroke-width="3"/>
+<polygon points="-113.5,-200.0 0.0,-260.0 113.5,-200.0 103.0,-146.0 0.0,-116.0 -103.0,-146.0" fill="none" stroke="#16305c" stroke-opacity="0.5" stroke-width="3"/>
+  </g>
+  <g transform="translate(738 746)">
+    <rect x="-86" y="-20" width="86" height="34" rx="17" fill="#16305c" fill-opacity="0.1"/>
+    <text x="-43" y="3" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="2.4" fill="#16305c" fill-opacity="0.72">DEMO</text>
+  </g>
+</svg>

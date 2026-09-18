@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-label="Illustration of an emerald cut diamond seen from above. Demo artwork.">
+  <defs>
+    <linearGradient id="bg-diamond-emerald-cut" x1="0" y1="0" x2="0.65" y2="1">
+      <stop offset="0" stop-color="#f9fbff"/>
+      <stop offset="1" stop-color="#d8e4f4"/>
+    </linearGradient>
+    <radialGradient id="pool-diamond-emerald-cut" cx="0.38" cy="0.32" r="0.72">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shadow-diamond-emerald-cut" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#27406a" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#27406a" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="weave-diamond-emerald-cut" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="26" stroke="#27406a" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg-diamond-emerald-cut)"/>
+  <rect width="800" height="800" fill="url(#weave-diamond-emerald-cut)"/>
+  <rect width="800" height="800" fill="url(#pool-diamond-emerald-cut)"/>
+  <rect x="28" y="28" width="744" height="744" rx="18" fill="none" stroke="#27406a" stroke-opacity="0.16"/>
+  <ellipse cx="400" cy="605" rx="230" ry="46" fill="url(#shadow-diamond-emerald-cut)"/>
+  <g transform="translate(400 390)">
+<polygon points="-128.0,-258.0 128.0,-258.0 186.0,-200.0 186.0,200.0 128.0,258.0 -128.0,258.0 -186.0,200.0 -186.0,-200.0" fill="#3a5478"/>
+<polygon points="-128.0,-258.0 128.0,-258.0 186.0,-200.0 186.0,200.0 128.0,258.0 -128.0,258.0 -186.0,200.0 -186.0,-200.0" fill="#b6c6dc"/>
+<polygon points="-128.0,-258.0 128.0,-258.0 186.0,-200.0 186.0,200.0 128.0,258.0 -128.0,258.0 -186.0,200.0 -186.0,-200.0" fill="none" stroke="#3a5478" stroke-opacity="0.4" stroke-width="2"/>
+<polygon points="-101.5,-204.7 101.5,-204.7 147.6,-158.7 147.6,158.7 101.5,204.7 -101.5,204.7 -147.6,158.7 -147.6,-158.7" fill="#cad7e7"/>
+<polygon points="-101.5,-204.7 101.5,-204.7 147.6,-158.7 147.6,158.7 101.5,204.7 -101.5,204.7 -147.6,158.7 -147.6,-158.7" fill="none" stroke="#3a5478" stroke-opacity="0.4" stroke-width="2"/>
+<polygon points="-75.1,-151.4 75.1,-151.4 109.1,-117.3 109.1,117.3 75.1,151.4 -75.1,151.4 -109.1,117.3 -109.1,-117.3" fill="#dae4f0"/>
+<polygon points="-75.1,-151.4 75.1,-151.4 109.1,-117.3 109.1,117.3 75.1,151.4 -75.1,151.4 -109.1,117.3 -109.1,-117.3" fill="none" stroke="#3a5478" stroke-opacity="0.4" stroke-width="2"/>
+<polygon points="-48.6,-98.0 48.6,-98.0 70.7,-76.0 70.7,76.0 48.6,98.0 -48.6,98.0 -70.7,76.0 -70.7,-76.0" fill="#e3ebf5"/>
+<polygon points="-48.6,-98.0 48.6,-98.0 70.7,-76.0 70.7,76.0 48.6,98.0 -48.6,98.0 -70.7,76.0 -70.7,-76.0" fill="none" stroke="#3a5478" stroke-opacity="0.4" stroke-width="2"/>
+<polygon points="-48.6,-98.0 48.6,-98.0 70.7,-76.0 70.7,76.0 48.6,98.0 -48.6,98.0 -70.7,76.0 -70.7,-76.0" fill="#dfe8f3"/>
+<polygon points="-48.6,-98.0 48.6,-98.0 70.7,-76.0 70.7,76.0 48.6,98.0 -48.6,98.0 -70.7,76.0 -70.7,-76.0" fill="none" stroke="#3a5478" stroke-opacity="0.45" stroke-width="2"/>
+<polygon points="-96.7,-129.0 -18.6,-170.3 -37.2,-103.2 -107.9,-72.2" fill="#ffffff" opacity="0.5"/>
+  </g>
+  <g transform="translate(738 746)">
+    <rect x="-86" y="-20" width="86" height="34" rx="17" fill="#27406a" fill-opacity="0.1"/>
+    <text x="-43" y="3" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="2.4" fill="#27406a" fill-opacity="0.72">DEMO</text>
+  </g>
+</svg>
