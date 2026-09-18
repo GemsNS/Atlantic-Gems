@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { NoResultIcon } from "@/components/shop/Icons";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -11,26 +12,33 @@ export const metadata: Metadata = {
 export default function InventoryStaticPage() {
   return (
     <>
-      <section className="page-hero">
+      <section className="shop-hero">
         <div className="wrap">
           <p className="eyebrow">The collection</p>
           <h1>Being prepared</h1>
           <p className="lede">
-            Our online collection is not open yet. Pieces are shown by appointment, and we source to
-            your brief in the meantime.
+            The online collection is not open yet. Pieces are shown by appointment in Halifax, and we
+            source to your brief in the meantime.
           </p>
         </div>
       </section>
       <section className="section">
         <div className="wrap">
-          <div className="empty">
-            <p>Tell us what you are looking for and we will reply with what we have or can source.</p>
-            <Link href="/contact?type=jewellery" className="btn btn-primary">
-              Ask about current pieces
-            </Link>
-            <p className="muted" style={{ fontSize: "0.9rem" }}>
-              Or email <a href={`mailto:${site.email}`} className="link">{site.email}</a>
+          <div className="empty-state">
+            <NoResultIcon />
+            <h3>Tell us what you are looking for</h3>
+            <p>
+              Describe the piece — stone, metal, size, budget — and we will reply with what we hold or
+              what we can find.
             </p>
+            <div className="empty-actions">
+              <Link href="/contact?type=jewellery" className="btn btn-primary">
+                Ask about current pieces
+              </Link>
+              <a href={`mailto:${site.email}`} className="btn btn-ghost">
+                {site.email}
+              </a>
+            </div>
           </div>
         </div>
       </section>

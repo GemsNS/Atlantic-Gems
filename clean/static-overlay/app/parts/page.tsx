@@ -3,9 +3,9 @@ import Link from "next/link";
 import { requirePage } from "@/lib/require-page";
 import { PART_CATEGORIES, type PartCategory } from "@/lib/parts/types";
 import { listParts, isPublicPart } from "@/lib/parts/store";
-import { PartCard } from "@/components/parts/PartCard";
+import { PartsBrowser } from "@/components/parts/PartsBrowser";
 import { PartsCategoryGrid, PartsCategoryRail } from "@/components/parts/PartsCategoryNav";
-import { PartPlate } from "@/components/parts/PartPlate";
+import { PartsTrayStack } from "@/components/parts/PartsTrayStack";
 import { Reveal } from "@/components/Reveal";
 
 export const metadata: Metadata = {
@@ -20,60 +20,74 @@ export const dynamic = "force-static";
 export default async function PartsIndexStaticPage() {
   await requirePage("parts");
   const parts = (await listParts()).filter(isPublicPart);
-  const featured = [...parts].sort((a, b) => (b.stockQty || 0) - (a.stockQty || 0)).slice(0, 8);
   const counts = Object.fromEntries(
     PART_CATEGORIES.map((c) => [c.value, parts.filter((p) => p.category === c.value).length]),
   ) as Partial<Record<PartCategory, number>>;
   const brands = new Set(parts.map((p) => p.brand).filter(Boolean)).size;
   const inStock = parts.filter((p) => p.stockQty > 0).length;
 
+  const stackTop = [...PART_CATEGORIES]
+    .map((c) => c.value)
+    .filter((v) => (counts[v] ?? 0) > 0)
+    .slice(0, 3) as PartCategory[];
+  const stack: PartCategory[] = stackTop.length === 3 ? stackTop : ["tools", "movements", "straps"];
+
   return (
     <>
-      <section className="parts-hero">
-        <div className="wrap parts-hero-inner">
+      <section className="shop-hero">
+        <div className="wrap shop-hero-inner">
           <div>
             <p className="eyebrow">Parts counter</p>
             <h1>Everything for the bench.</h1>
             <p className="lede">
-              Movements, crystals, straps, batteries, findings and Swiss tools. This static preview
-              has no cart — request a quote by email or contact form.
+              Movements, crystals, straps, batteries, findings and Swiss tools, laid out as trays on
+              the counter. This preview has no cart — send the references you need and we reply with a
+              written quotation.
             </p>
+            <ul className="shop-stats" aria-label="Catalogue at a glance">
+              <li>
+                <b>{parts.length}</b>
+                <span>public lines</span>
+              </li>
+              <li>
+                <b>{inStock}</b>
+                <span>on the shelf</span>
+              </li>
+              <li>
+                <b>{brands || "—"}</b>
+                <span>brands</span>
+              </li>
+              <li>
+                <b>{PART_CATEGORIES.length}</b>
+                <span>trays</span>
+              </li>
+            </ul>
             <div className="hero-ctas">
               <Link href="#catalogue" className="btn btn-primary">
-                Browse catalogue
+                Browse the counter
               </Link>
               <Link href="/contact" className="btn btn-ghost">
                 Request a quote
               </Link>
             </div>
-            <div className="parts-hero-stats">
-              <div>
-                <strong>{parts.length}</strong>
-                <span>public lines</span>
-              </div>
-              <div>
-                <strong>{inStock}</strong>
-                <span>in stock</span>
-              </div>
-              <div>
-                <strong>{brands || "—"}</strong>
-                <span>brands</span>
-              </div>
-            </div>
           </div>
-          <div className="parts-hero-aside">
-            <PartPlate category="tools" size="hero" />
+          <div className="shop-hero-aside">
+            <PartsTrayStack categories={stack} />
           </div>
         </div>
       </section>
 
-      <section className="section" id="catalogue">
+      <section className="section" id="catalogue" style={{ borderTop: 0 }}>
         <div className="wrap">
-          <div className="parts-toolbar">
+          <div className="shop-head">
             <div>
+              <span className="shop-head-n">Index</span>
               <h2>Shop by tray</h2>
-              <p>Open a category, or jump from the rail below.</p>
+              <p>Ten trays, from case parts to packaging. Open one, or search the whole counter below.</p>
             </div>
+            <Link href="/contact" className="btn btn-ghost btn-small">
+              Need an unlisted part?
+            </Link>
           </div>
           <PartsCategoryRail counts={counts} />
           <Reveal>
@@ -84,19 +98,14 @@ export default async function PartsIndexStaticPage() {
 
       <section className="section section-alt">
         <div className="wrap">
-          <div className="parts-toolbar">
+          <div className="shop-head">
             <div>
-              <h2>On the counter now</h2>
-              <p>Demo prices until the live list is confirmed.</p>
+              <span className="shop-head-n">The whole counter</span>
+              <h2>Search every line</h2>
+              <p>Demo prices stand in until the live list is confirmed.</p>
             </div>
           </div>
-          <Reveal>
-            <div className="part-grid">
-              {featured.map((p) => (
-                <PartCard key={p.id} part={p} />
-              ))}
-            </div>
-          </Reveal>
+          <PartsBrowser parts={parts} canQuote={false} />
         </div>
       </section>
     </>

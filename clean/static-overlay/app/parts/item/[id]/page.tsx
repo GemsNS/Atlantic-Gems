@@ -7,7 +7,8 @@ import { partCategoryLabel } from "@/lib/parts/types";
 import { formatMoney } from "@/lib/format";
 import { PartPlate } from "@/components/parts/PartPlate";
 import { PartCard } from "@/components/parts/PartCard";
-import { stockLabel, stockTone } from "@/lib/parts/visuals";
+import { StockGauge } from "@/components/parts/StockGauge";
+import { PART_VISUALS, stockNote, stockTone } from "@/lib/parts/visuals";
 import { site } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -34,12 +35,13 @@ export default async function PartDetailStaticPage({
 }) {
   await requirePage("parts");
   const { id } = await params;
-  const part = await getPart(id);
+  const all = await listParts();
+  const part = all.find((p) => p.id === id) ?? null;
   if (!part || !isPublicPart(part)) notFound();
   const tone = stockTone(part.stockQty, part.reorderPoint);
-  const related = (await listParts())
-    .filter((p) => isPublicPart(p) && p.category === part.category && p.id !== part.id)
-    .slice(0, 4);
+  const visual = PART_VISUALS[part.category];
+  const sameTray = all.filter((p) => isPublicPart(p) && p.category === part.category && p.id !== part.id);
+  const related = sameTray.slice(0, 4);
 
   const subject = encodeURIComponent(`Parts enquiry: ${part.sku} ${part.title}`);
   const body = encodeURIComponent(
@@ -47,73 +49,113 @@ export default async function PartDetailStaticPage({
   );
 
   return (
-    <section className="section" style={{ borderTop: 0, paddingTop: "clamp(32px, 5vw, 56px)" }}>
-      <div className="wrap part-detail">
-        <div className="part-detail-stage">
-          <PartPlate category={part.category} size="hero" />
-        </div>
-        <div>
-          <p className="part-detail-crumb">
-            <Link href="/parts">Parts</Link>
+    <>
+      <section className="section" style={{ borderTop: 0, paddingTop: "clamp(28px, 4vw, 48px)" }}>
+        <div className="wrap">
+          <p className="crumb">
+            <Link href="/parts">Parts counter</Link>
             <span aria-hidden="true">/</span>
             <Link href={`/parts/${part.category}`}>{partCategoryLabel(part.category)}</Link>
+            <span aria-hidden="true">/</span>
+            <span>{part.sku}</span>
           </p>
-          <h1>{part.title}</h1>
-          <p className="part-detail-brand">
-            {part.brand ? `${part.brand} · ` : ""}
-            SKU {part.sku}
-            {part.demo ? " · Demo listing" : ""}
-          </p>
-          <p className="part-detail-price">{formatMoney(part.price, part.currency)}</p>
-          <p className={`part-chip part-chip-stock is-${tone}`} style={{ position: "static" }}>
-            {stockLabel(part.stockQty, part.reorderPoint)}
-          </p>
-          <p className="part-detail-desc">{part.description || "No further description on file."}</p>
-          <ul className="part-spec">
-            <li>
-              <span className="k">Pack size</span>
-              <span className="v">{part.packSize}</span>
-            </li>
-            <li>
-              <span className="k">On hand</span>
-              <span className="v">{part.stockQty}</span>
-            </li>
-            <li>
-              <span className="k">Category</span>
-              <span className="v">{partCategoryLabel(part.category)}</span>
-            </li>
-            <li>
-              <span className="k">Visibility</span>
-              <span className="v">{part.visibility}</span>
-            </li>
-          </ul>
-          <div className="part-buy-panel">
-            <h2>Request a quote</h2>
-            <p>This static preview has no cart. Email us, or use the contact form on the live site.</p>
-            <a href={`mailto:${site.email}?subject=${subject}&body=${body}`} className="btn btn-primary" style={{ width: "100%", justifyContent: "center" }}>
-              Email about this part
-            </a>
-            <Link href="/contact" className="btn btn-ghost" style={{ width: "100%", justifyContent: "center", marginTop: 10 }}>
-              Contact form
-            </Link>
-          </div>
-        </div>
-      </div>
-      {related.length > 0 ? (
-        <div className="wrap" style={{ marginTop: 64 }}>
-          <div className="parts-toolbar">
+
+          <div className="part-detail">
+            <div className="part-detail-stage">
+              <PartPlate category={part.category} size="hero" seed={part.sku} />
+              <p className="gallery-hint">
+                Illustrated plate — {visual.label.toLowerCase()}. Photographs follow as lines are
+                confirmed.
+              </p>
+            </div>
+
             <div>
-              <h2>More in this tray</h2>
-              <p>Related lines from {partCategoryLabel(part.category)}.</p>
+              <h1>{part.title}</h1>
+              <p className="part-detail-brand">
+                {part.brand ? <span>{part.brand}</span> : null}
+                <span className="sku">{part.sku}</span>
+                {part.demo ? <span>Demo listing</span> : null}
+              </p>
+
+              <div className="part-detail-price-row">
+                <span className="part-detail-price">{formatMoney(part.price, part.currency)}</span>
+                <StockGauge
+                  qty={part.stockQty}
+                  reorder={part.reorderPoint}
+                  label={stockNote(part.stockQty, part.reorderPoint)}
+                />
+              </div>
+
+              <p className="part-detail-desc">
+                {part.description || "No further description on file — ask and we will check the tin."}
+              </p>
+
+              <ul className="part-spec">
+                <li>
+                  <span className="k">Pack size</span>
+                  <span className="v">{part.packSize}</span>
+                </li>
+                <li>
+                  <span className="k">On hand</span>
+                  <span className="v">{part.stockQty}</span>
+                </li>
+                <li>
+                  <span className="k">Reorder at</span>
+                  <span className="v">{part.reorderPoint}</span>
+                </li>
+                <li>
+                  <span className="k">Tray</span>
+                  <span className="v">{partCategoryLabel(part.category)}</span>
+                </li>
+                <li>
+                  <span className="k">Quoted in</span>
+                  <span className="v">{part.currency}</span>
+                </li>
+              </ul>
+
+              <div className="part-buy-panel">
+                <h2>{tone === "out" ? "Out at the counter" : "Request a quote"}</h2>
+                <p>
+                  This preview has no cart. Email the reference and the quantity, or use the contact
+                  form on the live site.
+                </p>
+                <div className="part-buy">
+                  <div className="part-buy-row">
+                    <a href={`mailto:${site.email}?subject=${subject}&body=${body}`} className="btn btn-primary">
+                      Email about this part
+                    </a>
+                    <Link href="/contact" className="btn btn-ghost">
+                      Contact form
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="part-grid">
-            {related.map((p) => (
-              <PartCard key={p.id} part={p} />
-            ))}
-          </div>
         </div>
+      </section>
+
+      {related.length > 0 ? (
+        <section className="section section-alt">
+          <div className="wrap">
+            <div className="shop-head">
+              <div>
+                <span className="shop-head-n">Same tray</span>
+                <h2>More {partCategoryLabel(part.category).toLowerCase()}</h2>
+                <p>{sameTray.length} public lines on this tray.</p>
+              </div>
+              <Link href={`/parts/${part.category}`} className="btn btn-ghost btn-small">
+                Open the tray
+              </Link>
+            </div>
+            <div className="part-grid">
+              {related.map((p) => (
+                <PartCard key={p.id} part={p} />
+              ))}
+            </div>
+          </div>
+        </section>
       ) : null}
-    </section>
+    </>
   );
 }

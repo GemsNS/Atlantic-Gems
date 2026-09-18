@@ -4,9 +4,11 @@ import { headers } from "next/headers";
 import { requirePage } from "@/lib/require-page";
 import { PART_CATEGORIES, type PartCategory } from "@/lib/parts/types";
 import { listParts, isPublicPart } from "@/lib/parts/store";
-import { PartCard } from "@/components/parts/PartCard";
+import { getCart } from "@/lib/cart";
+import { formatMoney } from "@/lib/format";
+import { PartsBrowser } from "@/components/parts/PartsBrowser";
 import { PartsCategoryGrid, PartsCategoryRail } from "@/components/parts/PartsCategoryNav";
-import { PartPlate } from "@/components/parts/PartPlate";
+import { PartsTrayStack } from "@/components/parts/PartsTrayStack";
 import { Reveal } from "@/components/Reveal";
 
 export const metadata: Metadata = {
@@ -21,60 +23,89 @@ export default async function PartsIndexPage() {
   await requirePage("parts");
   const h = await headers();
   const csrf = h.get("x-csrf-token") ?? "";
-  const parts = (await listParts()).filter(isPublicPart);
-  const featured = [...parts].sort((a, b) => (b.stockQty || 0) - (a.stockQty || 0)).slice(0, 8);
+  const allParts = await listParts();
+  const parts = allParts.filter(isPublicPart);
   const counts = Object.fromEntries(
     PART_CATEGORIES.map((c) => [c.value, parts.filter((p) => p.category === c.value).length]),
   ) as Partial<Record<PartCategory, number>>;
   const brands = new Set(parts.map((p) => p.brand).filter(Boolean)).size;
   const inStock = parts.filter((p) => p.stockQty > 0).length;
 
+  // A running total of the quote tray, so the counter always shows the order.
+  const lines = await getCart();
+  let trayQty = 0;
+  let traySubtotal = 0;
+  for (const l of lines) {
+    const part = allParts.find((p) => p.id === l.partId);
+    if (!part) continue;
+    trayQty += l.qty;
+    traySubtotal += (part.price ?? 0) * l.qty;
+  }
+
+  const stackTop = (
+    [...PART_CATEGORIES]
+      .map((c) => c.value)
+      .filter((v) => (counts[v] ?? 0) > 0)
+      .slice(0, 3) as PartCategory[]
+  );
+  const stack: PartCategory[] = stackTop.length === 3 ? stackTop : ["tools", "movements", "straps"];
+
   return (
     <>
-      <section className="parts-hero">
-        <div className="wrap parts-hero-inner">
+      <section className="shop-hero">
+        <div className="wrap shop-hero-inner">
           <div>
             <p className="eyebrow">Parts counter</p>
             <h1>Everything for the bench.</h1>
             <p className="lede">
-              Movements, crystals, straps, batteries, findings and Swiss tools — laid out like a
-              tray on the counter. Request a written quote from your cart; ask if a part is not listed.
+              Movements, crystals, straps, batteries, findings and Swiss tools — laid out as trays on
+              the counter. Build a tray, then send it over for a written quotation. If a reference is
+              not listed, ask: most of what we stock is ordered to the job.
             </p>
-            <div className="hero-ctas">
-              <Link href="#catalogue" className="btn btn-primary">
-                Browse catalogue
-              </Link>
-              <Link href="/cart" className="btn btn-ghost">
-                Quote cart
-              </Link>
-            </div>
-            <div className="parts-hero-stats" aria-label="Catalogue snapshot">
-              <div>
-                <strong>{parts.length}</strong>
+            <ul className="shop-stats" aria-label="Catalogue at a glance">
+              <li>
+                <b>{parts.length}</b>
                 <span>public lines</span>
-              </div>
-              <div>
-                <strong>{inStock}</strong>
-                <span>in stock</span>
-              </div>
-              <div>
-                <strong>{brands || "—"}</strong>
+              </li>
+              <li>
+                <b>{inStock}</b>
+                <span>on the shelf</span>
+              </li>
+              <li>
+                <b>{brands || "—"}</b>
                 <span>brands</span>
-              </div>
-            </div>
+              </li>
+              <li>
+                <b>{PART_CATEGORIES.length}</b>
+                <span>trays</span>
+              </li>
+            </ul>
           </div>
-          <div className="parts-hero-aside">
-            <PartPlate category="tools" size="hero" />
+          <div className="shop-hero-aside">
+            <PartsTrayStack categories={stack} />
           </div>
         </div>
       </section>
 
-      <section className="section" id="catalogue">
+      <section className="section" id="catalogue" style={{ borderTop: 0 }}>
         <div className="wrap">
-          <div className="parts-toolbar">
+          {trayQty > 0 ? (
+            <div className="quote-strip">
+              <span>
+                Quote tray: <strong>{trayQty}</strong> {trayQty === 1 ? "item" : "items"} ·{" "}
+                <strong>{formatMoney(traySubtotal, "CAD")}</strong> estimated
+              </span>
+              <Link href="/cart" className="btn btn-ghost btn-small">
+                Review and send
+              </Link>
+            </div>
+          ) : null}
+
+          <div className="shop-head">
             <div>
+              <span className="shop-head-n">Index</span>
               <h2>Shop by tray</h2>
-              <p>Open a category, or jump from the rail below.</p>
+              <p>Ten trays, from case parts to packaging. Open one, or search the whole counter below.</p>
             </div>
             <Link href="/contact" className="btn btn-ghost btn-small">
               Need an unlisted part?
@@ -89,27 +120,17 @@ export default async function PartsIndexPage() {
 
       <section className="section section-alt">
         <div className="wrap">
-          <div className="parts-toolbar">
+          <div className="shop-head">
             <div>
-              <h2>On the counter now</h2>
-              <p>A selection of stocked lines. Demo prices until the live list is confirmed.</p>
+              <span className="shop-head-n">The whole counter</span>
+              <h2>Search every line</h2>
+              <p>
+                Filter by tray, brand and shelf stock. Demo prices stand in until the live list is
+                confirmed.
+              </p>
             </div>
           </div>
-          <Reveal>
-            <div className="part-grid">
-              {featured.map((p) => (
-                <PartCard key={p.id} part={p} csrf={csrf} showQuickAdd />
-              ))}
-            </div>
-          </Reveal>
-          <div className="hero-ctas" style={{ marginTop: 32 }}>
-            <Link href={`/parts/${PART_CATEGORIES[0]!.value}`} className="btn btn-primary">
-              Start with watch parts
-            </Link>
-            <Link href="/contact" className="btn btn-ghost">
-              Trade account enquiry
-            </Link>
-          </div>
+          <PartsBrowser parts={parts} csrf={csrf} />
         </div>
       </section>
     </>

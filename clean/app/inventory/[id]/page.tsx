@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getItem, getSettings } from "@/lib/inventory/store";
-import { collectionIsPublic, isVisibleToPublic } from "@/lib/inventory/types";
+import { getItem, getSettings, listItems } from "@/lib/inventory/store";
+import { collectionIsPublic, isVisibleToPublic, type InventoryItem } from "@/lib/inventory/types";
 import { categoryLabel, conditionLabel, formatPrice, statusLabel } from "@/lib/format";
+import { isNewArrival } from "@/lib/inventory/facets";
 import { ItemGallery } from "@/components/ItemGallery";
+import { ItemCard } from "@/components/ItemCard";
+import { SaveButton } from "@/components/inventory/SaveButton";
 
 export const dynamic = "force-dynamic";
 
@@ -14,12 +17,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return { title: item ? item.title : "Item", robots: { index: false, follow: false } };
 }
 
-export default async function ItemPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const [settings, item] = await Promise.all([getSettings(), getItem(id)]);
-  if (!collectionIsPublic(settings) || !item || !isVisibleToPublic(item)) notFound();
-
-  const facts: [string, string][] = [
+function facts(item: InventoryItem): [string, string][] {
+  return [
     ["Category", categoryLabel(item.category)],
     ["Condition", conditionLabel(item.condition)],
     ...(item.metal ? ([["Metal", item.metal]] as [string, string][]) : []),
@@ -28,52 +27,126 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
     ...(item.sku ? ([["Reference", item.sku]] as [string, string][]) : []),
     ["Availability", statusLabel(item.status)],
   ];
+}
+
+export default async function ItemPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const [settings, item] = await Promise.all([getSettings(), getItem(id)]);
+  if (!collectionIsPublic(settings) || !item || !isVisibleToPublic(item)) notFound();
+
+  const related = (await listItems())
+    .filter(
+      (i) =>
+        isVisibleToPublic(i) &&
+        i.status !== "sold" &&
+        i.id !== item.id &&
+        (i.category === item.category || (item.metal && i.metal === item.metal)),
+    )
+    .slice(0, 4);
+
+  const brief = `Enquiry about: ${item.title}${item.sku ? ` (ref ${item.sku})` : ""}`;
 
   return (
-    <section className="section" style={{ borderTop: 0 }}>
-      <div className="wrap">
-        <p style={{ marginBottom: 24 }}>
-          <Link href="/inventory" className="link">
-            ← Back to the collection
-          </Link>
-        </p>
-        <div className="item-grid">
-          <ItemGallery images={item.images} title={item.title} />
-          <div className="item-body">
-            <p className="eyebrow">{categoryLabel(item.category)} · {conditionLabel(item.condition)}</p>
-            <h1 style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)", marginTop: 10 }}>{item.title}</h1>
-            <p className="item-price">{formatPrice(item)}</p>
-            {item.description ? <p className="lede" style={{ marginTop: 18 }}>{item.description}</p> : null}
-            <ul className="facts">
-              {facts.map(([k, v]) => (
-                <li key={k}>
-                  <span className="k">{k}</span>
-                  <span className="v">{v}</span>
-                </li>
-              ))}
-            </ul>
-            {item.disclosure ? (
-              <div className="explorer-note" style={{ marginTop: 24 }}>
-                <strong style={{ color: "var(--ink)" }}>Disclosure.</strong> {item.disclosure}
-              </div>
-            ) : null}
-            <div className="hero-ctas">
-              <Link href={`/contact?type=jewellery&brief=${encodeURIComponent(`Enquiry about: ${item.title}${item.sku ? ` (ref ${item.sku})` : ""}`)}`} className="btn btn-primary">
-                Enquire about this piece
-              </Link>
-              {item.ebayUrl ? (
-                <a href={item.ebayUrl} className="btn btn-ghost" rel="noopener noreferrer" target="_blank">
-                  View on eBay
-                </a>
-              ) : null}
+    <>
+      <section className="section" style={{ borderTop: 0, paddingTop: "clamp(28px, 4vw, 48px)" }}>
+        <div className="wrap">
+          <p className="crumb">
+            <Link href="/inventory">The collection</Link>
+            <span aria-hidden="true">/</span>
+            <span>{categoryLabel(item.category)}</span>
+          </p>
+
+          <div className="piece">
+            <div className="piece-stage">
+              <ItemGallery images={item.images} title={item.title} />
             </div>
-            <p className="muted" style={{ marginTop: 18, fontSize: "0.9rem" }}>
-              Viewing by appointment in Halifax. Purchases are confirmed by written quotation; we do not
-              take card payments online.
-            </p>
+
+            <div className="piece-body">
+              <p className="piece-eyebrow">
+                {categoryLabel(item.category)}
+                <span aria-hidden="true">·</span>
+                {conditionLabel(item.condition)}
+                {item.status === "reserved" ? <span className="flag flag-reserved">Reserved</span> : null}
+                {isNewArrival(item) && item.status !== "reserved" ? (
+                  <span className="flag flag-new">Just in</span>
+                ) : null}
+              </p>
+              <h1>{item.title}</h1>
+
+              <div className="piece-price-row">
+                <span className="piece-price">{formatPrice(item)}</span>
+                {item.price !== null ? (
+                  <span className="gallery-hint">{item.currency} · taxes extra</span>
+                ) : null}
+              </div>
+
+              {item.description ? <p className="piece-lede">{item.description}</p> : null}
+
+              <ul className="spec-ledger">
+                {facts(item).map(([k, v]) => (
+                  <li key={k}>
+                    <span className="k">{k}</span>
+                    <span className="v">{v}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {item.disclosure ? (
+                <div className="house-note">
+                  <strong>Disclosure</strong>
+                  {item.disclosure}
+                </div>
+              ) : null}
+
+              <div className="piece-actions">
+                <Link
+                  href={`/contact?type=jewellery&brief=${encodeURIComponent(brief)}`}
+                  className="btn btn-primary"
+                >
+                  Enquire about this piece
+                </Link>
+                <SaveButton id={item.id} title={item.title} inline />
+                {item.ebayUrl ? (
+                  <a href={item.ebayUrl} className="btn btn-ghost" rel="noopener noreferrer" target="_blank">
+                    View on eBay
+                  </a>
+                ) : null}
+              </div>
+
+              <p className="piece-fine">
+                Viewing by appointment in Halifax. Purchases are confirmed by written quotation; we do
+                not take card payments online. Read our{" "}
+                <Link href="/policies/disclosure" className="link">
+                  certification and disclosure policy
+                </Link>
+                .
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {related.length > 0 ? (
+        <section className="section section-alt">
+          <div className="wrap">
+            <div className="shop-head">
+              <div>
+                <span className="shop-head-n">Alongside this</span>
+                <h2>Others in the case</h2>
+                <p>Pieces close to this one in category or metal.</p>
+              </div>
+              <Link href="/inventory" className="btn btn-ghost btn-small">
+                All of the collection
+              </Link>
+            </div>
+            <div className="inv-grid">
+              {related.map((i) => (
+                <ItemCard key={i.id} item={i} />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+    </>
   );
 }

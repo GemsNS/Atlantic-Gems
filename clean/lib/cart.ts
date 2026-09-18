@@ -77,3 +77,19 @@ export async function addToCart(partId: string, qty = 1): Promise<CartLine[]> {
   await setCart(lines);
   return lines;
 }
+
+export async function setCartQty(partId: string, qty: number): Promise<CartLine[]> {
+  const clamped = Math.max(0, Math.min(999, Math.round(qty) || 0));
+  const lines = await getCart();
+  const next = clamped === 0
+    ? lines.filter((l) => l.partId !== partId)
+    : lines.map((l) => (l.partId === partId ? { partId, qty: clamped } : l));
+  await setCart(next);
+  return next;
+}
+
+export async function removeFromCart(partId: string): Promise<CartLine[]> {
+  const lines = (await getCart()).filter((l) => l.partId !== partId);
+  await setCart(lines);
+  return lines;
+}

@@ -55,7 +55,7 @@ export default async function WholesalePage() {
               </Link>
             </div>
           ) : (
-            <InventoryBrowser items={items} hrefBase="/wholesale/item" />
+            <InventoryBrowser items={items} hrefBase="/wholesale/item" contactType="wholesale" />
           )}
 
           <div className="aside-card" style={{ marginTop: 40, maxWidth: 640 }}>

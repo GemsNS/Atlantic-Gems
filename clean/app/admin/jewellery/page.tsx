@@ -99,8 +99,17 @@ export default async function AdminJewelleryPage({
 
       <div className="admin-tablewrap" style={{ marginTop: 28 }}>
         {items.length === 0 ? (
-          <div className="empty">
-            <p>No jewellery items yet. Add manually or sync an eBay store.</p>
+          <div className="empty-state">
+            <h3>No jewellery items yet</h3>
+            <p>Add a piece by hand, or sync an eBay store from Connect.</p>
+            <div className="empty-actions">
+              <Link href="/admin/items/new" className="btn btn-primary">
+                Add item
+              </Link>
+              <Link href="/admin/connect" className="btn btn-ghost">
+                Connect eBay store
+              </Link>
+            </div>
           </div>
         ) : (
           <table className="admin-table">
@@ -117,10 +126,26 @@ export default async function AdminJewelleryPage({
             <tbody>
               {items.map((i) => (
                 <tr key={i.id}>
-                  <td>{i.title}</td>
+                  <td>
+                    <span className="table-item">
+                      {i.images[0] ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={i.images[0]} alt="" loading="lazy" />
+                      ) : (
+                        <span className="table-noimg" aria-hidden="true" />
+                      )}
+                      <span>
+                        {i.title}
+                        {i.sku ? <span className="inv-ref"> {i.sku}</span> : null}
+                      </span>
+                    </span>
+                  </td>
                   <td>{categoryLabel(i.category)}</td>
                   <td>
-                    {statusLabel(i.status)} · {i.visibility}
+                    <span className={`flag${i.status === "reserved" ? " flag-reserved" : ""}`}>
+                      {statusLabel(i.status)}
+                    </span>{" "}
+                    <span className="flag">{i.visibility}</span>
                   </td>
                   <td>
                     {i.source}

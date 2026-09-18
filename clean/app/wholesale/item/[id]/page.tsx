@@ -25,21 +25,31 @@ export default async function TradeItemPage({ params }: { params: Promise<{ id: 
   ];
 
   return (
-    <section className="section" style={{ borderTop: 0 }}>
+    <section className="section" style={{ borderTop: 0, paddingTop: "clamp(28px, 4vw, 48px)" }}>
       <div className="wrap">
-        <p style={{ marginBottom: 24 }}>
-          <Link href="/wholesale" className="link">
-            ← Back to trade stock
-          </Link>
+        <p className="crumb">
+          <Link href="/wholesale">Trade stock</Link>
+          <span aria-hidden="true">/</span>
+          <span>{categoryLabel(item.category)}</span>
         </p>
-        <div className="item-grid">
-          <ItemGallery images={item.images} title={item.title} />
-          <div className="item-body">
-            <p className="eyebrow">Trade · {categoryLabel(item.category)}</p>
-            <h1 style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)", marginTop: 10 }}>{item.title}</h1>
-            <p className="item-price">{formatPrice(item)}</p>
-            {item.description ? <p className="lede" style={{ marginTop: 18 }}>{item.description}</p> : null}
-            <ul className="facts">
+
+        <div className="piece">
+          <div className="piece-stage">
+            <ItemGallery images={item.images} title={item.title} />
+          </div>
+          <div className="piece-body">
+            <p className="piece-eyebrow">
+              Trade
+              <span aria-hidden="true">·</span>
+              {categoryLabel(item.category)}
+            </p>
+            <h1>{item.title}</h1>
+            <div className="piece-price-row">
+              <span className="piece-price">{formatPrice(item)}</span>
+              <span className="gallery-hint">Trade pricing, taxes and shipping extra</span>
+            </div>
+            {item.description ? <p className="piece-lede">{item.description}</p> : null}
+            <ul className="spec-ledger">
               {facts.map(([k, v]) => (
                 <li key={k}>
                   <span className="k">{k}</span>
@@ -48,13 +58,20 @@ export default async function TradeItemPage({ params }: { params: Promise<{ id: 
               ))}
             </ul>
             {item.disclosure ? (
-              <div className="explorer-note" style={{ marginTop: 24 }}>
-                <strong style={{ color: "var(--ink)" }}>Disclosure.</strong> {item.disclosure}
+              <div className="house-note">
+                <strong>Disclosure</strong>
+                {item.disclosure}
               </div>
             ) : null}
-            <div className="hero-ctas">
-              <Link href={`/contact?type=wholesale&brief=${encodeURIComponent(`Trade enquiry: ${item.title}${item.sku ? ` (ref ${item.sku})` : ""}`)}`} className="btn btn-primary">
+            <div className="piece-actions">
+              <Link
+                href={`/contact?type=wholesale&brief=${encodeURIComponent(`Trade enquiry: ${item.title}${item.sku ? ` (ref ${item.sku})` : ""}`)}`}
+                className="btn btn-primary"
+              >
                 Request this item
+              </Link>
+              <Link href="/policies/wholesale-terms" className="btn btn-ghost">
+                Trade terms
               </Link>
             </div>
           </div>

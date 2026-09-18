@@ -73,9 +73,17 @@ export function stockTone(qty: number, reorder: number): "ok" | "low" | "out" {
   return "ok";
 }
 
-export function stockLabel(qty: number, reorder: number): string {
+/** Five-segment bench gauge: how full the shelf is against its reorder point. */
+export function stockSegments(qty: number, reorder: number): number {
+  if (qty <= 0) return 0;
+  const full = Math.max(reorder, 1) * 3;
+  return Math.min(5, Math.max(1, Math.ceil((qty / full) * 5)));
+}
+
+/** A line a counter hand would actually say about the shelf. */
+export function stockNote(qty: number, reorder: number): string {
   const t = stockTone(qty, reorder);
-  if (t === "out") return "Out of stock";
-  if (t === "low") return `${qty} left`;
-  return "In stock";
+  if (t === "out") return "Out of stock — ask for the lead time";
+  if (t === "low") return `Only ${qty} left at the counter`;
+  return `${qty} on the shelf`;
 }
