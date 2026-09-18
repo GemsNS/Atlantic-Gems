@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PART_CATEGORIES, type PartCategory } from "@/lib/parts/types";
-import { PartPlate } from "@/components/parts/PartPlate";
+import { PartMedia } from "@/components/parts/PartMedia";
+import { CATEGORY_ART } from "@/lib/parts/art";
 import { ArrowRight } from "@/components/shop/Icons";
 
 export function PartsCategoryGrid({
@@ -14,7 +15,7 @@ export function PartsCategoryGrid({
         const n = counts[c.value] ?? 0;
         return (
           <Link key={c.value} href={`/parts/${c.value}`} className="parts-cat-tile">
-            <PartPlate category={c.value} size="sm" seed={c.value} />
+            <PartMedia category={c.value} artKey={CATEGORY_ART[c.value]} size="sm" seed={c.value} />
             <div className="parts-cat-copy">
               <h3>{c.label}</h3>
               <p>{c.blurb}</p>

@@ -52,12 +52,12 @@ function lower(s: string) {
 const PRESETS: Record<Exclude<SiteMode, "custom">, Omit<SiteCopy, "mode" | "services" | "enquiryTypes">> = {
   "parts-supplier": {
     tagline:
-      "Watch, clock and jewellery parts, tools and supplies for makers and repair benches in Halifax, Nova Scotia.",
-    heroHead: "Parts and tools for the watchmaker’s bench.",
+      "Rough gems, loose diamonds and watchmaking parts for benches, cutters and collectors in Halifax, Nova Scotia.",
+    heroHead: "Stones for the setting. Parts for the bench.",
     heroSub:
-      "Movements, crystals, straps, batteries, findings and Swiss tools — stocked for trade and serious hobbyists. Ask if you need a part that is not listed.",
-    primaryCta: { href: "/parts", label: "Shop parts and tools" },
-    secondaryCta: { href: "/contact", label: "Request a part" },
+      "Rough gems and loose diamonds, alongside movements, crystals, straps and cells — held for trade and for serious hobbyists. Ask if you need a stone or a part that is not listed.",
+    primaryCta: { href: "/parts", label: "Shop stones and parts" },
+    secondaryCta: { href: "/contact", label: "Request a stone or a part" },
     sections: ["parts", "visit"],
     houseTitle: "",
     houseLede: "",
@@ -67,14 +67,14 @@ const PRESETS: Record<Exclude<SiteMode, "custom">, Omit<SiteCopy, "mode" | "serv
     atelierLede: "",
     stonesTitle: "",
     stonesLede: "",
-    partsTitle: "Shop parts and tools",
+    partsTitle: "Shop stones and parts",
     partsLede:
-      "Browse watch parts, movements, crystals, clock movements, findings, tools, batteries, straps, packaging, and cleaners.",
+      "Browse rough gems, loose diamonds, watch parts, movements, crystals, batteries, and straps.",
     visitTitle: "Trade supply from Halifax.",
     visitLede:
       "Trade accounts can request stock and pricing through the trade area. Everyone else can enquire about availability of unlisted parts.",
     footerBlurb:
-      "Watch, clock and jewellery parts and tools for makers and repair benches in Halifax, Nova Scotia.",
+      "Rough gems, loose diamonds and watchmaking parts for benches and repair in Halifax, Nova Scotia.",
   },
   atelier: {
     tagline: site.tagline,
@@ -106,15 +106,15 @@ const PRESETS: Record<Exclude<SiteMode, "custom">, Omit<SiteCopy, "mode" | "serv
   "full-house": {
     tagline:
       "Fine jewellery, gemstones, atelier services, and watchmaking parts from Halifax, Nova Scotia.",
-    heroHead: "Jewellery house. Parts counter. One bench.",
+    heroHead: "Jewellery house. Stone counter. One bench.",
     heroSub:
-      "New and pre-owned jewellery, custom work and repair — plus watch and jewellery parts, tools and supplies for trade benches.",
-    primaryCta: { href: "/parts", label: "Shop parts" },
+      "New and pre-owned jewellery, custom work and repair — plus rough gems, loose diamonds and watchmaking parts for trade benches.",
+    primaryCta: { href: "/parts", label: "Shop the counter" },
     secondaryCta: { href: "/jewellery", label: "Find jewellery" },
     sections: ["parts", "jewelleryPaths", "house", "atelier", "gemstones", "visit"],
     houseTitle: "The house and the counter.",
     houseLede:
-      "Atelier services and a parts counter under one roof — jewellery, stones, watches, and the tools to keep them running.",
+      "Atelier services and a trade counter under one roof — jewellery, stones, watches, and the parts to keep them running.",
     jewelleryTitle: "Buy, sell, or have it found.",
     jewelleryLede:
       "New and pre-owned fine jewellery from the collection or sourced to your brief.",
@@ -123,9 +123,9 @@ const PRESETS: Record<Exclude<SiteMode, "custom">, Omit<SiteCopy, "mode" | "serv
       "Commissions, repairs, setting, appraisals and watch work are assessed first and quoted in writing.",
     stonesTitle: "And the stones themselves.",
     stonesLede: "Loose rough and faceted stones for the trade and for commissions.",
-    partsTitle: "Parts and tools",
+    partsTitle: "Stones and parts",
     partsLede:
-      "Watch parts, movements, crystals, findings, batteries, straps and Swiss tools for makers and repair.",
+      "Rough gems and loose diamonds, plus watch parts, movements, crystals, batteries and straps for makers and repair.",
     visitTitle: "By appointment in Halifax.",
     visitLede:
       "Private clients are seen by appointment. Trade buyers use the trade area for stock and pricing.",
@@ -232,9 +232,9 @@ function composeCustom(pages: PagesMap): Omit<SiteCopy, "mode" | "services" | "e
     stonesLede: pages.gemstones
       ? "Loose rough and faceted stones for the trade and for commissions."
       : "",
-    partsTitle: pages.parts ? "Parts and tools" : "",
+    partsTitle: pages.parts ? "Stones and parts" : "",
     partsLede: pages.parts
-      ? "Watch parts, movements, crystals, findings, batteries, straps and tools."
+      ? "Rough gems, loose diamonds, watch parts, movements, crystals, batteries and straps."
       : "",
     visitTitle: "From Halifax.",
     visitLede: pages.wholesale

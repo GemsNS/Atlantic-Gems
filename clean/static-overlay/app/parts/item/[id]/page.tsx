@@ -5,7 +5,7 @@ import { requirePage } from "@/lib/require-page";
 import { getPart, isPublicPart, listParts } from "@/lib/parts/store";
 import { partCategoryLabel } from "@/lib/parts/types";
 import { formatMoney } from "@/lib/format";
-import { PartPlate } from "@/components/parts/PartPlate";
+import { PartMedia } from "@/components/parts/PartMedia";
 import { PartCard } from "@/components/parts/PartCard";
 import { StockGauge } from "@/components/parts/StockGauge";
 import { PART_VISUALS, stockNote, stockTone } from "@/lib/parts/visuals";
@@ -62,10 +62,10 @@ export default async function PartDetailStaticPage({
 
           <div className="part-detail">
             <div className="part-detail-stage">
-              <PartPlate category={part.category} size="hero" seed={part.sku} />
+              <PartMedia category={part.category} artKey={part.art} seed={part.sku} size="hero" alt={part.title} />
               <p className="gallery-hint">
-                Illustrated plate — {visual.label.toLowerCase()}. Photographs follow as lines are
-                confirmed.
+                Drawn plate — {visual.label.toLowerCase()}. The picture stands in for the line while
+                the demo catalogue is up; photographs follow as lines are confirmed.
               </p>
             </div>
 

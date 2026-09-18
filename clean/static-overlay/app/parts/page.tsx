@@ -11,7 +11,7 @@ import { Reveal } from "@/components/Reveal";
 export const metadata: Metadata = {
   title: "Parts and Tools",
   description:
-    "Watch, clock and jewellery parts, tools, batteries, straps and packaging from Atlantic Gems.",
+    "Rough gems, loose diamonds, watch parts, movements, crystals, batteries and straps from Atlantic Gems.",
 };
 
 export const dynamic = "force-static";
@@ -30,7 +30,7 @@ export default async function PartsIndexStaticPage() {
     .map((c) => c.value)
     .filter((v) => (counts[v] ?? 0) > 0)
     .slice(0, 3) as PartCategory[];
-  const stack: PartCategory[] = stackTop.length === 3 ? stackTop : ["tools", "movements", "straps"];
+  const stack: PartCategory[] = stackTop.length === 3 ? stackTop : ["loose-diamonds", "rough-gems", "straps"];
 
   return (
     <>
@@ -40,9 +40,9 @@ export default async function PartsIndexStaticPage() {
             <p className="eyebrow">Parts counter</p>
             <h1>Everything for the bench.</h1>
             <p className="lede">
-              Movements, crystals, straps, batteries, findings and Swiss tools, laid out as trays on
-              the counter. This preview has no cart — send the references you need and we reply with a
-              written quotation.
+              Rough gems and loose diamonds, then the watch trays — movements, crystals, straps and
+              cells — laid out on the counter. This preview has no cart — send the references you
+              need and we reply with a written quotation.
             </p>
             <ul className="shop-stats" aria-label="Catalogue at a glance">
               <li>
@@ -83,7 +83,7 @@ export default async function PartsIndexStaticPage() {
             <div>
               <span className="shop-head-n">Index</span>
               <h2>Shop by tray</h2>
-              <p>Ten trays, from case parts to packaging. Open one, or search the whole counter below.</p>
+              <p>Seven trays, from rough gems and loose diamonds to straps and cells. Open one, or search the whole counter below.</p>
             </div>
             <Link href="/contact" className="btn btn-ghost btn-small">
               Need an unlisted part?

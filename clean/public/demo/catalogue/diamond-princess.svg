@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-label="Illustration of a princess cut diamond seen from above. Demo artwork.">
+  <defs>
+    <linearGradient id="bg-diamond-princess" x1="0" y1="0" x2="0.65" y2="1">
+      <stop offset="0" stop-color="#f9fbff"/>
+      <stop offset="1" stop-color="#d8e4f4"/>
+    </linearGradient>
+    <radialGradient id="pool-diamond-princess" cx="0.38" cy="0.32" r="0.72">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shadow-diamond-princess" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#27406a" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#27406a" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="weave-diamond-princess" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="26" stroke="#27406a" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg-diamond-princess)"/>
+  <rect width="800" height="800" fill="url(#weave-diamond-princess)"/>
+  <rect width="800" height="800" fill="url(#pool-diamond-princess)"/>
+  <rect x="28" y="28" width="744" height="744" rx="18" fill="none" stroke="#27406a" stroke-opacity="0.16"/>
+  <ellipse cx="400" cy="605" rx="230" ry="46" fill="url(#shadow-diamond-princess)"/>
+  <g transform="translate(400 390)">
+<polygon points="-212.0,-212.0 212.0,-212.0 212.0,212.0 -212.0,212.0" fill="#3a5478"/>
+<polygon points="-207.8,-207.8 207.8,-207.8 207.8,207.8 -207.8,207.8" fill="#c1cfe2"/>
+<polygon points="-156.9,-156.9 156.9,-156.9 156.9,156.9 -156.9,156.9" fill="#d7e1ee"/>
+<polygon points="-106.0,-106.0 106.0,-106.0 106.0,106.0 -106.0,106.0" fill="#d0dbea"/>
+<polygon points="-106.0,-106.0 106.0,-106.0 106.0,106.0 -106.0,106.0" fill="#dfe8f3"/>
+<line x1="-207.76" y1="-207.76" x2="-106" y2="-106" stroke="#3a5478" stroke-opacity="0.45" stroke-width="2"/>
+<line x1="0" y1="-207.76" x2="0" y2="-106" stroke="#3a5478" stroke-opacity="0.32" stroke-width="1.6"/>
+<line x1="207.76" y1="-207.76" x2="106" y2="-106" stroke="#3a5478" stroke-opacity="0.45" stroke-width="2"/>
+<line x1="207.76" y1="0" x2="106" y2="0" stroke="#3a5478" stroke-opacity="0.32" stroke-width="1.6"/>
+<line x1="207.76" y1="207.76" x2="106" y2="106" stroke="#3a5478" stroke-opacity="0.45" stroke-width="2"/>
+<line x1="0" y1="207.76" x2="0" y2="106" stroke="#3a5478" stroke-opacity="0.32" stroke-width="1.6"/>
+<line x1="-207.76" y1="207.76" x2="-106" y2="106" stroke="#3a5478" stroke-opacity="0.45" stroke-width="2"/>
+<line x1="-207.76" y1="0" x2="-106" y2="0" stroke="#3a5478" stroke-opacity="0.32" stroke-width="1.6"/>
+<polygon points="-106.0,-106.0 106.0,-106.0 106.0,106.0 -106.0,106.0" fill="none" stroke="#3a5478" stroke-opacity="0.45" stroke-width="2"/>
+<polygon points="-212.0,-212.0 212.0,-212.0 212.0,212.0 -212.0,212.0" fill="none" stroke="#3a5478" stroke-opacity="0.55" stroke-width="3"/>
+<polygon points="-127.2,-127.2 -31.8,-152.6 -63.6,-89.0 -144.2,-63.6" fill="#ffffff" opacity="0.5"/>
+  </g>
+  <g transform="translate(738 746)">
+    <rect x="-86" y="-20" width="86" height="34" rx="17" fill="#27406a" fill-opacity="0.1"/>
+    <text x="-43" y="3" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="2.4" fill="#27406a" fill-opacity="0.72">DEMO</text>
+  </g>
+</svg>

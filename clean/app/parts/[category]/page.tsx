@@ -8,7 +8,8 @@ import { listParts, isPublicPart } from "@/lib/parts/store";
 import { formatMoney } from "@/lib/format";
 import { PartsBrowser } from "@/components/parts/PartsBrowser";
 import { PartsCategoryRail } from "@/components/parts/PartsCategoryNav";
-import { PartPlate } from "@/components/parts/PartPlate";
+import { PartMedia } from "@/components/parts/PartMedia";
+import { CATEGORY_ART } from "@/lib/parts/art";
 import { PART_VISUALS } from "@/lib/parts/visuals";
 
 export const dynamic = "force-dynamic";
@@ -90,7 +91,7 @@ export default async function PartsCategoryPage({
             <p className="shop-hero-note">{visual.label} · quoted in Canadian dollars, taxes extra.</p>
           </div>
           <div className="shop-hero-aside">
-            <PartPlate category={cat} size="hero" />
+            <PartMedia category={cat} artKey={CATEGORY_ART[cat]} size="hero" />
           </div>
         </div>
       </section>

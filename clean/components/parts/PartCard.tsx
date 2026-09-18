@@ -3,7 +3,7 @@ import type { Part } from "@/lib/parts/types";
 import { partCategoryLabel } from "@/lib/parts/types";
 import { formatMoney } from "@/lib/format";
 import { stockNote, stockTone } from "@/lib/parts/visuals";
-import { PartPlate } from "@/components/parts/PartPlate";
+import { PartMedia } from "@/components/parts/PartMedia";
 import { StockGauge } from "@/components/parts/StockGauge";
 import { QtyStepper } from "@/components/parts/QtyStepper";
 
@@ -26,7 +26,7 @@ export function PartCard({
     <article className={`part-card${out ? " is-out" : ""}`}>
       <Link href={`/parts/item/${part.id}`} className="part-card-link">
         <div className="part-card-media">
-          <PartPlate category={part.category} size="md" seed={part.sku} />
+          <PartMedia category={part.category} artKey={part.art} seed={part.sku} size="md" alt={part.title} />
           {part.demo ? <span className="part-chip part-chip-demo">Demo</span> : null}
           {out ? <span className="part-chip part-chip-stock is-out">Out</span> : null}
         </div>

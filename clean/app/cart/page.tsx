@@ -7,7 +7,7 @@ import { listParts } from "@/lib/parts/store";
 import { formatMoney } from "@/lib/format";
 import { createPaymentIntent } from "@/lib/integrations/payments";
 import { getShippingRates } from "@/lib/integrations/shipping";
-import { PartPlate } from "@/components/parts/PartPlate";
+import { PartMedia } from "@/components/parts/PartMedia";
 import { QtyStepper } from "@/components/parts/QtyStepper";
 import { NoResultIcon, TrashIcon } from "@/components/shop/Icons";
 import { partCategoryLabel } from "@/lib/parts/types";
@@ -109,7 +109,7 @@ export default async function CartPage({
                   </div>
                   {rows.map(({ line, part }) => (
                     <article key={part.id} className="cart-line">
-                      <PartPlate category={part.category} size="sm" seed={part.sku} />
+                      <PartMedia category={part.category} artKey={part.art} seed={part.sku} size="sm" alt={part.title} />
                       <div>
                         <h2 className="cart-line-title">
                           <Link href={`/parts/item/${part.id}`}>{part.title}</Link>

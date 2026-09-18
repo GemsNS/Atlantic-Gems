@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-label="Illustration of a tabular ruby crystal in the rough. Demo artwork.">
+  <defs>
+    <linearGradient id="bg-rough-ruby-crystal" x1="0" y1="0" x2="0.65" y2="1">
+      <stop offset="0" stop-color="#fbeef1"/>
+      <stop offset="1" stop-color="#efc9d1"/>
+    </linearGradient>
+    <radialGradient id="pool-rough-ruby-crystal" cx="0.38" cy="0.32" r="0.72">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shadow-rough-ruby-crystal" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#5e0f1c" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#5e0f1c" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="weave-rough-ruby-crystal" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
+      <line x1="0" y1="0" x2="0" y2="26" stroke="#5e0f1c" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg-rough-ruby-crystal)"/>
+  <rect width="800" height="800" fill="url(#weave-rough-ruby-crystal)"/>
+  <rect width="800" height="800" fill="url(#pool-rough-ruby-crystal)"/>
+  <rect x="28" y="28" width="744" height="744" rx="18" fill="none" stroke="#5e0f1c" stroke-opacity="0.16"/>
+  <ellipse cx="400" cy="605" rx="230" ry="46" fill="url(#shadow-rough-ruby-crystal)"/>
+  <g transform="translate(400 390)">
+<polygon points="-137.3,-20.4 0.0,21.6 17.6,176.0 -102.1,130.0" fill="#e68c9b"/>
+<polygon points="0.0,21.6 137.3,-20.4 146.1,116.0 17.6,176.0" fill="#871d2e"/>
+<polygon points="-151.4,-96.0 0.0,-180.0 151.4,-96.0 137.3,-20.4 0.0,21.6 -137.3,-20.4" fill="#be4e60"/>
+<polygon points="-151.4,-96.0 0.0,-180.0 0.0,-62.4" fill="#efb1bb"/>
+<polygon points="0.0,-180.0 151.4,-96.0 0.0,-62.4" fill="#ca6172"/>
+<polygon points="151.4,-96.0 137.3,-20.4 0.0,21.6 0.0,-62.4" fill="#932234"/>
+<polygon points="-137.3,-20.4 -151.4,-96.0 0.0,-62.4 0.0,21.6" fill="#b23d50"/>
+<path d="M-128.5 17.2 L4.4 60.2 L139.5 13.7" fill="none" stroke="#5e0f1c" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-119.7 54.8 L8.8 98.8 L141.7 47.8" fill="none" stroke="#5e0f1c" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-110.9 92.4 L13.2 137.4 L143.9 81.9" fill="none" stroke="#5e0f1c" stroke-opacity="0.18" stroke-width="2"/>
+<path d="M-137.28 -20.400000000000006 L0 21.599999999999994 L17.6 176 L-102.08 130 Z M0 21.599999999999994 L137.28 -20.400000000000006 L146.08 116 L17.6 176 Z" fill="none" stroke="#5e0f1c" stroke-opacity="0.5" stroke-width="3"/>
+<polygon points="-151.4,-96.0 0.0,-180.0 151.4,-96.0 137.3,-20.4 0.0,21.6 -137.3,-20.4" fill="none" stroke="#5e0f1c" stroke-opacity="0.5" stroke-width="3"/>
+  </g>
+  <g transform="translate(738 746)">
+    <rect x="-86" y="-20" width="86" height="34" rx="17" fill="#5e0f1c" fill-opacity="0.1"/>
+    <text x="-43" y="3" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="2.4" fill="#5e0f1c" fill-opacity="0.72">DEMO</text>
+  </g>
+</svg>

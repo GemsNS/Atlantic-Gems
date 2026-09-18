@@ -1,16 +1,21 @@
 import { z } from "zod";
 
 export const PART_CATEGORIES = [
+  {
+    value: "rough-gems",
+    label: "Rough Gems",
+    blurb: "Uncut crystals and mine-run parcels for cutters, setters and collectors.",
+  },
+  {
+    value: "loose-diamonds",
+    label: "Loose Diamonds",
+    blurb: "Loose brilliants and step cuts, quoted with the grading we hold on file.",
+  },
   { value: "watch-parts", label: "Watch Parts", blurb: "Hands, stems, crowns, springs and case parts." },
   { value: "movements", label: "Watch Movements", blurb: "Mechanical and quartz calibres for repair and build." },
   { value: "crystals", label: "Watch Crystals", blurb: "Mineral, acrylic and sapphire crystals." },
-  { value: "clock-movements", label: "Clock Movements", blurb: "Movements and accessories for clockmakers." },
-  { value: "findings", label: "Jewellery Findings", blurb: "Jump rings, clasps, pins and bench findings." },
-  { value: "tools", label: "Tools", blurb: "Swiss and trade tools for the bench." },
   { value: "batteries", label: "Batteries", blurb: "Watch batteries including Renata cells." },
   { value: "straps", label: "Straps", blurb: "Leather and specialty straps." },
-  { value: "packaging", label: "Packaging", blurb: "Tags, bags, envelopes and labels." },
-  { value: "cleaners", label: "Cleaners and Lubricants", blurb: "Cleaners, oils and lubricants for makers." },
 ] as const;
 
 export type PartCategory = (typeof PART_CATEGORIES)[number]["value"];
@@ -32,6 +37,12 @@ export const partSchema = z.object({
   currency: z.enum(["CAD", "USD"]).default("CAD"),
   visibility: z.enum(["public", "trade", "private"]).default("public"),
   demo: z.boolean().default(true),
+  /**
+   * Key into PART_ART (lib/parts/art.ts) — a drawn illustration committed under
+   * public/demo/catalogue/. Empty falls back to the drawn tray plate. Never a
+   * photograph of a client's piece.
+   */
+  art: z.string().trim().max(60).default(""),
   createdAt: z.string(),
   updatedAt: z.string(),
 });

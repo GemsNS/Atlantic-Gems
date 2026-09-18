@@ -10,7 +10,7 @@ type Common = {
 };
 
 /**
- * Each tray has three drawn variants so a shelf of five Bergeon tools does not
+ * Each tray has three drawn variants so a shelf of five like lines does not
  * read as five copies of the same picture. The variant is chosen from the SKU,
  * so a given line always shows the same plate.
  */
@@ -25,6 +25,58 @@ function Motif({ kind, variant, ink }: { kind: string; variant: number; ink: str
   const solid = { fill: ink, stroke: "none" };
 
   switch (kind) {
+    // ---- Rough gems: faceted lump, upright point, twinned pair ----------
+    case "rough":
+      if (variant === 1)
+        return (
+          <g {...c}>
+            <path d="M50 16 L66 40 L60 78 H40 L34 40 Z" />
+            <path d="M34 40 H66M50 16 V78" opacity="0.45" />
+            <path d="M40 78 L50 52 L60 78" opacity="0.3" />
+          </g>
+        );
+      if (variant === 2)
+        return (
+          <g {...c}>
+            <path d="M24 56 L34 30 L48 40 L44 70 Z" />
+            <path d="M48 40 L62 22 L76 48 L64 74 L44 70 Z" />
+            <path d="M62 22 L64 74M48 40 L76 48" opacity="0.4" />
+          </g>
+        );
+      return (
+        <g {...c}>
+          <path d="M30 34 L52 22 L74 38 L68 66 L44 74 L26 58 Z" />
+          <path d="M52 22 L48 50 L74 38M48 50 L44 74M48 50 L26 58" opacity="0.42" />
+        </g>
+      );
+
+    // ---- Loose diamonds: round brilliant, step cut, pear -----------------
+    case "brilliant":
+      if (variant === 1)
+        return (
+          <g {...c}>
+            <path d="M30 40 H70 L50 76 Z" />
+            <path d="M30 40 L38 28 H62 L70 40" />
+            <path d="M38 28 L44 40 L50 28M62 28 L56 40 L50 28" opacity="0.5" />
+            <path d="M44 40 L50 76 L56 40" opacity="0.35" />
+          </g>
+        );
+      if (variant === 2)
+        return (
+          <g {...c}>
+            <rect x="28" y="30" width="44" height="40" rx="3" />
+            <rect x="36" y="38" width="28" height="24" rx="2" opacity="0.6" />
+            <path d="M28 30 L36 38M72 30 L64 38M28 70 L36 62M72 70 L64 62" opacity="0.45" />
+          </g>
+        );
+      return (
+        <g {...c}>
+          <path d="M50 20 C62 38 70 50 70 60 A20 20 0 0 1 30 60 C30 50 38 38 50 20 Z" />
+          <path d="M50 20 V80M34 54 H66" opacity="0.38" />
+          <circle cx="50" cy="60" r="12" opacity="0.28" />
+        </g>
+      );
+
     // ---- Watch parts: crown and stem, hands, case screws -----------------
     case "stem":
       if (variant === 1)
@@ -124,86 +176,6 @@ function Motif({ kind, variant, ink }: { kind: string; variant: number; ink: str
         </g>
       );
 
-    // ---- Clock movements: pendulum, gong, winding key --------------------
-    case "pendulum":
-      if (variant === 1)
-        return (
-          <g {...c}>
-            <path d="M28 70 Q50 20 72 70" />
-            <circle cx="28" cy="70" r="4" {...solid} />
-            <circle cx="72" cy="70" r="4" {...solid} />
-            <path d="M50 24v-6" />
-          </g>
-        );
-      if (variant === 2)
-        return (
-          <g {...c}>
-            <circle cx="50" cy="32" r="11" />
-            <rect x="44" y="43" width="12" height="30" rx="2" />
-            <path d="M38 78h24" strokeWidth="2.4" />
-          </g>
-        );
-      return (
-        <g {...c}>
-          <line x1="50" y1="18" x2="50" y2="62" />
-          <circle cx="50" cy="74" r="12" />
-          <line x1="36" y1="18" x2="64" y2="18" />
-        </g>
-      );
-
-    // ---- Findings: jump rings, lobster clasp, pins -----------------------
-    case "ring":
-      if (variant === 1)
-        return (
-          <g {...c}>
-            <path d="M36 32 Q26 46 34 60 Q44 74 58 66 Q68 58 62 46" />
-            <path d="M38 44 H58" opacity="0.7" />
-            <circle cx="66" cy="34" r="7" />
-          </g>
-        );
-      if (variant === 2)
-        return (
-          <g {...c}>
-            <circle cx="34" cy="34" r="7" />
-            <line x1="39" y1="39" x2="72" y2="72" strokeWidth="2.2" />
-            <path d="M66 72 h10" opacity="0.6" />
-          </g>
-        );
-      return (
-        <g {...c}>
-          <circle cx="42" cy="50" r="14" />
-          <circle cx="58" cy="50" r="14" />
-          <circle cx="50" cy="38" r="10" />
-        </g>
-      );
-
-    // ---- Tools: driver, pliers, loupe ------------------------------------
-    case "tool":
-      if (variant === 1)
-        return (
-          <g {...c}>
-            <path d="M30 76 L52 48 M70 76 L48 48" strokeWidth="2.2" />
-            <path d="M52 48 Q50 34 42 24" />
-            <path d="M48 48 Q50 34 58 24" />
-            <circle cx="50" cy="50" r="2.6" {...solid} />
-          </g>
-        );
-      if (variant === 2)
-        return (
-          <g {...c}>
-            <circle cx="44" cy="44" r="17" />
-            <circle cx="44" cy="44" r="11" opacity="0.5" />
-            <path d="M56 56 L76 76" strokeWidth="2.6" />
-          </g>
-        );
-      return (
-        <g {...c}>
-          <line x1="28" y1="72" x2="72" y2="28" />
-          <path d="M68 24 L78 22 L76 32 Z" {...solid} />
-          <rect x="22" y="68" width="14" height="8" rx="2" transform="rotate(-45 29 72)" />
-        </g>
-      );
-
     // ---- Batteries: cell face, stacked cells, polarity -------------------
     case "cell":
       if (variant === 1)
@@ -259,54 +231,6 @@ function Motif({ kind, variant, ink }: { kind: string; variant: number; ink: str
           <line x1="66" y1="42" x2="66" y2="58" />
           <circle cx="28" cy="50" r="3" {...solid} />
           <circle cx="72" cy="50" r="3" {...solid} />
-        </g>
-      );
-
-    // ---- Packaging: tag, box, envelope -----------------------------------
-    case "tag":
-      if (variant === 1)
-        return (
-          <g {...c}>
-            <path d="M26 42 L50 30 L74 42 L50 54 Z" />
-            <path d="M26 42v22l24 12 24-12V42" />
-            <path d="M50 54v22" opacity="0.5" />
-          </g>
-        );
-      if (variant === 2)
-        return (
-          <g {...c}>
-            <rect x="24" y="34" width="52" height="32" rx="2" />
-            <path d="M24 34 L50 54 L76 34" />
-          </g>
-        );
-      return (
-        <g {...c}>
-          <path d="M30 28 H62 L78 50 L62 72 H30 Z" />
-          <circle cx="38" cy="50" r="4" />
-        </g>
-      );
-
-    // ---- Cleaners: drop, oiler, bottle ------------------------------------
-    case "drop":
-      if (variant === 1)
-        return (
-          <g {...c}>
-            <path d="M44 22h12v10l-4 6v34a4 4 0 0 1-4 4 4 4 0 0 1-4-4V38l-4-6V22" />
-            <path d="M40 60h20" opacity="0.5" />
-          </g>
-        );
-      if (variant === 2)
-        return (
-          <g {...c}>
-            <rect x="36" y="34" width="28" height="42" rx="4" />
-            <path d="M44 34V24h12v10" />
-            <path d="M36 50h28" opacity="0.5" />
-          </g>
-        );
-      return (
-        <g {...c}>
-          <path d="M50 22 C50 22 28 48 28 60 A22 22 0 0 0 72 60 C72 48 50 22 50 22 Z" />
-          <path d="M42 58 Q50 48 58 58" opacity="0.5" />
         </g>
       );
 

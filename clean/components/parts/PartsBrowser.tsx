@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PartCard } from "@/components/parts/PartCard";
-import { PartPlate } from "@/components/parts/PartPlate";
+import { PartMedia } from "@/components/parts/PartMedia";
 import { StockGauge } from "@/components/parts/StockGauge";
 import { QtyStepper } from "@/components/parts/QtyStepper";
 import {
@@ -338,7 +338,7 @@ function PartLedgerRow({ part, csrf, quickAdd }: { part: Part; csrf?: string; qu
   return (
     <article className="led-row">
       <span className="led-thumb">
-        <PartPlate category={part.category} size="sm" seed={part.sku} />
+        <PartMedia category={part.category} artKey={part.art} seed={part.sku} size="sm" alt={part.title} />
       </span>
       <div className="led-main">
         <h3 className="led-title">
