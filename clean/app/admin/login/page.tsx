@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { safeAdminNext } from "@/lib/validation";
 
 export const metadata: Metadata = { title: "Admin sign in", robots: { index: false, follow: false } };
 export const dynamic = "force-dynamic";
@@ -14,7 +15,7 @@ export default async function AdminLoginPage({
   const csrf = h.get("x-csrf-token") ?? "";
   const error = Array.isArray(params.error) ? params.error[0] : params.error;
   const nextRaw = Array.isArray(params.next) ? params.next[0] : params.next;
-  const next = nextRaw && nextRaw.startsWith("/admin") && !nextRaw.includes("://") ? nextRaw : "/admin";
+  const next = safeAdminNext(nextRaw);
 
   return (
     <section className="section" style={{ borderTop: 0 }}>

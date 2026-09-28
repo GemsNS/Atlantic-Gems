@@ -208,9 +208,11 @@ export async function importFromEbay(): Promise<{ imported: number; ended: numbe
 
   await upsertMany([...mapped, ...ended]);
   const result = `${mapped.length} active listing(s) imported, ${ended.length} marked sold, ${skipped} skipped by category filter`;
+  // Only the two fields the import owns: the rest of the eBay settings are
+  // merged from the file as it is now, so an admin save made while the import
+  // ran is kept.
   await updateSettings({
     ebay: {
-      ...settings.ebay,
       lastImport: new Date().toISOString(),
       lastResult: result,
     },

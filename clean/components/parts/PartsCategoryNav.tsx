@@ -4,6 +4,10 @@ import { PartMedia } from "@/components/parts/PartMedia";
 import { CATEGORY_ART } from "@/lib/parts/art";
 import { ArrowRight } from "@/components/shop/Icons";
 
+// The trays render per request with no loading boundary, so an automatic
+// prefetch only returns the route tree; these links skip it and fetch on click
+// (plan item U11).
+
 export function PartsCategoryGrid({
   counts,
 }: {
@@ -14,7 +18,7 @@ export function PartsCategoryGrid({
       {PART_CATEGORIES.map((c) => {
         const n = counts[c.value] ?? 0;
         return (
-          <Link key={c.value} href={`/parts/${c.value}`} className="parts-cat-tile">
+          <Link key={c.value} href={`/parts/${c.value}`} className="parts-cat-tile" prefetch={false}>
             <PartMedia category={c.value} artKey={CATEGORY_ART[c.value]} size="sm" seed={c.value} />
             <div className="parts-cat-copy">
               <h3>{c.label}</h3>
@@ -43,13 +47,14 @@ export function PartsCategoryRail({
 }) {
   return (
     <nav className="parts-rail" aria-label="Parts categories">
-      <Link href="/parts" className={!active ? "is-active" : undefined}>
+      <Link href="/parts" className={!active ? "is-active" : undefined} prefetch={false}>
         All trays
       </Link>
       {PART_CATEGORIES.map((c) => (
         <Link
           key={c.value}
           href={`/parts/${c.value}`}
+          prefetch={false}
           className={active === c.value ? "is-active" : undefined}
           aria-current={active === c.value ? "page" : undefined}
         >

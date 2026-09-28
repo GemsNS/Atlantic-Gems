@@ -1,0 +1,1133 @@
+{
+  "note": "Every `npm run perf:interactions` run behind ../lighthouse-2026-09-21-perf2.md, in the order they ran (base and the build under test alternating). slowestMs is the slowest interaction on the page; both passes are described in scripts/interaction-latency.mjs.",
+  "runs": {
+    "base": [
+      {
+        "run": 1,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 128
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 680
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 184
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 224
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 136
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 80
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 144
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 280
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 208
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 208
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 152
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 64
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 88
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 240
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 72
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 200
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 112
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 88
+          }
+        ]
+      },
+      {
+        "run": 4,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 128
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 216
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 80
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 128
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 112
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 56
+          }
+        ]
+      },
+      {
+        "run": 5,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 96
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 432
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 80
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 168
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 168
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 56
+          }
+        ]
+      },
+      {
+        "run": 6,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 88
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 192
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 56
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 96
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 120
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 72
+          }
+        ]
+      },
+      {
+        "run": 7,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 128
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 168
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 80
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 184
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 152
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 56
+          }
+        ]
+      },
+      {
+        "run": 8,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 88
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 376
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 104
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 192
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 136
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 56
+          }
+        ]
+      },
+      {
+        "run": 9,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 136
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 696
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 72
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 200
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 168
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 72
+          }
+        ]
+      },
+      {
+        "run": 10,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 136
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 224
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 40
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 144
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 168
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 56
+          }
+        ]
+      },
+      {
+        "run": 11,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 112
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 208
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 80
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 144
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 144
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 80
+          }
+        ]
+      },
+      {
+        "run": 12,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 96
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 496
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 64
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 104
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 224
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 72
+          }
+        ]
+      },
+      {
+        "run": 13,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 96
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 432
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 80
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 112
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 160
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 80
+          }
+        ]
+      },
+      {
+        "run": 14,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 104
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 288
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 112
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 72
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 104
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 56
+          }
+        ]
+      }
+    ],
+    "new2": [
+      {
+        "run": 2,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 88
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 264
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 80
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 152
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 80
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 56
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 112
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 248
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 112
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 160
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 128
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 72
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 136
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 448
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 64
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 152
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 80
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 56
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 104
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 168
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 72
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 144
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 176
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 72
+          }
+        ]
+      }
+    ],
+    "new3": [
+      {
+        "run": 3,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 184
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 264
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 248
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 144
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 200
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 80
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 160
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 264
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 112
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 152
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 88
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 40
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 128
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 248
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 88
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 104
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 144
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 88
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 120
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 224
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 80
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 208
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 176
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 56
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 128
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 256
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 184
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 184
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 160
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 72
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 128
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 208
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 48
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 128
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 128
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 56
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 88
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 216
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 104
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 168
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 96
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 104
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 104
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 272
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 176
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 80
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 128
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 80
+          }
+        ]
+      }
+    ],
+    "final": [
+      {
+        "run": 9,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 136
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 264
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 128
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 160
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 192
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 88
+          }
+        ]
+      },
+      {
+        "run": 10,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 152
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 216
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 88
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 168
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 136
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 88
+          }
+        ]
+      },
+      {
+        "run": 11,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 88
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 240
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 136
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 176
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 104
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 80
+          }
+        ]
+      },
+      {
+        "run": 12,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 104
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 240
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 232
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 168
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 120
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 80
+          }
+        ]
+      },
+      {
+        "run": 13,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 120
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 208
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 48
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 152
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 176
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 48
+          }
+        ]
+      },
+      {
+        "run": 14,
+        "results": [
+          {
+            "pass": "early",
+            "page": "/",
+            "slowestMs": 144
+          },
+          {
+            "pass": "early",
+            "page": "/parts",
+            "slowestMs": 232
+          },
+          {
+            "pass": "early",
+            "page": "/cart",
+            "slowestMs": 64
+          },
+          {
+            "pass": "settled",
+            "page": "/",
+            "slowestMs": 136
+          },
+          {
+            "pass": "settled",
+            "page": "/parts",
+            "slowestMs": 152
+          },
+          {
+            "pass": "settled",
+            "page": "/cart",
+            "slowestMs": 72
+          }
+        ]
+      }
+    ]
+  }
+}

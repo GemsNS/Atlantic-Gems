@@ -19,6 +19,13 @@ Thumbs.db
 # screenshots / evidence generated locally
 evidence/tmp/
 
+# Playwright output
+clean/test-results/
+clean/playwright-report/
+
+# Lighthouse output (the /cart reports carry the test tray's cookies)
+clean/lighthouse-out/
+
 # static export build directory
 clean/.static-build/
 

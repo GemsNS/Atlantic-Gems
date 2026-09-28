@@ -1,7 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
+import { preload } from "react-dom";
 import { CompassHero } from "@/components/CompassHero";
 import type { SiteCopy } from "@/lib/site-copy";
+import { imageProps } from "@/lib/image-props";
 import wordmark from "@/public/brand/wordmark.jpg";
 
 export function Hero({ copy }: { copy: SiteCopy }) {
@@ -11,6 +12,17 @@ export function Hero({ copy }: { copy: SiteCopy }) {
       : copy.services.length === 1
         ? `${copy.services[0]!.title}. Follow the needle.`
         : `${copy.services.length} disciplines, one bench. Follow the needle to any point.`;
+
+  // next/image's props on a plain <img>: the same markup, without shipping the
+  // image component to the browser (plan item U11). The preload is what
+  // `priority` used to emit.
+  const wordmarkImg = imageProps({
+    src: wordmark,
+    alt: "Atlantic Gems. Rough and faceted gemstones.",
+    priority: true,
+    sizes: "(max-width: 900px) 86vw, 560px",
+  });
+  preload(wordmarkImg.src, { as: "image", imageSrcSet: wordmarkImg.srcSet, imageSizes: wordmarkImg.sizes });
 
   return (
     <section className="hero" aria-labelledby="hero-title">
@@ -23,12 +35,8 @@ export function Hero({ copy }: { copy: SiteCopy }) {
       <div className="wrap hero-inner">
         <div className="hero-copy">
           <h1 id="hero-title" className="hero-wordmark">
-            <Image
-              src={wordmark}
-              alt="Atlantic Gems. Rough and faceted gemstones."
-              priority
-              sizes="(max-width: 900px) 86vw, 560px"
-            />
+            {/* eslint-disable-next-line @next/next/no-img-element -- props from next/image's getImgProps */}
+            <img {...wordmarkImg} alt={wordmarkImg.alt} />
           </h1>
           <p className="hero-head">{copy.heroHead}</p>
           <p className="hero-sub lede">{copy.heroSub}</p>

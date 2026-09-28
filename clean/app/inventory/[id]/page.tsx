@@ -13,8 +13,10 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const item = await getItem(id);
-  return { title: item ? item.title : "Item", robots: { index: false, follow: false } };
+  const [settings, item] = await Promise.all([getSettings(), getItem(id)]);
+  // Same visibility rule as the page, so private pieces never leak a title.
+  const visible = item && collectionIsPublic(settings) && isVisibleToPublic(item);
+  return { title: visible ? item.title : "Item", robots: { index: false, follow: false } };
 }
 
 function facts(item: InventoryItem): [string, string][] {

@@ -7,30 +7,26 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const form = await readAdminForm(req);
-  if (!form) return adminRedirect(req, "/admin/site", undefined, "Request rejected. Please try again.");
+  if (!form) return adminRedirect("/admin/site", { error: "rejected" });
 
   const intent = String(form.get("intent") ?? "shop");
 
   if (intent === "shop") {
     const shopOpen = form.get("shopOpen") === "open";
     await updateSettings({ shopOpen });
-    return adminRedirect(
-      req,
-      "/admin/jewellery",
-      shopOpen ? "Shop is now OPEN: public items are visible." : "Shop is now CLOSED: collection hidden.",
-    );
+    return adminRedirect("/admin/jewellery", { msg: shopOpen ? "shop-open" : "shop-closed" });
   }
 
   if (intent === "mode") {
     const mode = String(form.get("siteMode") ?? "custom") as SiteMode;
     if (!["parts-supplier", "atelier", "full-house", "custom"].includes(mode)) {
-      return adminRedirect(req, "/admin/site", undefined, "Unknown mode.");
+      return adminRedirect("/admin/site", { error: "unknown-mode" });
     }
     if (mode === "custom") {
-      return adminRedirect(req, "/admin/site", "Use the page toggles for a custom mix.");
+      return adminRedirect("/admin/site", { msg: "use-toggles" });
     }
     await updateSettings({ siteMode: mode });
-    return adminRedirect(req, "/admin/site", `Site mode set to ${mode}.`);
+    return adminRedirect("/admin/site", { msg: `mode-set:${mode}` });
   }
 
   if (intent === "pages") {
@@ -39,7 +35,7 @@ export async function POST(req: Request) {
       pages[key] = form.get(`page_${key}`) === "on";
     }
     await updateSettings({ pages, siteMode: "custom" });
-    return adminRedirect(req, "/admin/site", "Page visibility updated.");
+    return adminRedirect("/admin/site", { msg: "pages-updated" });
   }
 
   if (intent === "ebay") {
@@ -58,8 +54,8 @@ export async function POST(req: Request) {
         },
       },
     });
-    return adminRedirect(req, "/admin/connect", "eBay store settings saved.");
+    return adminRedirect("/admin/connect", { msg: "ebay-saved" });
   }
 
-  return adminRedirect(req, "/admin/site", undefined, "Unknown settings action.");
+  return adminRedirect("/admin/site", { error: "unknown-action" });
 }

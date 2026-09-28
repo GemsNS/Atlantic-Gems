@@ -1,0 +1,132 @@
+# The checks in docs/CI.md, run on every push to main and every pull request.
+# No secrets: the servers started here get a scratch DATA_DIR and a CI-only
+# SESSION_SECRET. The Lighthouse and interaction budgets stay manual (see
+# docs/CI.md): shared runners are too noisy for a pass/fail timing gate.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+    working-directory: clean
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  check:
+    name: Typecheck, lint, scan and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: clean/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck, lint, string scan and server build
+        run: npm run check
+
+      - name: GitHub Pages static export
+        run: npm run build:static
+
+  journey:
+    name: Journey tests
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: clean/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Jobs do not share .next/, so this job builds its own.
+      - name: Production build
+        run: npm run build
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      # Starts its own next start on port 3100 (playwright.config.ts).
+      - name: Browser tests of the quote journey
+        run: npm run test:e2e
+
+      - name: Start next start on port 3000
+        run: |
+          DATA_DIR="$(mktemp -d)" \
+          SESSION_SECRET="ci-only-session-secret-not-for-production-use-0123456789" \
+            ./node_modules/.bin/next start -p 3000 > "$RUNNER_TEMP/next-start.log" 2>&1 &
+          pid=$!
+          echo "SERVER_PID=$pid" >> "$GITHUB_ENV"
+          for _ in $(seq 1 60); do
+            if curl -fs -o /dev/null http://127.0.0.1:3000/api/health; then
+              exit 0
+            fi
+            if ! kill -0 "$pid" 2>/dev/null; then
+              echo "::error::next start exited before it was ready"
+              exit 1
+            fi
+            sleep 1
+          done
+          echo "::error::next start did not answer /api/health within 60 seconds"
+          exit 1
+
+      - name: HTTP smoke of the quote journey
+        env:
+          SMOKE_BASE_URL: http://127.0.0.1:3000
+        run: npm run smoke
+
+      # The draft-copy half of the scan only reads rendered pages, and every
+      # page renders per request, so it needs the live server.
+      - name: String scan of the rendered pages
+        env:
+          SCAN_BASE_URL: http://127.0.0.1:3000
+        run: npm run scan
+
+      - name: Server log
+        if: failure() && env.SERVER_PID != ''
+        run: cat "$RUNNER_TEMP/next-start.log"
+
+      - name: Stop the server
+        if: always() && env.SERVER_PID != ''
+        run: kill "$SERVER_PID" 2>/dev/null || true
+
+      - name: Upload Playwright report and traces
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: |
+            clean/playwright-report/
+            clean/test-results/
+          if-no-files-found: ignore
+          retention-days: 14

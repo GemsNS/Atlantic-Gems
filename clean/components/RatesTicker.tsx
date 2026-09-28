@@ -55,6 +55,43 @@ async function load(): Promise<RatesSnapshot> {
   return data;
 }
 
+/**
+ * Calls `start` once the page's main content is on screen, so the rates
+ * request does not compete with the first paint on a slow connection (plan
+ * item U11). The first largest-contentful-paint entry marks that moment;
+ * browsers without it wait for `load`, and a cap still starts the ticker in a
+ * background tab, which reports no paint. Returns a cancel.
+ */
+function whenPainted(start: () => void): () => void {
+  let started = false;
+  let capId = 0;
+  let observer: PerformanceObserver | null = null;
+  const stop = () => {
+    observer?.disconnect();
+    window.removeEventListener("load", go);
+    window.clearTimeout(capId);
+  };
+  function go() {
+    if (started) return;
+    started = true;
+    stop();
+    start();
+  }
+  capId = window.setTimeout(go, 4000);
+  if (
+    typeof PerformanceObserver !== "undefined" &&
+    PerformanceObserver.supportedEntryTypes?.includes("largest-contentful-paint")
+  ) {
+    observer = new PerformanceObserver(go);
+    observer.observe({ type: "largest-contentful-paint", buffered: true });
+  } else if (document.readyState === "complete") {
+    go();
+  } else {
+    window.addEventListener("load", go);
+  }
+  return stop;
+}
+
 function Items({ snap }: { snap: RatesSnapshot }) {
   const latest = snap.metals.reduce(
     (t, m) => Math.max(t, Date.parse(m.updatedAt) || 0),
@@ -111,9 +148,10 @@ export function RatesTicker() {
           setFailed(true);
           schedule(45_000); // retry sooner after a failure
         });
-    run();
+    const cancelStart = whenPainted(run);
     return () => {
       alive = false;
+      cancelStart();
       window.clearTimeout(timer);
     };
   }, []);

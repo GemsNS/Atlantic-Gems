@@ -12,16 +12,16 @@ function str(form: FormData, key: string): string {
 
 export async function POST(req: Request) {
   const form = await readAdminForm(req);
-  if (!form) return adminRedirect(req, "/admin", undefined, "Request rejected. Please try again.");
+  if (!form) return adminRedirect("/admin", { error: "rejected" });
 
   const id = str(form, "id").trim();
   const existing = id ? await getItem(id) : null;
-  if (id && !existing) return adminRedirect(req, "/admin", undefined, "Item not found.");
+  if (id && !existing) return adminRedirect("/admin", { error: "item-not-found" });
 
   const priceRaw = str(form, "price").replace(/[,\s]/g, "");
   const price = priceRaw === "" ? null : Number(priceRaw);
   if (price !== null && !Number.isFinite(price)) {
-    return adminRedirect(req, id ? `/admin/items/${id}` : "/admin/items/new", undefined, "Price must be a number.");
+    return adminRedirect(id ? `/admin/items/${id}` : "/admin/items/new", { error: "price-nan" });
   }
 
   const images = form
@@ -55,11 +55,13 @@ export async function POST(req: Request) {
 
   const parsed = itemSchema.safeParse(candidate);
   if (!parsed.success) {
-    const first = parsed.error.issues[0];
-    const where = first ? `${String(first.path[0] ?? "form")}: ${first.message}` : "Invalid item.";
-    return adminRedirect(req, id ? `/admin/items/${id}` : "/admin/items/new", undefined, where);
+    // Only the field name travels in the URL; lib/admin-messages.ts words the alert.
+    const field = parsed.error.issues[0]?.path[0];
+    return adminRedirect(id ? `/admin/items/${id}` : "/admin/items/new", {
+      error: typeof field === "string" ? `item-invalid:${field}` : "invalid-item",
+    });
   }
 
   await upsertItem(parsed.data);
-  return adminRedirect(req, "/admin", existing ? "Item updated." : "Item added.");
+  return adminRedirect("/admin", { msg: existing ? "item-updated" : "item-added" });
 }

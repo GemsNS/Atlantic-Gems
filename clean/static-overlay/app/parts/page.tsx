@@ -55,7 +55,7 @@ export default async function PartsIndexStaticPage() {
               </li>
               <li>
                 <b>{brands || "—"}</b>
-                <span>brands</span>
+                <span>{brands === 1 ? "brand" : "brands"}</span>
               </li>
               <li>
                 <b>{PART_CATEGORIES.length}</b>
@@ -102,7 +102,10 @@ export default async function PartsIndexStaticPage() {
             <div>
               <span className="shop-head-n">The whole counter</span>
               <h2>Search every line</h2>
-              <p>Demo prices stand in until the live list is confirmed.</p>
+              <p>
+                Filter by tray, brand and shelf stock.
+                {parts.some((p) => p.demo) ? " Demo prices stand in until the live list is confirmed." : null}
+              </p>
             </div>
           </div>
           <PartsBrowser parts={parts} canQuote={false} />

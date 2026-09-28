@@ -56,7 +56,7 @@ Last public check: 2026-09-05
 | Asset | File | Status | Notes |
 |---|---|---|---|
 | Wordmark with tagline | source/originals/wordmark-header.jpg (1678x670) | CLIENT | "ATLANTIC GEMS" in blue with green teardrop gem and blue diamond; tagline "ROUGH AND FACETED GEMSTONES". Served unmodified at clean/public/brand/wordmark.jpg |
-| Logo mark | source/originals/logo-mark.jpg (1000x1000) | CLIENT | Green teardrop, blue diamond, green swoosh on white. Served unmodified at clean/public/brand/mark.jpg and as the favicon |
+| Logo mark | source/originals/logo-mark.jpg (1000x1000) | CLIENT | Green teardrop, blue diamond, green swoosh on white. Served unmodified at clean/public/brand/mark.jpg. The favicon, clean/app/icon.jpg, is the same artwork resized to 64x64 (1.8 KB), and the home-screen icon, clean/app/apple-icon.jpg, is the same artwork resized to 180x180, with no other change |
 | Brand blue | #1055B8 (sampled) | CLIENT | Dominant blue in both files; site primary accent |
 | Brand green | #0B6A4C (sampled) | CLIENT | Dominant green in both files; site secondary accent |
 | Client tagline | "Rough and faceted gemstones" | CLIENT | Appears in wordmark only; site headline carries the full-house positioning per brief |
@@ -89,3 +89,6 @@ Loose gem sales are a secondary business. The main focus is sales and sourcing o
 | Perrin / Renata / Bergeon naming in seed | DEMO | Placeholders for layout only; not an affiliation claim |
 | eBay public store sync | PRODUCT WIRE | Live only when `EBAY_*` env + seller set; watches/jewellery into inventory, never parts |
 | Stripe / shipping / accounting | STUB | Adapters return unconfigured until env keys added |
+| Demo lines in quote requests | PRODUCT | Each quote line records whether it came from a demo listing. Demo lines are marked in the house email, the webhook payload and Admin → Quotes (list and detail); /cart notes that their prices are placeholders. All demo lines can be retired from /admin/parts; the seed is not written back |
+| Customer acknowledgement emails (U9) | BUILT, OFF | Sent only when `CUSTOMER_ACK_EMAIL=true`, through Resend. Off until the client approves the wording in `clean/lib/mail.ts`. No prices, hours or response times; signs off "Atlantic Gems, Halifax, Nova Scotia" from `clean/lib/site.ts`. The greeting is a fixed "Hello," and nothing the sender typed is echoed; at most one per address a day and 50 an hour in all |
+| Parts tray blurbs (`clean/lib/parts/categories.ts`) | PRODUCT | Neutral copy only: no grading or certification claim for loose diamonds and no battery brand. Restore either only after the client confirms it, with the source recorded here |

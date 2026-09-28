@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { adminError, adminMessage } from "@/lib/admin-messages";
 
 const NAV = [
   { href: "/admin", label: "Dashboard" },
@@ -13,19 +14,28 @@ const NAV = [
   { href: "/admin/follow-ups", label: "Follow-ups" },
 ];
 
+/**
+ * `msg` and `error` are the codes an admin action put in the URL; only the
+ * fixed wording in lib/admin-messages.ts is shown, and an unknown code shows
+ * nothing. `problem` is an alert the page itself worked out.
+ */
 export function AdminShell({
   csrf,
   title,
   msg,
   error,
+  problem,
   children,
 }: {
   csrf: string;
   title: string;
   msg?: string;
   error?: string;
+  problem?: string;
   children: ReactNode;
 }) {
+  const status = adminMessage(msg);
+  const alert = adminError(error) ?? problem;
   return (
     <section className="section admin" style={{ borderTop: 0 }}>
       <div className="wrap">
@@ -45,14 +55,14 @@ export function AdminShell({
           </form>
         </div>
         <h1 className="admin-title">{title}</h1>
-        {msg ? (
+        {status ? (
           <div className="form-status ok" role="status">
-            {msg}
+            {status}
           </div>
         ) : null}
-        {error ? (
+        {alert ? (
           <div className="form-status err" role="alert">
-            {error}
+            {alert}
           </div>
         ) : null}
         {children}

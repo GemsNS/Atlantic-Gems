@@ -79,8 +79,32 @@ export function searchText(item: InventoryItem): string {
     .toLowerCase();
 }
 
-/** Prefilled enquiry text for a set of saved pieces. */
+/** Longest ?brief= prefill /contact keeps (BRIEF_MAX in app/contact/page.tsx). */
+const BRIEF_MAX = 300;
+
+/**
+ * Prefilled enquiry text for a set of saved pieces. Pieces are listed in full
+ * while they fit under the /contact cap, and the rest are counted on a closing
+ * line, so nothing is cut mid-line and the link stays short however many are
+ * saved. One piece at the title and SKU caps takes about 210 characters, so
+ * the first is always listed.
+ */
 export function savedBrief(items: InventoryItem[]): string {
-  const lines = items.map((i) => `· ${i.title}${i.sku ? ` (ref ${i.sku})` : ""}`);
-  return `Enquiry about ${items.length} ${items.length === 1 ? "piece" : "pieces"}:\n${lines.join("\n")}`;
+  const noun = (n: number) => (n === 1 ? "piece" : "pieces");
+  const more = (n: number) => `and ${n} more saved ${noun(n)}`;
+  const head = `Enquiry about ${items.length} ${noun(items.length)}:`;
+  const lines = [head];
+  let used = head.length;
+  for (const [n, item] of items.entries()) {
+    const line = `· ${item.title}${item.sku ? ` (ref ${item.sku})` : ""}`;
+    const left = items.length - n - 1;
+    // Room for this line, and for the closing count if pieces follow it.
+    if (n > 0 && used + 1 + line.length + (left ? 1 + more(left).length : 0) > BRIEF_MAX) {
+      lines.push(more(items.length - n));
+      break;
+    }
+    lines.push(line);
+    used += 1 + line.length;
+  }
+  return lines.join("\n");
 }

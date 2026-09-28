@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { getSettings } from "@/lib/inventory/store";
 import { composeSiteCopy } from "@/lib/site-copy";
 import { enabledServices } from "@/lib/site-pages";
 import { site } from "@/lib/site";
+import { imageProps } from "@/lib/image-props";
 import mark from "@/public/brand/mark.jpg";
 
 export async function SiteFooter() {
@@ -16,6 +16,9 @@ export async function SiteFooter() {
     : null;
   const showParts = pages?.parts ?? true;
   const showWholesale = pages?.wholesale ?? true;
+  // next/image's props on a plain <img>, so no image component ships to the
+  // browser (plan item U11).
+  const markImg = imageProps({ src: mark, alt: "", width: 40, height: 40 });
 
   return (
     <footer className="footer">
@@ -23,7 +26,8 @@ export async function SiteFooter() {
         <div className="footer-grid">
           <div>
             <div className="brand">
-              <Image src={mark} alt="" className="brand-mark" width={40} height={40} />
+              {/* eslint-disable-next-line @next/next/no-img-element -- props from next/image's getImgProps */}
+              <img {...markImg} alt="" className="brand-mark" />
               <span>{site.name}</span>
             </div>
             <p>{copy?.footerBlurb ?? site.tagline}</p>

@@ -7,19 +7,19 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const form = await readAdminForm(req);
-  if (!form) return adminRedirect(req, "/admin/pipeline", undefined, "Request rejected.");
+  if (!form) return adminRedirect("/admin/pipeline", { error: "rejected" });
   const dealId = String(form.get("dealId") ?? "");
   const stage = String(form.get("stage") ?? "");
   if (!DEAL_STAGES.some((s) => s.value === stage)) {
-    return adminRedirect(req, "/admin/pipeline", undefined, "Invalid stage.");
+    return adminRedirect("/admin/pipeline", { error: "invalid-stage" });
   }
   const deals = await listDeals();
   const deal = deals.find((d) => d.id === dealId);
-  if (!deal) return adminRedirect(req, "/admin/pipeline", undefined, "Deal not found.");
+  if (!deal) return adminRedirect("/admin/pipeline", { error: "deal-not-found" });
   await upsertDeal({
     ...deal,
     stage: stage as (typeof DEAL_STAGES)[number]["value"],
     updatedAt: new Date().toISOString(),
   });
-  return adminRedirect(req, "/admin/pipeline", "Stage updated.");
+  return adminRedirect("/admin/pipeline", { msg: "stage-updated" });
 }

@@ -70,6 +70,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="referrer" content="strict-origin-when-cross-origin" />
       </head>
       <body>
+        {/* Reveal fades sections in from script; without it they would stay
+            invisible, so show them as they are. */}
+        <noscript>
+          <style>{".reveal{opacity:1;transform:none}"}</style>
+        </noscript>
         <a className="skip-link" href="#main">
           Skip to content
         </a>

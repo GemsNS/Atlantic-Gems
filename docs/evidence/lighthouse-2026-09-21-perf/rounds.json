@@ -1,0 +1,788 @@
+{
+  "note": "Every Lighthouse run behind the tables in ../lighthouse-2026-09-21-perf.md. Rounds were interleaved on one machine; each round is one `npm run perf:lighthouse` (3 runs per page, median by score).",
+  "lighthouse": "13.5.0",
+  "rounds": {
+    "before: the wave 3 tree rebuilt in a scratch copy, port 3101": [
+      {
+        "round": "ab-base-r1",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 88,
+                "fcpMs": 1548,
+                "lcpMs": 3411,
+                "cls": 0.002,
+                "tbtMs": 165
+              },
+              {
+                "score": 83,
+                "fcpMs": 1540,
+                "lcpMs": 3312,
+                "cls": 0.002,
+                "tbtMs": 367
+              },
+              {
+                "score": 82,
+                "fcpMs": 1531,
+                "lcpMs": 3467,
+                "cls": 0,
+                "tbtMs": 367
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 78,
+                "fcpMs": 1803,
+                "lcpMs": 3121,
+                "cls": 0.001,
+                "tbtMs": 549
+              },
+              {
+                "score": 77,
+                "fcpMs": 1527,
+                "lcpMs": 3403,
+                "cls": 0.003,
+                "tbtMs": 545
+              },
+              {
+                "score": 80,
+                "fcpMs": 1521,
+                "lcpMs": 3276,
+                "cls": 0.003,
+                "tbtMs": 468
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 83,
+                "fcpMs": 1401,
+                "lcpMs": 3010,
+                "cls": 0.001,
+                "tbtMs": 453
+              },
+              {
+                "score": 85,
+                "fcpMs": 1376,
+                "lcpMs": 2966,
+                "cls": 0.001,
+                "tbtMs": 389
+              },
+              {
+                "score": 85,
+                "fcpMs": 1375,
+                "lcpMs": 2913,
+                "cls": 0.001,
+                "tbtMs": 393
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "ab-base-r2",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 76,
+                "fcpMs": 1558,
+                "lcpMs": 3620,
+                "cls": 0.002,
+                "tbtMs": 417
+              },
+              {
+                "score": 88,
+                "fcpMs": 1525,
+                "lcpMs": 3329,
+                "cls": 0,
+                "tbtMs": 221
+              },
+              {
+                "score": 89,
+                "fcpMs": 1530,
+                "lcpMs": 3359,
+                "cls": 0.002,
+                "tbtMs": 169
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 78,
+                "fcpMs": 1524,
+                "lcpMs": 3044,
+                "cls": 0.003,
+                "tbtMs": 601
+              },
+              {
+                "score": 80,
+                "fcpMs": 1533,
+                "lcpMs": 3127,
+                "cls": 0.003,
+                "tbtMs": 527
+              },
+              {
+                "score": 73,
+                "fcpMs": 1521,
+                "lcpMs": 3315,
+                "cls": 0.003,
+                "tbtMs": 730
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 84,
+                "fcpMs": 1383,
+                "lcpMs": 3033,
+                "cls": 0.001,
+                "tbtMs": 405
+              },
+              {
+                "score": 85,
+                "fcpMs": 1381,
+                "lcpMs": 3023,
+                "cls": 0.001,
+                "tbtMs": 362
+              },
+              {
+                "score": 84,
+                "fcpMs": 1418,
+                "lcpMs": 2969,
+                "cls": 0.001,
+                "tbtMs": 424
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "ab-base-r3",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 87,
+                "fcpMs": 1528,
+                "lcpMs": 3357,
+                "cls": 0.002,
+                "tbtMs": 228
+              },
+              {
+                "score": 85,
+                "fcpMs": 1554,
+                "lcpMs": 3509,
+                "cls": 0.002,
+                "tbtMs": 271
+              },
+              {
+                "score": 84,
+                "fcpMs": 1544,
+                "lcpMs": 3300,
+                "cls": 0.002,
+                "tbtMs": 320
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 81,
+                "fcpMs": 1525,
+                "lcpMs": 3024,
+                "cls": 0.003,
+                "tbtMs": 509
+              },
+              {
+                "score": 78,
+                "fcpMs": 1527,
+                "lcpMs": 3368,
+                "cls": 0.003,
+                "tbtMs": 512
+              },
+              {
+                "score": 80,
+                "fcpMs": 1544,
+                "lcpMs": 3381,
+                "cls": 0.003,
+                "tbtMs": 392
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 87,
+                "fcpMs": 1388,
+                "lcpMs": 2958,
+                "cls": 0.001,
+                "tbtMs": 321
+              },
+              {
+                "score": 89,
+                "fcpMs": 1363,
+                "lcpMs": 2911,
+                "cls": 0.001,
+                "tbtMs": 274
+              },
+              {
+                "score": 89,
+                "fcpMs": 1370,
+                "lcpMs": 2905,
+                "cls": 0.001,
+                "tbtMs": 255
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "after: the final tree, port 3100": [
+      {
+        "round": "final-r1",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 91,
+                "fcpMs": 1533,
+                "lcpMs": 2975,
+                "cls": 0.002,
+                "tbtMs": 120
+              },
+              {
+                "score": 91,
+                "fcpMs": 1556,
+                "lcpMs": 3031,
+                "cls": 0.002,
+                "tbtMs": 176
+              },
+              {
+                "score": 91,
+                "fcpMs": 1530,
+                "lcpMs": 3029,
+                "cls": 0.002,
+                "tbtMs": 180
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 86,
+                "fcpMs": 1519,
+                "lcpMs": 2867,
+                "cls": 0.003,
+                "tbtMs": 360
+              },
+              {
+                "score": 91,
+                "fcpMs": 1568,
+                "lcpMs": 2888,
+                "cls": 0.003,
+                "tbtMs": 203
+              },
+              {
+                "score": 88,
+                "fcpMs": 1533,
+                "lcpMs": 2876,
+                "cls": 0.003,
+                "tbtMs": 319
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 89,
+                "fcpMs": 1368,
+                "lcpMs": 2842,
+                "cls": 0.001,
+                "tbtMs": 267
+              },
+              {
+                "score": 89,
+                "fcpMs": 1368,
+                "lcpMs": 2786,
+                "cls": 0.001,
+                "tbtMs": 308
+              },
+              {
+                "score": 89,
+                "fcpMs": 1374,
+                "lcpMs": 2727,
+                "cls": 0.001,
+                "tbtMs": 305
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "final-r2",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 96,
+                "fcpMs": 1525,
+                "lcpMs": 2729,
+                "cls": 0.002,
+                "tbtMs": 40
+              },
+              {
+                "score": 89,
+                "fcpMs": 1534,
+                "lcpMs": 3057,
+                "cls": 0.002,
+                "tbtMs": 216
+              },
+              {
+                "score": 93,
+                "fcpMs": 1574,
+                "lcpMs": 2958,
+                "cls": 0,
+                "tbtMs": 107
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 86,
+                "fcpMs": 1524,
+                "lcpMs": 3036,
+                "cls": 0.003,
+                "tbtMs": 328
+              },
+              {
+                "score": 88,
+                "fcpMs": 1518,
+                "lcpMs": 2896,
+                "cls": 0.003,
+                "tbtMs": 297
+              },
+              {
+                "score": 89,
+                "fcpMs": 1515,
+                "lcpMs": 2804,
+                "cls": 0.003,
+                "tbtMs": 289
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 91,
+                "fcpMs": 1386,
+                "lcpMs": 2718,
+                "cls": 0.001,
+                "tbtMs": 234
+              },
+              {
+                "score": 90,
+                "fcpMs": 1384,
+                "lcpMs": 2816,
+                "cls": 0.001,
+                "tbtMs": 272
+              },
+              {
+                "score": 89,
+                "fcpMs": 1379,
+                "lcpMs": 2726,
+                "cls": 0.001,
+                "tbtMs": 301
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "an earlier cut of the changes, port 3100 (same time as the inlineCss rounds)": [
+      {
+        "round": "ab-final-r1",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 87,
+                "fcpMs": 1527,
+                "lcpMs": 3065,
+                "cls": 0.002,
+                "tbtMs": 283
+              },
+              {
+                "score": 91,
+                "fcpMs": 1577,
+                "lcpMs": 3052,
+                "cls": 0.002,
+                "tbtMs": 159
+              },
+              {
+                "score": 91,
+                "fcpMs": 1592,
+                "lcpMs": 3131,
+                "cls": 0.002,
+                "tbtMs": 141
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 89,
+                "fcpMs": 1552,
+                "lcpMs": 2877,
+                "cls": 0.003,
+                "tbtMs": 246
+              },
+              {
+                "score": 84,
+                "fcpMs": 1518,
+                "lcpMs": 2789,
+                "cls": 0.003,
+                "tbtMs": 452
+              },
+              {
+                "score": 87,
+                "fcpMs": 1526,
+                "lcpMs": 2906,
+                "cls": 0.003,
+                "tbtMs": 301
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 88,
+                "fcpMs": 1371,
+                "lcpMs": 2755,
+                "cls": 0.001,
+                "tbtMs": 345
+              },
+              {
+                "score": 89,
+                "fcpMs": 1395,
+                "lcpMs": 2770,
+                "cls": 0.001,
+                "tbtMs": 223
+              },
+              {
+                "score": 88,
+                "fcpMs": 1401,
+                "lcpMs": 2862,
+                "cls": 0.001,
+                "tbtMs": 303
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "ab-final-r2",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 94,
+                "fcpMs": 1539,
+                "lcpMs": 2804,
+                "cls": 0.002,
+                "tbtMs": 33
+              },
+              {
+                "score": 91,
+                "fcpMs": 1549,
+                "lcpMs": 2950,
+                "cls": 0.002,
+                "tbtMs": 198
+              },
+              {
+                "score": 92,
+                "fcpMs": 1552,
+                "lcpMs": 2989,
+                "cls": 0.002,
+                "tbtMs": 140
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 84,
+                "fcpMs": 1540,
+                "lcpMs": 2726,
+                "cls": 0.003,
+                "tbtMs": 450
+              },
+              {
+                "score": 78,
+                "fcpMs": 1526,
+                "lcpMs": 2830,
+                "cls": 0.001,
+                "tbtMs": 555
+              },
+              {
+                "score": 89,
+                "fcpMs": 1527,
+                "lcpMs": 2788,
+                "cls": 0,
+                "tbtMs": 301
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 85,
+                "fcpMs": 1377,
+                "lcpMs": 2849,
+                "cls": 0.001,
+                "tbtMs": 384
+              },
+              {
+                "score": 89,
+                "fcpMs": 1396,
+                "lcpMs": 2772,
+                "cls": 0.001,
+                "tbtMs": 318
+              },
+              {
+                "score": 84,
+                "fcpMs": 1419,
+                "lcpMs": 2860,
+                "cls": 0.001,
+                "tbtMs": 435
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "the same earlier cut with experimental.inlineCss, port 3102 (not adopted)": [
+      {
+        "round": "ab-inline-r1",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 93,
+                "fcpMs": 1540,
+                "lcpMs": 3038,
+                "cls": 0.002,
+                "tbtMs": 102
+              },
+              {
+                "score": 86,
+                "fcpMs": 1527,
+                "lcpMs": 3062,
+                "cls": 0.002,
+                "tbtMs": 256
+              },
+              {
+                "score": 91,
+                "fcpMs": 1524,
+                "lcpMs": 2976,
+                "cls": 0.002,
+                "tbtMs": 189
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 94,
+                "fcpMs": 1367,
+                "lcpMs": 2542,
+                "cls": 0,
+                "tbtMs": 181
+              },
+              {
+                "score": 80,
+                "fcpMs": 1371,
+                "lcpMs": 3035,
+                "cls": 0.003,
+                "tbtMs": 523
+              },
+              {
+                "score": 82,
+                "fcpMs": 1375,
+                "lcpMs": 2813,
+                "cls": 0.003,
+                "tbtMs": 543
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 74,
+                "fcpMs": 1542,
+                "lcpMs": 3117,
+                "cls": 0.001,
+                "tbtMs": 815
+              },
+              {
+                "score": 86,
+                "fcpMs": 1574,
+                "lcpMs": 3027,
+                "cls": 0.001,
+                "tbtMs": 315
+              },
+              {
+                "score": 85,
+                "fcpMs": 1380,
+                "lcpMs": 2977,
+                "cls": 0.001,
+                "tbtMs": 398
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "ab-inline-r2",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 92,
+                "fcpMs": 1514,
+                "lcpMs": 2927,
+                "cls": 0.002,
+                "tbtMs": 164
+              },
+              {
+                "score": 89,
+                "fcpMs": 1521,
+                "lcpMs": 3028,
+                "cls": 0.002,
+                "tbtMs": 210
+              },
+              {
+                "score": 90,
+                "fcpMs": 1365,
+                "lcpMs": 3036,
+                "cls": 0.002,
+                "tbtMs": 198
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 80,
+                "fcpMs": 1442,
+                "lcpMs": 2971,
+                "cls": 0.003,
+                "tbtMs": 584
+              },
+              {
+                "score": 78,
+                "fcpMs": 1367,
+                "lcpMs": 3058,
+                "cls": 0.003,
+                "tbtMs": 620
+              },
+              {
+                "score": 76,
+                "fcpMs": 1382,
+                "lcpMs": 3043,
+                "cls": 0.003,
+                "tbtMs": 742
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 86,
+                "fcpMs": 1379,
+                "lcpMs": 2689,
+                "cls": 0.001,
+                "tbtMs": 420
+              },
+              {
+                "score": 76,
+                "fcpMs": 1893,
+                "lcpMs": 3019,
+                "cls": 0,
+                "tbtMs": 694
+              },
+              {
+                "score": 86,
+                "fcpMs": 1933,
+                "lcpMs": 2834,
+                "cls": 0.001,
+                "tbtMs": 361
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

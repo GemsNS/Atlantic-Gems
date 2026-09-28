@@ -6,17 +6,31 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { RatesTicker } from "@/components/RatesTicker";
 import { site } from "@/lib/site";
 
+// Only the weights globals.css asks for (300 was never used): the heaviest rule
+// is 700, which is Manrope's heaviest face here. Both families are variable
+// fonts, so this trims @font-face rules, not downloads.
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600"],
   variable: "--font-cormorant",
   display: "swap",
 });
 
+// The italic is set once, on the stone family line in the gem explorer, so it
+// is not preloaded: next/font would otherwise preload its file on every page.
+// Same family name as above, so `--font-display` in italic picks it up.
+const cormorantItalic = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["italic"],
+  variable: "--font-cormorant-italic",
+  display: "swap",
+  preload: false,
+});
+
 const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-manrope",
   display: "swap",
 });
@@ -52,8 +66,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-CA" className={`${cormorant.variable} ${manrope.variable}`}>
+    <html lang="en-CA" className={`${cormorant.variable} ${cormorantItalic.variable} ${manrope.variable}`}>
       <body>
+        {/* Reveal fades sections in from script; without it they would stay
+            invisible, so show them as they are. */}
+        <noscript>
+          <style>{".reveal{opacity:1;transform:none}"}</style>
+        </noscript>
         <a className="skip-link" href="#main">
           Skip to content
         </a>

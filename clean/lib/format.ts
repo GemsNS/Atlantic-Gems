@@ -1,4 +1,5 @@
-import { CATEGORIES, CONDITIONS, STATUSES, type InventoryItem } from "@/lib/inventory/types";
+import type { InventoryItem } from "@/lib/inventory/types";
+import { CATEGORIES, CONDITIONS, STATUSES } from "@/lib/inventory/labels";
 
 const formatters: Record<string, Intl.NumberFormat> = {};
 const moneyFormatters: Record<string, Intl.NumberFormat> = {};

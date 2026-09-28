@@ -11,6 +11,7 @@ import { PartsCategoryRail } from "@/components/parts/PartsCategoryNav";
 import { PartMedia } from "@/components/parts/PartMedia";
 import { CATEGORY_ART } from "@/lib/parts/art";
 import { PART_VISUALS } from "@/lib/parts/visuals";
+import { CURRENCY_NAMES, priceSummary } from "@/lib/parts/price-summary";
 
 export const dynamic = "force-dynamic";
 
@@ -50,8 +51,9 @@ export default async function PartsCategoryPage({
   ) as Partial<Record<PartCategory, number>>;
   const visual = PART_VISUALS[cat];
   const onShelf = parts.filter((p) => p.stockQty > 0).length;
-  const prices = parts.map((p) => p.price).filter((p): p is number => p !== null);
-  const from = prices.length ? Math.min(...prices) : null;
+  // The lowest listed price in each currency; the note names a currency only
+  // when every line on the tray is in it.
+  const { from, only } = priceSummary(parts);
   const brands = new Set(parts.map((p) => p.brand).filter(Boolean)).size;
 
   return (
@@ -78,17 +80,29 @@ export default async function PartsCategoryPage({
               {brands > 0 ? (
                 <li>
                   <b>{brands}</b>
-                  <span>brands</span>
+                  <span>{brands === 1 ? "brand" : "brands"}</span>
                 </li>
               ) : null}
-              {from !== null ? (
-                <li>
-                  <b>{formatMoney(from, "CAD").replace("CAD", "").trim()}</b>
-                  <span>from</span>
-                </li>
-              ) : null}
+              {from.map(([currency, amount]) => {
+                // The code is left off when the note below already names the currency.
+                const price = formatMoney(amount, currency);
+                return (
+                  <li key={currency}>
+                    <b>{only ? price.replace(currency, "").trim() : price}</b>
+                    <span>from</span>
+                  </li>
+                );
+              })}
             </ul>
-            <p className="shop-hero-note">{visual.label} · quoted in Canadian dollars, taxes extra.</p>
+            {only ? (
+              <p className="shop-hero-note">
+                {visual.label} · quoted in {CURRENCY_NAMES[only]}, taxes extra.
+              </p>
+            ) : parts.length > 0 ? (
+              <p className="shop-hero-note">
+                {visual.label} · each price is marked with its currency, taxes extra.
+              </p>
+            ) : null}
           </div>
           <div className="shop-hero-aside">
             <PartMedia category={cat} artKey={CATEGORY_ART[cat]} size="hero" />

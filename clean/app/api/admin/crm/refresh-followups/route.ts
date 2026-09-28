@@ -6,11 +6,9 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const form = await readAdminForm(req);
-  if (!form) return adminRedirect(req, "/admin/follow-ups", undefined, "Request rejected.");
+  if (!form) return adminRedirect("/admin/follow-ups", { error: "rejected" });
   const created = await refreshFollowUps();
-  return adminRedirect(
-    req,
-    "/admin/follow-ups",
-    created.length ? `Created ${created.length} new task(s).` : "No new tasks.",
-  );
+  return adminRedirect("/admin/follow-ups", {
+    msg: created.length ? `tasks-created:${created.length}` : "no-tasks",
+  });
 }

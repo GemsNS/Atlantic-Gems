@@ -1,0 +1,1218 @@
+{
+  "note": "Every Lighthouse run behind ../lighthouse-2026-09-21-perf2.md. Rounds were interleaved on one machine: base, new3, new2 for rounds 1 to 3, then base and final for rounds 4 to 6. Each round is one `npm run perf:lighthouse` (3 runs per page, median by score).",
+  "lighthouse": "13.5.0",
+  "rounds": {
+    "before: the tree as round 1 left it, rebuilt in a scratch copy, port 3101": [
+      {
+        "round": "base-r1",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 82,
+                "fcpMs": 1533,
+                "lcpMs": 3168,
+                "cls": 0.002,
+                "tbtMs": 428
+              },
+              {
+                "score": 92,
+                "fcpMs": 1561,
+                "lcpMs": 3027,
+                "cls": 0.002,
+                "tbtMs": 141
+              },
+              {
+                "score": 89,
+                "fcpMs": 1610,
+                "lcpMs": 3198,
+                "cls": 0.002,
+                "tbtMs": 163
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 55,
+                "fcpMs": 1803,
+                "lcpMs": 4046,
+                "cls": 0.003,
+                "tbtMs": 2651
+              },
+              {
+                "score": 88,
+                "fcpMs": 1557,
+                "lcpMs": 2846,
+                "cls": 0.003,
+                "tbtMs": 310
+              },
+              {
+                "score": 87,
+                "fcpMs": 1525,
+                "lcpMs": 2856,
+                "cls": 0.003,
+                "tbtMs": 364
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 91,
+                "fcpMs": 1369,
+                "lcpMs": 2705,
+                "cls": 0.001,
+                "tbtMs": 245
+              },
+              {
+                "score": 89,
+                "fcpMs": 1374,
+                "lcpMs": 2758,
+                "cls": 0.001,
+                "tbtMs": 279
+              },
+              {
+                "score": 85,
+                "fcpMs": 1409,
+                "lcpMs": 2874,
+                "cls": 0,
+                "tbtMs": 338
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "base-r2",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 91,
+                "fcpMs": 1568,
+                "lcpMs": 3032,
+                "cls": 0.002,
+                "tbtMs": 147
+              },
+              {
+                "score": 90,
+                "fcpMs": 1538,
+                "lcpMs": 2975,
+                "cls": 0.002,
+                "tbtMs": 191
+              },
+              {
+                "score": 85,
+                "fcpMs": 1543,
+                "lcpMs": 2974,
+                "cls": 0.002,
+                "tbtMs": 356
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 81,
+                "fcpMs": 1526,
+                "lcpMs": 3033,
+                "cls": 0.001,
+                "tbtMs": 482
+              },
+              {
+                "score": 89,
+                "fcpMs": 1525,
+                "lcpMs": 2817,
+                "cls": 0.003,
+                "tbtMs": 259
+              },
+              {
+                "score": 87,
+                "fcpMs": 1535,
+                "lcpMs": 2844,
+                "cls": 0.001,
+                "tbtMs": 317
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 73,
+                "fcpMs": 1746,
+                "lcpMs": 3026,
+                "cls": 0.001,
+                "tbtMs": 856
+              },
+              {
+                "score": 55,
+                "fcpMs": 1384,
+                "lcpMs": 3773,
+                "cls": 0.001,
+                "tbtMs": 3055
+              },
+              {
+                "score": 88,
+                "fcpMs": 1422,
+                "lcpMs": 2812,
+                "cls": 0.001,
+                "tbtMs": 304
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "base-r3",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 81,
+                "fcpMs": 1534,
+                "lcpMs": 3141,
+                "cls": 0.002,
+                "tbtMs": 442
+              },
+              {
+                "score": 89,
+                "fcpMs": 1526,
+                "lcpMs": 3041,
+                "cls": 0.002,
+                "tbtMs": 243
+              },
+              {
+                "score": 90,
+                "fcpMs": 1525,
+                "lcpMs": 3048,
+                "cls": 0.002,
+                "tbtMs": 206
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 83,
+                "fcpMs": 1542,
+                "lcpMs": 2914,
+                "cls": 0.003,
+                "tbtMs": 459
+              },
+              {
+                "score": 79,
+                "fcpMs": 1561,
+                "lcpMs": 3047,
+                "cls": 0.003,
+                "tbtMs": 570
+              },
+              {
+                "score": 75,
+                "fcpMs": 1530,
+                "lcpMs": 3062,
+                "cls": 0.003,
+                "tbtMs": 706
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 89,
+                "fcpMs": 1399,
+                "lcpMs": 2818,
+                "cls": 0.001,
+                "tbtMs": 292
+              },
+              {
+                "score": 89,
+                "fcpMs": 1368,
+                "lcpMs": 2791,
+                "cls": 0.001,
+                "tbtMs": 285
+              },
+              {
+                "score": 90,
+                "fcpMs": 1384,
+                "lcpMs": 2708,
+                "cls": 0.001,
+                "tbtMs": 257
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "base-r4",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 90,
+                "fcpMs": 1534,
+                "lcpMs": 2969,
+                "cls": 0.002,
+                "tbtMs": 211
+              },
+              {
+                "score": 91,
+                "fcpMs": 1599,
+                "lcpMs": 3153,
+                "cls": 0.002,
+                "tbtMs": 139
+              },
+              {
+                "score": 87,
+                "fcpMs": 1534,
+                "lcpMs": 3132,
+                "cls": 0.002,
+                "tbtMs": 279
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 75,
+                "fcpMs": 1531,
+                "lcpMs": 3070,
+                "cls": 0.003,
+                "tbtMs": 773
+              },
+              {
+                "score": 70,
+                "fcpMs": 1528,
+                "lcpMs": 3116,
+                "cls": 0,
+                "tbtMs": 1075
+              },
+              {
+                "score": 86,
+                "fcpMs": 1529,
+                "lcpMs": 2823,
+                "cls": 0.003,
+                "tbtMs": 390
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 90,
+                "fcpMs": 1411,
+                "lcpMs": 2731,
+                "cls": 0.001,
+                "tbtMs": 274
+              },
+              {
+                "score": 89,
+                "fcpMs": 1378,
+                "lcpMs": 2744,
+                "cls": 0.001,
+                "tbtMs": 294
+              },
+              {
+                "score": 90,
+                "fcpMs": 1445,
+                "lcpMs": 2760,
+                "cls": 0.001,
+                "tbtMs": 244
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "base-r5",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 90,
+                "fcpMs": 1572,
+                "lcpMs": 3043,
+                "cls": 0.002,
+                "tbtMs": 200
+              },
+              {
+                "score": 90,
+                "fcpMs": 1577,
+                "lcpMs": 3049,
+                "cls": 0.002,
+                "tbtMs": 173
+              },
+              {
+                "score": 88,
+                "fcpMs": 1584,
+                "lcpMs": 3082,
+                "cls": 0.002,
+                "tbtMs": 198
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 86,
+                "fcpMs": 1523,
+                "lcpMs": 2890,
+                "cls": 0.003,
+                "tbtMs": 363
+              },
+              {
+                "score": 81,
+                "fcpMs": 1524,
+                "lcpMs": 2911,
+                "cls": 0.001,
+                "tbtMs": 523
+              },
+              {
+                "score": 78,
+                "fcpMs": 1522,
+                "lcpMs": 2788,
+                "cls": 0.001,
+                "tbtMs": 693
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 93,
+                "fcpMs": 1410,
+                "lcpMs": 2721,
+                "cls": 0,
+                "tbtMs": 187
+              },
+              {
+                "score": 93,
+                "fcpMs": 1412,
+                "lcpMs": 2677,
+                "cls": 0.001,
+                "tbtMs": 186
+              },
+              {
+                "score": 88,
+                "fcpMs": 1368,
+                "lcpMs": 2706,
+                "cls": 0.001,
+                "tbtMs": 293
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "base-r6",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 90,
+                "fcpMs": 1534,
+                "lcpMs": 2999,
+                "cls": 0.002,
+                "tbtMs": 216
+              },
+              {
+                "score": 92,
+                "fcpMs": 1531,
+                "lcpMs": 2945,
+                "cls": 0,
+                "tbtMs": 139
+              },
+              {
+                "score": 92,
+                "fcpMs": 1562,
+                "lcpMs": 3015,
+                "cls": 0.002,
+                "tbtMs": 143
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 87,
+                "fcpMs": 1524,
+                "lcpMs": 2821,
+                "cls": 0.001,
+                "tbtMs": 340
+              },
+              {
+                "score": 91,
+                "fcpMs": 1516,
+                "lcpMs": 2798,
+                "cls": 0.003,
+                "tbtMs": 227
+              },
+              {
+                "score": 86,
+                "fcpMs": 1552,
+                "lcpMs": 2906,
+                "cls": 0.003,
+                "tbtMs": 328
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 89,
+                "fcpMs": 1395,
+                "lcpMs": 2766,
+                "cls": 0.001,
+                "tbtMs": 286
+              },
+              {
+                "score": 88,
+                "fcpMs": 1372,
+                "lcpMs": 2734,
+                "cls": 0.001,
+                "tbtMs": 321
+              },
+              {
+                "score": 84,
+                "fcpMs": 1382,
+                "lcpMs": 2891,
+                "cls": 0.001,
+                "tbtMs": 431
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "after: the final tree, port 3100": [
+      {
+        "round": "final-r4",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 91,
+                "fcpMs": 1535,
+                "lcpMs": 2938,
+                "cls": 0.002,
+                "tbtMs": 191
+              },
+              {
+                "score": 90,
+                "fcpMs": 1521,
+                "lcpMs": 3009,
+                "cls": 0.002,
+                "tbtMs": 225
+              },
+              {
+                "score": 88,
+                "fcpMs": 1520,
+                "lcpMs": 2998,
+                "cls": 0.002,
+                "tbtMs": 264
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 76,
+                "fcpMs": 1533,
+                "lcpMs": 2764,
+                "cls": 0,
+                "tbtMs": 812
+              },
+              {
+                "score": 84,
+                "fcpMs": 1532,
+                "lcpMs": 2885,
+                "cls": 0.003,
+                "tbtMs": 415
+              },
+              {
+                "score": 87,
+                "fcpMs": 1525,
+                "lcpMs": 2710,
+                "cls": 0,
+                "tbtMs": 381
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 90,
+                "fcpMs": 1371,
+                "lcpMs": 2595,
+                "cls": 0.001,
+                "tbtMs": 307
+              },
+              {
+                "score": 91,
+                "fcpMs": 1390,
+                "lcpMs": 2735,
+                "cls": 0.001,
+                "tbtMs": 210
+              },
+              {
+                "score": 96,
+                "fcpMs": 1373,
+                "lcpMs": 2482,
+                "cls": 0.001,
+                "tbtMs": 141
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "final-r5",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 92,
+                "fcpMs": 1554,
+                "lcpMs": 2986,
+                "cls": 0.002,
+                "tbtMs": 154
+              },
+              {
+                "score": 92,
+                "fcpMs": 1522,
+                "lcpMs": 2935,
+                "cls": 0.002,
+                "tbtMs": 172
+              },
+              {
+                "score": 93,
+                "fcpMs": 1544,
+                "lcpMs": 2932,
+                "cls": 0.002,
+                "tbtMs": 154
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 84,
+                "fcpMs": 1525,
+                "lcpMs": 2863,
+                "cls": 0.003,
+                "tbtMs": 419
+              },
+              {
+                "score": 87,
+                "fcpMs": 1528,
+                "lcpMs": 2895,
+                "cls": 0.003,
+                "tbtMs": 342
+              },
+              {
+                "score": 80,
+                "fcpMs": 1577,
+                "lcpMs": 2969,
+                "cls": 0.003,
+                "tbtMs": 545
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 93,
+                "fcpMs": 1368,
+                "lcpMs": 2604,
+                "cls": 0.001,
+                "tbtMs": 214
+              },
+              {
+                "score": 87,
+                "fcpMs": 1382,
+                "lcpMs": 2827,
+                "cls": 0.001,
+                "tbtMs": 344
+              },
+              {
+                "score": 90,
+                "fcpMs": 1398,
+                "lcpMs": 2720,
+                "cls": 0.001,
+                "tbtMs": 272
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "final-r6",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 92,
+                "fcpMs": 1524,
+                "lcpMs": 2984,
+                "cls": 0.002,
+                "tbtMs": 174
+              },
+              {
+                "score": 93,
+                "fcpMs": 1525,
+                "lcpMs": 2824,
+                "cls": 0.002,
+                "tbtMs": 154
+              },
+              {
+                "score": 91,
+                "fcpMs": 1536,
+                "lcpMs": 2962,
+                "cls": 0.002,
+                "tbtMs": 194
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 81,
+                "fcpMs": 1571,
+                "lcpMs": 3011,
+                "cls": 0.001,
+                "tbtMs": 475
+              },
+              {
+                "score": 84,
+                "fcpMs": 1517,
+                "lcpMs": 2812,
+                "cls": 0.003,
+                "tbtMs": 407
+              },
+              {
+                "score": 84,
+                "fcpMs": 1522,
+                "lcpMs": 2728,
+                "cls": 0.003,
+                "tbtMs": 470
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 89,
+                "fcpMs": 1377,
+                "lcpMs": 2550,
+                "cls": 0.001,
+                "tbtMs": 352
+              },
+              {
+                "score": 92,
+                "fcpMs": 1767,
+                "lcpMs": 2659,
+                "cls": 0.001,
+                "tbtMs": 207
+              },
+              {
+                "score": 94,
+                "fcpMs": 1364,
+                "lcpMs": 2580,
+                "cls": 0.001,
+                "tbtMs": 193
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "the final tree without the containment line on the first four cards, port 3100": [
+      {
+        "round": "new3-r1",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 90,
+                "fcpMs": 1546,
+                "lcpMs": 2842,
+                "cls": 0.002,
+                "tbtMs": 252
+              },
+              {
+                "score": 90,
+                "fcpMs": 1532,
+                "lcpMs": 2987,
+                "cls": 0.002,
+                "tbtMs": 200
+              },
+              {
+                "score": 91,
+                "fcpMs": 1540,
+                "lcpMs": 2966,
+                "cls": 0.002,
+                "tbtMs": 192
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 87,
+                "fcpMs": 1533,
+                "lcpMs": 2889,
+                "cls": 0.003,
+                "tbtMs": 312
+              },
+              {
+                "score": 89,
+                "fcpMs": 1517,
+                "lcpMs": 2717,
+                "cls": 0.003,
+                "tbtMs": 290
+              },
+              {
+                "score": 80,
+                "fcpMs": 1569,
+                "lcpMs": 3044,
+                "cls": 0.001,
+                "tbtMs": 478
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 89,
+                "fcpMs": 1385,
+                "lcpMs": 2788,
+                "cls": 0.001,
+                "tbtMs": 294
+              },
+              {
+                "score": 92,
+                "fcpMs": 1378,
+                "lcpMs": 2619,
+                "cls": 0.001,
+                "tbtMs": 213
+              },
+              {
+                "score": 91,
+                "fcpMs": 1364,
+                "lcpMs": 2720,
+                "cls": 0.001,
+                "tbtMs": 244
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "new3-r2",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 92,
+                "fcpMs": 1544,
+                "lcpMs": 2871,
+                "cls": 0.002,
+                "tbtMs": 171
+              },
+              {
+                "score": 89,
+                "fcpMs": 1529,
+                "lcpMs": 2917,
+                "cls": 0.002,
+                "tbtMs": 259
+              },
+              {
+                "score": 91,
+                "fcpMs": 1589,
+                "lcpMs": 3001,
+                "cls": 0.002,
+                "tbtMs": 175
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 71,
+                "fcpMs": 1549,
+                "lcpMs": 2979,
+                "cls": 0.003,
+                "tbtMs": 1078
+              },
+              {
+                "score": 84,
+                "fcpMs": 1531,
+                "lcpMs": 2909,
+                "cls": 0.003,
+                "tbtMs": 421
+              },
+              {
+                "score": 74,
+                "fcpMs": 1765,
+                "lcpMs": 2968,
+                "cls": 0.003,
+                "tbtMs": 762
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 90,
+                "fcpMs": 1365,
+                "lcpMs": 2724,
+                "cls": 0.001,
+                "tbtMs": 266
+              },
+              {
+                "score": 90,
+                "fcpMs": 1377,
+                "lcpMs": 2724,
+                "cls": 0.001,
+                "tbtMs": 282
+              },
+              {
+                "score": 87,
+                "fcpMs": 1397,
+                "lcpMs": 2892,
+                "cls": 0.001,
+                "tbtMs": 316
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "new3-r3",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 86,
+                "fcpMs": 1530,
+                "lcpMs": 3081,
+                "cls": 0.002,
+                "tbtMs": 321
+              },
+              {
+                "score": 89,
+                "fcpMs": 1529,
+                "lcpMs": 3047,
+                "cls": 0.002,
+                "tbtMs": 227
+              },
+              {
+                "score": 92,
+                "fcpMs": 1526,
+                "lcpMs": 2959,
+                "cls": 0.002,
+                "tbtMs": 180
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 88,
+                "fcpMs": 1530,
+                "lcpMs": 2766,
+                "cls": 0.003,
+                "tbtMs": 333
+              },
+              {
+                "score": 74,
+                "fcpMs": 1561,
+                "lcpMs": 3064,
+                "cls": 0.001,
+                "tbtMs": 747
+              },
+              {
+                "score": 73,
+                "fcpMs": 1550,
+                "lcpMs": 3169,
+                "cls": 0.003,
+                "tbtMs": 797
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 90,
+                "fcpMs": 1391,
+                "lcpMs": 2789,
+                "cls": 0.001,
+                "tbtMs": 229
+              },
+              {
+                "score": 93,
+                "fcpMs": 1386,
+                "lcpMs": 2598,
+                "cls": 0.001,
+                "tbtMs": 200
+              },
+              {
+                "score": 82,
+                "fcpMs": 1395,
+                "lcpMs": 2890,
+                "cls": 0.001,
+                "tbtMs": 517
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "every change except the /parts content-visibility change and the compass numeral precision fix, port 3102": [
+      {
+        "round": "new2-r1",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 91,
+                "fcpMs": 1710,
+                "lcpMs": 2934,
+                "cls": 0,
+                "tbtMs": 125
+              },
+              {
+                "score": 94,
+                "fcpMs": 1520,
+                "lcpMs": 2765,
+                "cls": 0.002,
+                "tbtMs": 107
+              },
+              {
+                "score": 90,
+                "fcpMs": 1826,
+                "lcpMs": 2730,
+                "cls": 0,
+                "tbtMs": 182
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 89,
+                "fcpMs": 1524,
+                "lcpMs": 2852,
+                "cls": 0.003,
+                "tbtMs": 300
+              },
+              {
+                "score": 82,
+                "fcpMs": 1532,
+                "lcpMs": 2896,
+                "cls": 0.003,
+                "tbtMs": 469
+              },
+              {
+                "score": 79,
+                "fcpMs": 1529,
+                "lcpMs": 2907,
+                "cls": 0.003,
+                "tbtMs": 605
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 92,
+                "fcpMs": 1410,
+                "lcpMs": 2786,
+                "cls": 0.001,
+                "tbtMs": 214
+              },
+              {
+                "score": 86,
+                "fcpMs": 1389,
+                "lcpMs": 2781,
+                "cls": 0.001,
+                "tbtMs": 409
+              },
+              {
+                "score": 91,
+                "fcpMs": 1372,
+                "lcpMs": 2525,
+                "cls": 0.001,
+                "tbtMs": 280
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "round": "new2-r2",
+        "pages": [
+          {
+            "page": "/",
+            "medianRun": 3,
+            "runs": [
+              {
+                "score": 92,
+                "fcpMs": 1579,
+                "lcpMs": 2916,
+                "cls": 0.002,
+                "tbtMs": 126
+              },
+              {
+                "score": 85,
+                "fcpMs": 1533,
+                "lcpMs": 3180,
+                "cls": 0.002,
+                "tbtMs": 338
+              },
+              {
+                "score": 91,
+                "fcpMs": 1539,
+                "lcpMs": 2945,
+                "cls": 0.002,
+                "tbtMs": 183
+              }
+            ]
+          },
+          {
+            "page": "/parts",
+            "medianRun": 1,
+            "runs": [
+              {
+                "score": 78,
+                "fcpMs": 1523,
+                "lcpMs": 2981,
+                "cls": 0.001,
+                "tbtMs": 586
+              },
+              {
+                "score": 66,
+                "fcpMs": 1553,
+                "lcpMs": 3182,
+                "cls": 0,
+                "tbtMs": 1643
+              },
+              {
+                "score": 79,
+                "fcpMs": 1515,
+                "lcpMs": 2988,
+                "cls": 0.003,
+                "tbtMs": 587
+              }
+            ]
+          },
+          {
+            "page": "/cart",
+            "medianRun": 2,
+            "runs": [
+              {
+                "score": 87,
+                "fcpMs": 1459,
+                "lcpMs": 2790,
+                "cls": 0,
+                "tbtMs": 338
+              },
+              {
+                "score": 92,
+                "fcpMs": 1382,
+                "lcpMs": 2627,
+                "cls": 0.001,
+                "tbtMs": 246
+              },
+              {
+                "score": 92,
+                "fcpMs": 1364,
+                "lcpMs": 2591,
+                "cls": 0.001,
+                "tbtMs": 250
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

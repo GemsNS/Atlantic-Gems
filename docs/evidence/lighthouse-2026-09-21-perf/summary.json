@@ -1,0 +1,192 @@
+{
+  "base": "http://localhost:3100 (next start, production build after the U11 changes, scratch DATA_DIR)",
+  "budget": {
+    "lcpMs": 2500,
+    "cls": 0.05
+  },
+  "summary": [
+    {
+      "page": "/",
+      "median": {
+        "run": 3,
+        "file": "home-run3.json",
+        "score": 93,
+        "fcpMs": 1574,
+        "lcpMs": 2958,
+        "cls": 0,
+        "tbtMs": 107,
+        "siMs": 2472,
+        "lighthouse": "13.5.0",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+        "finalUrl": "http://localhost:3100/"
+      },
+      "pass": {
+        "lcp": false,
+        "cls": true
+      },
+      "runs": [
+        {
+          "run": 1,
+          "file": "home-run1.json",
+          "score": 96,
+          "fcpMs": 1525,
+          "lcpMs": 2729,
+          "cls": 0.002,
+          "tbtMs": 40,
+          "siMs": 1817,
+          "lighthouse": "13.5.0",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+          "finalUrl": "http://localhost:3100/"
+        },
+        {
+          "run": 2,
+          "file": "home-run2.json",
+          "score": 89,
+          "fcpMs": 1534,
+          "lcpMs": 3057,
+          "cls": 0.002,
+          "tbtMs": 216,
+          "siMs": 3263,
+          "lighthouse": "13.5.0",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+          "finalUrl": "http://localhost:3100/"
+        },
+        {
+          "run": 3,
+          "file": "home-run3.json",
+          "score": 93,
+          "fcpMs": 1574,
+          "lcpMs": 2958,
+          "cls": 0,
+          "tbtMs": 107,
+          "siMs": 2472,
+          "lighthouse": "13.5.0",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+          "finalUrl": "http://localhost:3100/"
+        }
+      ]
+    },
+    {
+      "page": "/parts",
+      "median": {
+        "run": 2,
+        "file": "parts-run2.json",
+        "score": 88,
+        "fcpMs": 1518,
+        "lcpMs": 2896,
+        "cls": 0.003,
+        "tbtMs": 297,
+        "siMs": 1772,
+        "lighthouse": "13.5.0",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+        "finalUrl": "http://localhost:3100/parts"
+      },
+      "pass": {
+        "lcp": false,
+        "cls": true
+      },
+      "runs": [
+        {
+          "run": 1,
+          "file": "parts-run1.json",
+          "score": 86,
+          "fcpMs": 1524,
+          "lcpMs": 3036,
+          "cls": 0.003,
+          "tbtMs": 328,
+          "siMs": 2172,
+          "lighthouse": "13.5.0",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+          "finalUrl": "http://localhost:3100/parts"
+        },
+        {
+          "run": 2,
+          "file": "parts-run2.json",
+          "score": 88,
+          "fcpMs": 1518,
+          "lcpMs": 2896,
+          "cls": 0.003,
+          "tbtMs": 297,
+          "siMs": 1772,
+          "lighthouse": "13.5.0",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+          "finalUrl": "http://localhost:3100/parts"
+        },
+        {
+          "run": 3,
+          "file": "parts-run3.json",
+          "score": 89,
+          "fcpMs": 1515,
+          "lcpMs": 2804,
+          "cls": 0.003,
+          "tbtMs": 289,
+          "siMs": 1834,
+          "lighthouse": "13.5.0",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+          "finalUrl": "http://localhost:3100/parts"
+        }
+      ]
+    },
+    {
+      "page": "/cart",
+      "median": {
+        "run": 2,
+        "file": "cart-run2.json",
+        "score": 90,
+        "fcpMs": 1384,
+        "lcpMs": 2816,
+        "cls": 0.001,
+        "tbtMs": 272,
+        "siMs": 2163,
+        "lighthouse": "13.5.0",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+        "finalUrl": "http://localhost:3100/cart"
+      },
+      "pass": {
+        "lcp": false,
+        "cls": true
+      },
+      "runs": [
+        {
+          "run": 1,
+          "file": "cart-run1.json",
+          "score": 91,
+          "fcpMs": 1386,
+          "lcpMs": 2718,
+          "cls": 0.001,
+          "tbtMs": 234,
+          "siMs": 2550,
+          "lighthouse": "13.5.0",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+          "finalUrl": "http://localhost:3100/cart"
+        },
+        {
+          "run": 2,
+          "file": "cart-run2.json",
+          "score": 90,
+          "fcpMs": 1384,
+          "lcpMs": 2816,
+          "cls": 0.001,
+          "tbtMs": 272,
+          "siMs": 2163,
+          "lighthouse": "13.5.0",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+          "finalUrl": "http://localhost:3100/cart"
+        },
+        {
+          "run": 3,
+          "file": "cart-run3.json",
+          "score": 89,
+          "fcpMs": 1379,
+          "lcpMs": 2726,
+          "cls": 0.001,
+          "tbtMs": 301,
+          "siMs": 1956,
+          "lighthouse": "13.5.0",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+          "finalUrl": "http://localhost:3100/cart"
+        }
+      ]
+    }
+  ]
+}

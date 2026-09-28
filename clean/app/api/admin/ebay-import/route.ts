@@ -6,19 +6,16 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const form = await readAdminForm(req);
-  if (!form) return adminRedirect(req, "/admin/connect", undefined, "Request rejected. Please try again.");
+  if (!form) return adminRedirect("/admin/connect", { error: "rejected" });
   if (!ebayConfigured()) {
-    return adminRedirect(req, "/admin/connect", undefined, "eBay is not configured on this server.");
+    return adminRedirect("/admin/connect", { error: "ebay-unconfigured" });
   }
   try {
     const r = await importFromEbay();
-    return adminRedirect(
-      req,
-      "/admin/connect",
-      `eBay sync complete: ${r.imported} active, ${r.ended} marked sold, ${r.skipped} skipped.`,
-    );
+    return adminRedirect("/admin/connect", { msg: `ebay-synced:${r.imported}.${r.ended}.${r.skipped}` });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : "unknown error";
-    return adminRedirect(req, "/admin/connect", undefined, `eBay sync failed: ${msg}`);
+    // The reason goes to the server log, not into the URL.
+    console.error("[ebay] sync failed:", err instanceof Error ? err.message : "unknown error");
+    return adminRedirect("/admin/connect", { error: "ebay-failed" });
   }
 }

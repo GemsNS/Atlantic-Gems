@@ -6,31 +6,17 @@ import {
   type PagesMap,
   type SiteMode,
 } from "@/lib/site-pages";
+import { CATEGORIES, CONDITIONS, STATUSES } from "./labels";
 
-export const CATEGORIES = [
-  { value: "ring", label: "Ring" },
-  { value: "necklace", label: "Necklace or pendant" },
-  { value: "bracelet", label: "Bracelet" },
-  { value: "earrings", label: "Earrings" },
-  { value: "brooch", label: "Brooch or pin" },
-  { value: "watch", label: "Watch" },
-  { value: "loose-stone", label: "Loose stone" },
-  { value: "other", label: "Other" },
-] as const;
-export type Category = (typeof CATEGORIES)[number]["value"];
-
-export const CONDITIONS = [
-  { value: "new", label: "New" },
-  { value: "pre-owned", label: "Pre-owned" },
-] as const;
-export type Condition = (typeof CONDITIONS)[number]["value"];
-
-export const STATUSES = [
-  { value: "available", label: "Available" },
-  { value: "reserved", label: "Reserved" },
-  { value: "sold", label: "Sold" },
-] as const;
-export type Status = (typeof STATUSES)[number]["value"];
+// Labels live in a zod-free module so lib/format and client components can import them cheaply.
+export {
+  CATEGORIES,
+  CONDITIONS,
+  STATUSES,
+  type Category,
+  type Condition,
+  type Status,
+} from "./labels";
 
 export const VISIBILITIES = [
   { value: "public", label: "Public (shown in the collection when the shop is open)" },

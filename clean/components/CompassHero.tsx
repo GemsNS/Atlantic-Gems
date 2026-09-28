@@ -17,6 +17,117 @@ function shortestTurn(from: number, to: number) {
   return from + d;
 }
 
+/** A hundredth of a unit on a 600-unit dial is far below a pixel, and rounding
+ *  keeps float noise such as 299.99999999999994 out of the 480 tick ends. */
+const round2 = (n: number) => Math.round(n * 100) / 100;
+
+function tickLine(i: number) {
+  const a = (i / 120) * Math.PI * 2;
+  const inner = 290 - (i % 10 === 0 ? 18 : i % 5 === 0 ? 12 : 7);
+  return (
+    <line
+      key={i}
+      x1={round2(300 + Math.cos(a) * 290)}
+      y1={round2(300 + Math.sin(a) * 290)}
+      x2={round2(300 + Math.cos(a) * inner)}
+      y2={round2(300 + Math.sin(a) * inner)}
+    />
+  );
+}
+
+const TICKS = Array.from({ length: 120 }, (_, i) => i);
+const NUMERALS = Array.from({ length: 12 }, (_, i) => i * 30);
+
+/**
+ * The dial face, bezel and rose never change, so they are built once: React
+ * skips an element it has already rendered, and a needle move re-renders only
+ * the needle. The stroke and type settings sit on groups instead of on each of
+ * the 132 marks, which roughly halves the compass's share of the home page
+ * HTML (plan item U11). Same drawing as before.
+ */
+const DIAL = (
+  <>
+    <defs>
+      <linearGradient id="cBrass" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stopColor="#f1dfae" />
+        <stop offset="0.5" stopColor="#c8a55a" />
+        <stop offset="1" stopColor="#8a6d33" />
+      </linearGradient>
+      <radialGradient id="cDial" cx="0.5" cy="0.45" r="0.6">
+        <stop offset="0" stopColor="#ffffff" />
+        <stop offset="0.7" stopColor="#f4f7fb" />
+        <stop offset="1" stopColor="#e3eaf4" />
+      </radialGradient>
+      <linearGradient id="cNeedleN" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#3b7be0" />
+        <stop offset="1" stopColor="#0b3f8f" />
+      </linearGradient>
+      <linearGradient id="cNeedleS" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#dfe7f1" />
+        <stop offset="1" stopColor="#aebccf" />
+      </linearGradient>
+    </defs>
+
+    <circle cx="300" cy="300" r="262" fill="url(#cDial)" stroke="#1055b8" strokeOpacity="0.25" />
+
+    <g className="compass-bezel">
+      <circle cx="300" cy="300" r="292" fill="none" stroke="#1055b8" strokeOpacity="0.35" strokeWidth="1.5" />
+      <circle cx="300" cy="300" r="268" fill="none" stroke="#1055b8" strokeOpacity="0.15" />
+      <g stroke="#1055b8" strokeOpacity="0.4" strokeWidth="1">
+        {TICKS.filter((i) => i % 10 !== 0).map(tickLine)}
+      </g>
+      <g stroke="#1055b8" strokeOpacity="0.75" strokeWidth="2">
+        {TICKS.filter((i) => i % 10 === 0).map(tickLine)}
+      </g>
+      <g
+        textAnchor="middle"
+        fontSize="13"
+        fontFamily="var(--font-body)"
+        fontWeight="600"
+        fill="#1055b8"
+        fillOpacity="0.7"
+      >
+        {NUMERALS.map((n) => {
+          const a = ((n - 90) * Math.PI) / 180;
+          // Not rounded: the numerals are turned about this point, and a
+          // rounded centre moves their anti-aliasing by a pixel.
+          const x = 300 + Math.cos(a) * 236;
+          const y = 300 + Math.sin(a) * 236;
+          return (
+            <text key={n} x={x} y={y} dominantBaseline="central" transform={`rotate(${n} ${x} ${y})`}>
+              {n === 0 ? "N" : n}
+            </text>
+          );
+        })}
+      </g>
+    </g>
+
+    <g className="compass-rose">
+      {[0, 90, 180, 270].map((deg) => (
+        <g key={`L${deg}`} transform={`rotate(${deg} 300 300)`}>
+          <polygon points="300,120 318,300 300,300" fill="#1055b8" />
+          <polygon points="300,120 282,300 300,300" fill="#3b7be0" />
+        </g>
+      ))}
+      {[45, 135, 225, 315].map((deg) => (
+        <g key={`S${deg}`} transform={`rotate(${deg} 300 300)`}>
+          <polygon points="300,190 313,300 300,300" fill="#0b6a4c" />
+          <polygon points="300,190 287,300 300,300" fill="#1f9a72" />
+        </g>
+      ))}
+      <circle cx="300" cy="300" r="118" fill="none" stroke="#1055b8" strokeOpacity="0.2" />
+    </g>
+  </>
+);
+
+const HUB = (
+  <>
+    <circle cx="300" cy="300" r="16" fill="url(#cBrass)" />
+    <circle cx="300" cy="300" r="6" fill="#7a1024" />
+    <circle cx="298" cy="298" r="2" fill="#ff8aa0" fillOpacity="0.8" />
+  </>
+);
+
 export function CompassHero({
   items,
   idleCaption,
@@ -68,9 +179,6 @@ export function CompassHero({
     pointTo(0);
   };
 
-  const ticks = Array.from({ length: 120 }, (_, i) => i);
-  const numerals = Array.from({ length: 12 }, (_, i) => i * 30);
-
   return (
     <div className="compass-wrap">
       <div
@@ -80,89 +188,7 @@ export function CompassHero({
         onPointerLeave={onLeave}
       >
         <svg viewBox="0 0 600 600" aria-hidden="true" focusable="false">
-          <defs>
-            <linearGradient id="cBrass" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#f1dfae" />
-              <stop offset="0.5" stopColor="#c8a55a" />
-              <stop offset="1" stopColor="#8a6d33" />
-            </linearGradient>
-            <radialGradient id="cDial" cx="0.5" cy="0.45" r="0.6">
-              <stop offset="0" stopColor="#ffffff" />
-              <stop offset="0.7" stopColor="#f4f7fb" />
-              <stop offset="1" stopColor="#e3eaf4" />
-            </radialGradient>
-            <linearGradient id="cNeedleN" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#3b7be0" />
-              <stop offset="1" stopColor="#0b3f8f" />
-            </linearGradient>
-            <linearGradient id="cNeedleS" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#dfe7f1" />
-              <stop offset="1" stopColor="#aebccf" />
-            </linearGradient>
-          </defs>
-
-          <circle cx="300" cy="300" r="262" fill="url(#cDial)" stroke="#1055b8" strokeOpacity="0.25" />
-
-          <g className="compass-bezel">
-            <circle cx="300" cy="300" r="292" fill="none" stroke="#1055b8" strokeOpacity="0.35" strokeWidth="1.5" />
-            <circle cx="300" cy="300" r="268" fill="none" stroke="#1055b8" strokeOpacity="0.15" />
-            {ticks.map((i) => {
-              const a = (i / 120) * Math.PI * 2;
-              const major = i % 10 === 0;
-              const mid = i % 5 === 0;
-              const r1 = 290;
-              const r2 = 290 - (major ? 18 : mid ? 12 : 7);
-              return (
-                <line
-                  key={i}
-                  x1={300 + Math.cos(a) * r1}
-                  y1={300 + Math.sin(a) * r1}
-                  x2={300 + Math.cos(a) * r2}
-                  y2={300 + Math.sin(a) * r2}
-                  stroke="#1055b8"
-                  strokeOpacity={major ? 0.75 : 0.4}
-                  strokeWidth={major ? 2 : 1}
-                />
-              );
-            })}
-            {numerals.map((n) => {
-              const a = ((n - 90) * Math.PI) / 180;
-              const r = 236;
-              return (
-                <text
-                  key={n}
-                  x={300 + Math.cos(a) * r}
-                  y={300 + Math.sin(a) * r}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fontSize="13"
-                  fontFamily="var(--font-body)"
-                  fontWeight="600"
-                  fill="#1055b8"
-                  fillOpacity="0.7"
-                  transform={`rotate(${n} ${300 + Math.cos(a) * r} ${300 + Math.sin(a) * r})`}
-                >
-                  {n === 0 ? "N" : n}
-                </text>
-              );
-            })}
-          </g>
-
-          <g className="compass-rose">
-            {[0, 90, 180, 270].map((deg) => (
-              <g key={`L${deg}`} transform={`rotate(${deg} 300 300)`}>
-                <polygon points="300,120 318,300 300,300" fill="#1055b8" />
-                <polygon points="300,120 282,300 300,300" fill="#3b7be0" />
-              </g>
-            ))}
-            {[45, 135, 225, 315].map((deg) => (
-              <g key={`S${deg}`} transform={`rotate(${deg} 300 300)`}>
-                <polygon points="300,190 313,300 300,300" fill="#0b6a4c" />
-                <polygon points="300,190 287,300 300,300" fill="#1f9a72" />
-              </g>
-            ))}
-            <circle cx="300" cy="300" r="118" fill="none" stroke="#1055b8" strokeOpacity="0.2" />
-          </g>
+          {DIAL}
 
           <g className="compass-needle" style={{ transform: `rotate(${angle}deg)` }}>
             <polygon points="300,92 311,300 289,300" fill="url(#cNeedleN)" />
@@ -170,9 +196,7 @@ export function CompassHero({
             <line x1="300" y1="92" x2="300" y2="508" stroke="#fff" strokeOpacity="0.5" strokeWidth="1" />
           </g>
 
-          <circle cx="300" cy="300" r="16" fill="url(#cBrass)" />
-          <circle cx="300" cy="300" r="6" fill="#7a1024" />
-          <circle cx="298" cy="298" r="2" fill="#ff8aa0" fillOpacity="0.8" />
+          {HUB}
         </svg>
 
         {items.length > 0 ? (

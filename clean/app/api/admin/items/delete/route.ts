@@ -6,9 +6,9 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const form = await readAdminForm(req);
-  if (!form) return adminRedirect(req, "/admin", undefined, "Request rejected. Please try again.");
+  if (!form) return adminRedirect("/admin", { error: "rejected" });
   const id = String(form.get("id") ?? "");
-  if (!/^[a-z0-9-]{4,40}$/.test(id)) return adminRedirect(req, "/admin", undefined, "Invalid item.");
+  if (!/^[a-z0-9-]{4,40}$/.test(id)) return adminRedirect("/admin", { error: "invalid-item" });
   const ok = await deleteItem(id);
-  return adminRedirect(req, "/admin", ok ? "Item deleted." : undefined, ok ? undefined : "Item not found.");
+  return adminRedirect("/admin", ok ? { msg: "item-deleted" } : { error: "item-not-found" });
 }

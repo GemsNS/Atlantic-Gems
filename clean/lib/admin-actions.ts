@@ -1,13 +1,14 @@
 import "server-only";
-import { NextResponse } from "next/server";
+import type { AdminError, AdminMsg } from "@/lib/admin-messages";
+import { seeOther } from "@/lib/http";
 import { csrfValid } from "@/lib/security/csrf";
 
-/** Redirect back into the admin UI with a short status message. */
-export function adminRedirect(req: Request, path: string, msg?: string, error?: string) {
-  const url = new URL(path, req.url);
-  if (msg) url.searchParams.set("msg", msg);
-  if (error) url.searchParams.set("error", error);
-  return NextResponse.redirect(url, 303);
+/**
+ * Redirect back into the admin UI with a status or alert code. Only codes
+ * travel in the URL; lib/admin-messages.ts turns them into words.
+ */
+export function adminRedirect(path: string, flash: { msg?: AdminMsg; error?: AdminError } = {}) {
+  return seeOther(path, { msg: flash.msg, error: flash.error });
 }
 
 /** Reads the form and validates CSRF; returns null when the request must be rejected. */

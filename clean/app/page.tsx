@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { Hero } from "@/components/Hero";
 import { Reveal } from "@/components/Reveal";
-import { GemExplorer } from "@/components/GemExplorer";
-import { AtelierBoard } from "@/components/AtelierBoard";
-import { JewelleryPaths } from "@/components/interactive/JewelleryPaths";
+// Loaded only when the site mode shows them (plan item U11).
+import { AtelierBoard, GemExplorer, JewelleryPaths } from "@/components/HomeSections";
 import { PartsCategoryGrid } from "@/components/parts/PartsCategoryNav";
 import { PART_CATEGORIES, type PartCategory } from "@/lib/parts/types";
 import { listParts, isPublicPart } from "@/lib/parts/store";
@@ -33,7 +32,7 @@ export default async function HomePage() {
       <Hero copy={copy} />
 
       {show("parts") ? (
-        <section className="section" aria-labelledby="parts-title">
+        <section className="section section-defer" aria-labelledby="parts-title">
           <div className="wrap">
             <div className="section-head">
               <h2 id="parts-title" className="section-title">
@@ -60,7 +59,7 @@ export default async function HomePage() {
       ) : null}
 
       {show("jewelleryPaths") ? (
-        <section className="section" aria-labelledby="jewellery-title">
+        <section className="section section-defer" aria-labelledby="jewellery-title">
           <div className="wrap">
             <div className="section-head">
               <h2 id="jewellery-title" className="section-title">
@@ -76,7 +75,7 @@ export default async function HomePage() {
       ) : null}
 
       {show("house") && copy.services.length > 0 ? (
-        <section className="section section-alt" aria-labelledby="house-title">
+        <section className="section section-alt section-defer" aria-labelledby="house-title">
           <div className="wrap">
             <div className="section-head">
               <h2 id="house-title" className="section-title">
@@ -102,7 +101,7 @@ export default async function HomePage() {
       ) : null}
 
       {show("atelier") ? (
-        <section className="section" aria-labelledby="atelier-title">
+        <section className="section section-defer" aria-labelledby="atelier-title">
           <div className="wrap">
             <div className="section-head">
               <h2 id="atelier-title" className="section-title">
@@ -118,7 +117,7 @@ export default async function HomePage() {
       ) : null}
 
       {show("gemstones") ? (
-        <section className="section section-alt" aria-labelledby="stones-title">
+        <section className="section section-alt section-defer" aria-labelledby="stones-title">
           <div className="wrap">
             <div className="section-head">
               <h2 id="stones-title" className="section-title">
@@ -133,7 +132,7 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      <section className="section" aria-labelledby="visit-title">
+      <section className="section section-defer" aria-labelledby="visit-title">
         <div className="wrap two-col">
           <div>
             <h2 id="visit-title" className="section-title">

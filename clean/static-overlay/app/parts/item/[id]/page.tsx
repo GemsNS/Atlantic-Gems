@@ -64,8 +64,9 @@ export default async function PartDetailStaticPage({
             <div className="part-detail-stage">
               <PartMedia category={part.category} artKey={part.art} seed={part.sku} size="hero" alt={part.title} />
               <p className="gallery-hint">
-                Drawn plate — {visual.label.toLowerCase()}. The picture stands in for the line while
-                the demo catalogue is up; photographs follow as lines are confirmed.
+                {part.demo
+                  ? `Drawn plate — ${visual.label.toLowerCase()}. The picture stands in for the line while the demo catalogue is up; photographs follow as lines are confirmed.`
+                  : `Drawn plate — ${visual.label.toLowerCase()}. Ask us for a photograph of the line.`}
               </p>
             </div>
 

@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
 import { csrfValid } from "@/lib/security/csrf";
-import { addToCart } from "@/lib/cart";
+import { addToCart, cartAvailable } from "@/lib/cart";
 import { getPart, isPublicPart } from "@/lib/parts/store";
 import { getSettings } from "@/lib/inventory/store";
+import { seeOther } from "@/lib/http";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,18 +10,27 @@ export const dynamic = "force-dynamic";
 export async function POST(req: Request) {
   const settings = await getSettings();
   if (!settings.pages.parts) {
-    return NextResponse.redirect(new URL("/", req.url), 303);
+    return seeOther("/");
+  }
+  if (!cartAvailable()) {
+    return seeOther("/cart?error=unavailable");
   }
   const form = await req.formData().catch(() => null);
   if (!form || !csrfValid(req, String(form.get("csrf") ?? ""))) {
-    return NextResponse.redirect(new URL("/parts?error=csrf", req.url), 303);
+    return seeOther("/cart?error=csrf");
   }
   const partId = String(form.get("partId") ?? "");
   const qty = Math.max(1, Math.min(999, Number(form.get("qty") ?? 1) || 1));
-  const part = await getPart(partId);
+  let part;
+  try {
+    part = await getPart(partId);
+  } catch {
+    // An unreadable parts.json (logged by readJson): the tray is left as it is.
+    return seeOther("/cart?error=store");
+  }
   if (!part || !isPublicPart(part)) {
-    return NextResponse.redirect(new URL("/parts", req.url), 303);
+    return seeOther("/parts");
   }
   await addToCart(partId, qty);
-  return NextResponse.redirect(new URL("/cart", req.url), 303);
+  return seeOther("/cart");
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { PartCard } from "@/components/parts/PartCard";
 import { PartMedia } from "@/components/parts/PartMedia";
 import { StockGauge } from "@/components/parts/StockGauge";
@@ -13,7 +13,9 @@ import {
   SearchIcon,
   SlidersIcon,
 } from "@/components/shop/Icons";
-import { PART_CATEGORIES, partCategoryLabel, type Part, type PartCategory } from "@/lib/parts/types";
+// Labels come from the zod-free module; the schema in lib/parts/types stays on the server.
+import { PART_CATEGORIES, partCategoryLabel, type PartCategory } from "@/lib/parts/categories";
+import type { Part } from "@/lib/parts/types";
 import { formatMoney } from "@/lib/format";
 import { stockNote, stockTone } from "@/lib/parts/visuals";
 
@@ -31,6 +33,9 @@ const SORTS: { value: Sort; label: string }[] = [
 function haystack(p: Part): string {
   return `${p.title} ${p.sku} ${p.brand} ${p.description} ${partCategoryLabel(p.category)}`.toLowerCase();
 }
+
+// When a search narrows the list, the cards that stay are not rendered again.
+const ShelfCard = memo(PartCard);
 
 /**
  * The counter itself: search, brand and category facets over a tray of parts,
@@ -58,6 +63,55 @@ export function PartsBrowser({
   const [view, setView] = useState<View>("tray");
   const [railOpen, setRailOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement | null>(null);
+  const restored = useRef(false);
+
+  // Filters live in the query string so the back button, a reload or a shared
+  // link lands on the same view. Read once on mount; `useSearchParams` is
+  // avoided on purpose so the static export needs no Suspense boundary.
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    const tray = sp.get("tray");
+    if (!fixedCategory && tray && PART_CATEGORIES.some((c) => c.value === tray)) setCategory(tray);
+    // Only a brand that is on the counter: the pill must never show text a
+    // link made up.
+    const b = sp.get("brand");
+    if (b && parts.some((p) => (p.brand || "Unbranded") === b)) setBrand(b);
+    const qq = sp.get("q");
+    if (qq) setQ(qq.slice(0, 120));
+    if (sp.get("stock") === "1") setInStock(true);
+    const s = sp.get("sort");
+    if (s && SORTS.some((o) => o.value === s)) setSort(s as Sort);
+    const v = sp.get("view");
+    if (v === "tray" || v === "ledger") setView(v);
+    restored.current = true;
+    // `parts` comes from the server and keeps its identity, so this still runs
+    // once; were it to change, reading the URL again (kept in step below) is
+    // harmless.
+  }, [fixedCategory, parts]);
+
+  useEffect(() => {
+    if (!restored.current) return;
+    const t = window.setTimeout(() => {
+      const url = new URL(window.location.href);
+      const set = (key: string, value: string | null) => {
+        if (value) url.searchParams.set(key, value);
+        else url.searchParams.delete(key);
+      };
+      set("q", q.trim() || null);
+      set("tray", fixedCategory || category === "all" ? null : category);
+      set("brand", brand === "all" ? null : brand);
+      set("stock", inStock ? "1" : null);
+      set("sort", sort === "title" ? null : sort);
+      set("view", view === "tray" ? null : view);
+      if (url.href === window.location.href) return;
+      try {
+        window.history.replaceState(window.history.state, "", url);
+      } catch {
+        // Some browsers throttle history writes; the view still works without it.
+      }
+    }, 250);
+    return () => window.clearTimeout(t);
+  }, [q, category, brand, inStock, sort, view, fixedCategory]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -74,34 +128,61 @@ export function PartsBrowser({
 
   const needle = q.trim().toLowerCase();
 
+  // The list and the counts follow the controls a beat behind: a keystroke or a
+  // toggle paints straight away and the grid re-renders in the background, so
+  // typing never waits on thirty cards (plan item U11).
+  const listNeedle = useDeferredValue(needle);
+  const listCategory = useDeferredValue(category);
+  const listBrand = useDeferredValue(brand);
+  const listInStock = useDeferredValue(inStock);
+  const listSort = useDeferredValue(sort);
+  const listView = useDeferredValue(view);
+
+  const haystacks = useMemo(() => new Map(parts.map((p) => [p.id, haystack(p)])), [parts]);
+
   const tests = useMemo(
     () =>
       ({
-        q: (p: Part) => !needle || haystack(p).includes(needle),
-        category: (p: Part) => category === "all" || p.category === category,
-        brand: (p: Part) => brand === "all" || (p.brand || "Unbranded") === brand,
-        inStock: (p: Part) => !inStock || p.stockQty > 0,
+        q: (p: Part) => !listNeedle || (haystacks.get(p.id) ?? "").includes(listNeedle),
+        category: (p: Part) => listCategory === "all" || p.category === listCategory,
+        brand: (p: Part) => listBrand === "all" || (p.brand || "Unbranded") === listBrand,
+        inStock: (p: Part) => !listInStock || p.stockQty > 0,
       }) satisfies Record<Facet, (p: Part) => boolean>,
-    [needle, category, brand, inStock],
+    [haystacks, listNeedle, listCategory, listBrand, listInStock],
   );
 
-  const passes = useMemo(() => {
-    const keys = Object.keys(tests) as Facet[];
-    return (p: Part, skip?: Facet) => keys.every((k) => k === skip || tests[k](p));
-  }, [tests]);
-
   const shown = useMemo(() => {
-    const list = parts.filter((p) => passes(p));
+    const list = parts.filter((p) => tests.q(p) && tests.category(p) && tests.brand(p) && tests.inStock(p));
     const price = (p: Part) => (p.price === null ? Number.POSITIVE_INFINITY : p.price);
-    if (sort === "price-asc") list.sort((a, b) => price(a) - price(b));
-    else if (sort === "price-desc") list.sort((a, b) => price(b) - price(a));
-    else if (sort === "stock") list.sort((a, b) => b.stockQty - a.stockQty);
+    if (listSort === "price-asc") list.sort((a, b) => price(a) - price(b));
+    else if (listSort === "price-desc") list.sort((a, b) => price(b) - price(a));
+    else if (listSort === "stock") list.sort((a, b) => b.stockQty - a.stockQty);
     else list.sort((a, b) => a.title.localeCompare(b.title));
     return list;
-  }, [parts, passes, sort]);
+  }, [parts, tests, listSort]);
 
-  const countIf = (skip: Facet, match: (p: Part) => boolean) =>
-    parts.filter((p) => passes(p, skip) && match(p)).length;
+  // Facet counts in one pass: a line counts towards a tray (or a brand) when it
+  // passes every other active filter.
+  const counts = useMemo(() => {
+    const byCategory = new Map<string, number>();
+    const byBrand = new Map<string, number>();
+    let everyTray = 0;
+    for (const p of parts) {
+      const inSearch = tests.q(p);
+      const inTray = tests.category(p);
+      const inBrand = tests.brand(p);
+      const onShelf = tests.inStock(p);
+      if (inSearch && inBrand && onShelf) {
+        everyTray += 1;
+        byCategory.set(p.category, (byCategory.get(p.category) ?? 0) + 1);
+      }
+      if (inSearch && inTray && onShelf) {
+        const b = p.brand || "Unbranded";
+        byBrand.set(b, (byBrand.get(b) ?? 0) + 1);
+      }
+    }
+    return { everyTray, byCategory, byBrand };
+  }, [parts, tests]);
 
   const cats = useMemo(
     () => PART_CATEGORIES.filter((c) => parts.some((p) => p.category === c.value)),
@@ -111,6 +192,8 @@ export function PartsBrowser({
     const names = new Set(parts.map((p) => p.brand || "Unbranded"));
     return [...names].sort((a, b) => a.localeCompare(b));
   }, [parts]);
+  // The demo note goes once the seed lines are retired.
+  const hasDemo = useMemo(() => parts.some((p) => p.demo), [parts]);
 
   const applied: { key: string; label: string; clear: () => void }[] = [];
   if (category !== "all")
@@ -119,50 +202,23 @@ export function PartsBrowser({
   if (inStock) applied.push({ key: "s", label: "In stock only", clear: () => setInStock(false) });
   if (needle) applied.push({ key: "q", label: `“${q.trim()}”`, clear: () => setQ("") });
 
-  const resetAll = () => {
+  // State setters never change, so this stays the same function between renders.
+  const resetAll = useCallback(() => {
     setQ("");
     setCategory("all");
     setBrand("all");
     setInStock(false);
-  };
+  }, []);
 
   const showRail = (!fixedCategory && cats.length > 1) || brands.length > 1;
-  const settleKey = `${category}|${brand}|${inStock}|${sort}|${view}`;
+  // Only a filter or sort change remounts the list so it settles in. A search
+  // updates the lines in place, and the layout switch swaps the list element
+  // whatever the key.
+  const settleKey = `${listCategory}|${listBrand}|${listInStock}|${listSort}`;
   const quickAdd = canQuote && Boolean(csrf);
 
-  const results =
-    shown.length === 0 ? (
-      <div className="empty-state">
-        <NoResultIcon />
-        <h3>Nothing on this tray matches</h3>
-        <p>
-          The counter list is not everything we can get. Send the reference or a photograph of the
-          part and we will price it.
-        </p>
-        <div className="empty-actions">
-          {applied.length ? (
-            <button type="button" className="btn btn-ghost" onClick={resetAll}>
-              Clear filters
-            </button>
-          ) : null}
-          <Link href="/contact" className="btn btn-primary">
-            Ask for an unlisted part
-          </Link>
-        </div>
-      </div>
-    ) : view === "tray" ? (
-      <div className="part-grid is-settling" key={settleKey}>
-        {shown.map((p) => (
-          <PartCard key={p.id} part={p} csrf={csrf} showQuickAdd={quickAdd} />
-        ))}
-      </div>
-    ) : (
-      <div className="inv-ledger is-settling" key={settleKey}>
-        {shown.map((p) => (
-          <PartLedgerRow key={p.id} part={p} csrf={csrf} quickAdd={quickAdd} />
-        ))}
-      </div>
-    );
+  // Whether the list on screen is filtered, from the same deferred values as the list.
+  const listFiltered = listCategory !== "all" || listBrand !== "all" || listInStock || listNeedle !== "";
 
   return (
     <div className={showRail ? "browse" : undefined}>
@@ -193,7 +249,7 @@ export function PartsBrowser({
                   <li>
                     <button type="button" aria-pressed={category === "all"} onClick={() => setCategory("all")}>
                       Everything
-                      <span className="chip-n">{countIf("category", () => true)}</span>
+                      <span className="chip-n">{counts.everyTray}</span>
                     </button>
                   </li>
                   {cats.map((c) => (
@@ -204,7 +260,7 @@ export function PartsBrowser({
                         onClick={() => setCategory(category === c.value ? "all" : c.value)}
                       >
                         {c.label}
-                        <span className="chip-n">{countIf("category", (p) => p.category === c.value)}</span>
+                        <span className="chip-n">{counts.byCategory.get(c.value) ?? 0}</span>
                       </button>
                     </li>
                   ))}
@@ -224,7 +280,7 @@ export function PartsBrowser({
                         onClick={() => setBrand(brand === b ? "all" : b)}
                       >
                         {b}
-                        <span className="chip-n">{countIf("brand", (p) => (p.brand || "Unbranded") === b)}</span>
+                        <span className="chip-n">{counts.byBrand.get(b) ?? 0}</span>
                       </button>
                     </li>
                   ))}
@@ -241,8 +297,8 @@ export function PartsBrowser({
             </div>
 
             <p className="rail-note">
-              Trade accounts are priced separately. Demo lines are marked while the live list is
-              confirmed.
+              Trade accounts are priced separately.
+              {hasDemo ? " Demo lines are marked while the live list is confirmed." : null}
             </p>
           </aside>
         </>
@@ -323,16 +379,113 @@ export function PartsBrowser({
             <strong>{shown.length}</strong> {shown.length === 1 ? "line" : "lines"}
             {shown.length !== parts.length ? ` of ${parts.length}` : ""}
           </span>
-          <span>{view === "ledger" ? "Price list" : "Tray view"}</span>
+          <span>{listView === "ledger" ? "Price list" : "Tray view"}</span>
         </p>
 
-        {results}
+        <PartsResults
+          shown={shown}
+          view={listView}
+          settleKey={settleKey}
+          csrf={csrf}
+          quickAdd={quickAdd}
+          filtered={listFiltered}
+          onReset={resetAll}
+          empty={parts.length === 0}
+        />
       </div>
     </div>
   );
 }
 
-function PartLedgerRow({ part, csrf, quickAdd }: { part: Part; csrf?: string; quickAdd: boolean }) {
+/**
+ * The list, in its own Suspense boundary: React hydrates the search and the
+ * toggles first and the cards after, so a tap on the controls never waits for
+ * thirty cards. It is memoised so a keystroke or a toggle leaves it alone until
+ * the deferred values catch up; new props on a boundary that has not finished
+ * hydrating would make React hydrate it on the spot. Nothing in here suspends,
+ * so the fallback is never shown.
+ */
+const PartsResults = memo(function PartsResults({
+  shown,
+  view,
+  settleKey,
+  csrf,
+  quickAdd,
+  filtered,
+  onReset,
+  empty,
+}: {
+  shown: Part[];
+  view: View;
+  settleKey: string;
+  csrf?: string;
+  quickAdd: boolean;
+  filtered: boolean;
+  onReset: () => void;
+  /** Nothing is listed at all, so no filter can be to blame. */
+  empty: boolean;
+}) {
+  return (
+    <Suspense fallback={null}>
+      {empty ? (
+        <div className="empty-state">
+          <NoResultIcon />
+          <h3>Nothing is listed here right now</h3>
+          <p>
+            Stones and parts are still sourced to the job. Send the reference, calibre or a
+            photograph and we will price it.
+          </p>
+          <div className="empty-actions">
+            <Link href="/contact" className="btn btn-primary">
+              Ask us to source it
+            </Link>
+          </div>
+        </div>
+      ) : shown.length === 0 ? (
+        <div className="empty-state">
+          <NoResultIcon />
+          <h3>Nothing on this tray matches</h3>
+          <p>
+            The counter list is not everything we can get. Send the reference or a photograph of the
+            part and we will price it.
+          </p>
+          <div className="empty-actions">
+            {filtered ? (
+              <button type="button" className="btn btn-ghost" onClick={onReset}>
+                Clear filters
+              </button>
+            ) : null}
+            <Link href="/contact" className="btn btn-primary">
+              Ask for an unlisted part
+            </Link>
+          </div>
+        </div>
+      ) : view === "tray" ? (
+        <div className="part-grid is-settling" key={settleKey}>
+          {shown.map((p) => (
+            <ShelfCard key={p.id} part={p} csrf={csrf} showQuickAdd={quickAdd} />
+          ))}
+        </div>
+      ) : (
+        <div className="inv-ledger is-settling" key={settleKey}>
+          {shown.map((p) => (
+            <PartLedgerRow key={p.id} part={p} csrf={csrf} quickAdd={quickAdd} />
+          ))}
+        </div>
+      )}
+    </Suspense>
+  );
+});
+
+const PartLedgerRow = memo(function PartLedgerRow({
+  part,
+  csrf,
+  quickAdd,
+}: {
+  part: Part;
+  csrf?: string;
+  quickAdd: boolean;
+}) {
   const tone = stockTone(part.stockQty, part.reorderPoint);
   const out = tone === "out";
   return (
@@ -342,12 +495,15 @@ function PartLedgerRow({ part, csrf, quickAdd }: { part: Part; csrf?: string; qu
       </span>
       <div className="led-main">
         <h3 className="led-title">
-          <Link href={`/parts/item/${part.id}`}>{part.title}</Link>
+          <Link href={`/parts/item/${part.id}`} prefetch={false}>
+            {part.title}
+          </Link>
         </h3>
         <p className="led-meta">
           <span className="led-ref">{part.sku}</span>
           {part.brand ? <span>{part.brand}</span> : null}
           <span>Pack {part.packSize}</span>
+          {part.demo ? <span>Demo price</span> : null}
           <StockGauge
             qty={part.stockQty}
             reorder={part.reorderPoint}
@@ -368,11 +524,11 @@ function PartLedgerRow({ part, csrf, quickAdd }: { part: Part; csrf?: string; qu
             </button>
           </form>
         ) : (
-          <Link href={`/parts/item/${part.id}`} className="btn btn-ghost btn-small">
+          <Link href={`/parts/item/${part.id}`} className="btn btn-ghost btn-small" prefetch={false}>
             {out ? "Lead time" : "View"}
           </Link>
         )}
       </div>
     </article>
   );
-}
+});

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Part } from "@/lib/parts/types";
-import { partCategoryLabel } from "@/lib/parts/types";
+import { partCategoryLabel } from "@/lib/parts/categories";
 import { formatMoney } from "@/lib/format";
 import { stockNote, stockTone } from "@/lib/parts/visuals";
 import { PartMedia } from "@/components/parts/PartMedia";
@@ -22,9 +22,13 @@ export function PartCard({
   const tone = stockTone(part.stockQty, part.reorderPoint);
   const out = tone === "out";
 
+  // No viewport prefetch: part pages render per request and have no loading
+  // boundary, so a prefetch only brings back the route tree (about 200 bytes),
+  // yet costs a request per visible card while the counter hydrates. The page
+  // is fetched on click either way (plan item U11).
   return (
     <article className={`part-card${out ? " is-out" : ""}`}>
-      <Link href={`/parts/item/${part.id}`} className="part-card-link">
+      <Link href={`/parts/item/${part.id}`} className="part-card-link" prefetch={false}>
         <div className="part-card-media">
           <PartMedia category={part.category} artKey={part.art} seed={part.sku} size="md" alt={part.title} />
           {part.demo ? <span className="part-chip part-chip-demo">Demo</span> : null}
@@ -67,6 +71,7 @@ export function PartCard({
           <Link
             href={`/contact?brief=${encodeURIComponent(`Lead time for ${part.sku} — ${part.title}`)}`}
             className="btn btn-ghost btn-small"
+            prefetch={false}
           >
             Ask lead time
           </Link>

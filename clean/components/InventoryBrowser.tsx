@@ -14,7 +14,8 @@ import {
   SearchIcon,
   SlidersIcon,
 } from "@/components/shop/Icons";
-import { CATEGORIES, CONDITIONS, type InventoryItem } from "@/lib/inventory/types";
+import type { InventoryItem } from "@/lib/inventory/types";
+import { CATEGORIES, CONDITIONS } from "@/lib/inventory/labels";
 import { categoryLabel, conditionLabel, formatPrice } from "@/lib/format";
 import {
   PRICE_BANDS,

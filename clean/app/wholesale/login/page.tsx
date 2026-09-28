@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
+import { FocusOnArrival } from "@/components/FocusOnArrival";
 import { safeNextPath } from "@/lib/validation";
 
 export const metadata: Metadata = {
@@ -36,19 +37,25 @@ export default async function WholesaleLoginPage({
           </div>
 
           {error === "1" ? (
-            <div className="form-status err" role="alert">
+            <FocusOnArrival className="form-status err" role="alert">
               That access phrase was not recognised.
-            </div>
+            </FocusOnArrival>
+          ) : null}
+          {error === "expired" ? (
+            <FocusOnArrival className="form-status err" role="alert">
+              The sign-in form had been open a long time, so the phrase was not checked. The form is
+              ready now: enter the phrase again.
+            </FocusOnArrival>
           ) : null}
           {error === "rate" ? (
-            <div className="form-status err" role="alert">
+            <FocusOnArrival className="form-status err" role="alert">
               Too many attempts. Please wait a few minutes and try again.
-            </div>
+            </FocusOnArrival>
           ) : null}
           {error === "config" ? (
-            <div className="form-status err" role="alert">
+            <FocusOnArrival className="form-status err" role="alert">
               Trade access is not available right now. Please contact us directly.
-            </div>
+            </FocusOnArrival>
           ) : null}
 
           <form className="form" action="/api/wholesale/login" method="post">

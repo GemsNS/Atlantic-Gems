@@ -3,18 +3,48 @@ import { cookies } from "next/headers";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import { cartLineSchema, type CartLine } from "@/lib/integrations/types";
+import { isPublicPart } from "@/lib/parts/store";
+import type { Part } from "@/lib/parts/types";
 
 const COOKIE = "ag_cart";
 const cartSchema = z.object({
   lines: z.array(cartLineSchema).max(100),
 });
 
-function secret(): string {
-  return process.env.SESSION_SECRET || "dev-cart-secret-change-me";
+const DEV_SECRET = "dev-cart-secret-change-me";
+let warned = false;
+
+/**
+ * The key the tray cookie is signed with. Outside production a fixed
+ * development key keeps local work simple; in production there is no
+ * fallback, because anyone who knows that key could forge a tray.
+ */
+function secret(): string | null {
+  const configured = process.env.SESSION_SECRET;
+  if (configured) return configured;
+  if (process.env.NODE_ENV !== "production") return DEV_SECRET;
+  if (!warned) {
+    warned = true;
+    console.error("[cart] SESSION_SECRET is not set; the quote tray is switched off until it is.");
+  }
+  return null;
+}
+
+/** False in production when SESSION_SECRET is missing: the tray cannot be kept safely. */
+export function cartAvailable(): boolean {
+  return process.env.STATIC_EXPORT === "1" || secret() !== null;
+}
+
+export class CartUnavailableError extends Error {
+  constructor() {
+    super("The quote tray is unavailable: SESSION_SECRET is not set.");
+  }
 }
 
 function sign(payload: string): string {
-  return createHmac("sha256", secret()).update(payload).digest("hex");
+  const key = secret();
+  if (!key) throw new CartUnavailableError();
+  return createHmac("sha256", key).update(payload).digest("hex");
 }
 
 function encode(lines: CartLine[]): string {
@@ -23,7 +53,7 @@ function encode(lines: CartLine[]): string {
 }
 
 function decode(raw: string | undefined): CartLine[] {
-  if (!raw) return [];
+  if (!raw || !secret()) return [];
   const [body, sig] = raw.split(".");
   if (!body || !sig) return [];
   const expected = sign(body);
@@ -92,4 +122,29 @@ export async function removeFromCart(partId: string): Promise<CartLine[]> {
   const lines = (await getCart()).filter((l) => l.partId !== partId);
   await setCart(lines);
   return lines;
+}
+
+export interface CartRow {
+  line: CartLine;
+  part: Part;
+}
+
+/**
+ * Splits the tray into lines that can still be quoted (the part exists and is
+ * public) and lines that cannot, so every surface counts the same thing and
+ * nothing hidden or deleted is quoted without the customer seeing it.
+ */
+export function resolveCart(
+  lines: CartLine[],
+  parts: Part[],
+): { rows: CartRow[]; unavailable: { line: CartLine; title: string | null }[] } {
+  const byId = new Map(parts.map((p) => [p.id, p]));
+  const rows: CartRow[] = [];
+  const unavailable: { line: CartLine; title: string | null }[] = [];
+  for (const line of lines) {
+    const part = byId.get(line.partId);
+    if (part && isPublicPart(part)) rows.push({ line, part });
+    else unavailable.push({ line, title: part ? part.title : null });
+  }
+  return { rows, unavailable };
 }

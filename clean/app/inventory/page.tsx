@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache, Suspense } from "react";
 import { InventoryBrowser } from "@/components/InventoryBrowser";
 import { NoResultIcon } from "@/components/shop/Icons";
+import { GridSkeleton, StatsSkeleton } from "@/components/SectionSkeleton";
 import { getSettings, listItems } from "@/lib/inventory/store";
 import { collectionIsPublic, isVisibleToPublic, type InventoryItem } from "@/lib/inventory/types";
 import { isNewArrival } from "@/lib/inventory/facets";
@@ -26,6 +28,17 @@ function lowestPrice(items: InventoryItem[]): number | null {
   return prices.length ? Math.min(...prices) : null;
 }
 
+/** One read of the store per request, shared by the sections below. */
+const loadCollection = cache(async () =>
+  (await listItems()).filter((i) => isVisibleToPublic(i) && i.status !== "sold"),
+);
+
+/**
+ * The visibility checks run first and the items stream behind skeletons.
+ * `notFound()` must stay above the `<Suspense>` boundaries, and there must be
+ * no route `loading.tsx` here: either would start the stream before it runs
+ * and turn a real 404 into a 200 (plan item U6).
+ */
 export default async function InventoryPage() {
   const settings = await getSettings();
   if (!settings.pages.collection) notFound();
@@ -67,11 +80,6 @@ export default async function InventoryPage() {
     );
   }
 
-  const items = (await listItems()).filter((i) => isVisibleToPublic(i) && i.status !== "sold");
-  const categories = new Set(items.map((i) => i.category)).size;
-  const justIn = items.filter((i) => isNewArrival(i)).length;
-  const from = lowestPrice(items);
-
   return (
     <>
       <section className="shop-hero">
@@ -84,28 +92,9 @@ export default async function InventoryPage() {
               stones as measured, treatments and reports stated. Prices in Canadian dollars unless
               marked otherwise.
             </p>
-            <ul className="shop-stats" aria-label="Collection at a glance">
-              <li>
-                <b>{items.length}</b>
-                <span>{items.length === 1 ? "piece" : "pieces"}</span>
-              </li>
-              <li>
-                <b>{categories || "—"}</b>
-                <span>categories</span>
-              </li>
-              {justIn > 0 ? (
-                <li>
-                  <b>{justIn}</b>
-                  <span>just in</span>
-                </li>
-              ) : null}
-              {from !== null ? (
-                <li>
-                  <b>{`$${from.toLocaleString("en-CA", { maximumFractionDigits: 0 })}`}</b>
-                  <span>from</span>
-                </li>
-              ) : null}
-            </ul>
+            <Suspense fallback={<StatsSkeleton />}>
+              <CollectionStats />
+            </Suspense>
             <p className="shop-hero-note">
               Viewing is by appointment. Save pieces as you browse and send them to us as one
               enquiry — nothing leaves your browser until you do.
@@ -116,9 +105,46 @@ export default async function InventoryPage() {
 
       <section className="section" style={{ borderTop: 0 }}>
         <div className="wrap">
-          <InventoryBrowser items={items} />
+          <Suspense fallback={<GridSkeleton cards={8} label="Loading the collection" />}>
+            <CollectionBrowser />
+          </Suspense>
         </div>
       </section>
     </>
   );
+}
+
+async function CollectionStats() {
+  const items = await loadCollection();
+  const categories = new Set(items.map((i) => i.category)).size;
+  const justIn = items.filter((i) => isNewArrival(i)).length;
+  const from = lowestPrice(items);
+  return (
+    <ul className="shop-stats" aria-label="Collection at a glance">
+      <li>
+        <b>{items.length}</b>
+        <span>{items.length === 1 ? "piece" : "pieces"}</span>
+      </li>
+      <li>
+        <b>{categories || "—"}</b>
+        <span>categories</span>
+      </li>
+      {justIn > 0 ? (
+        <li>
+          <b>{justIn}</b>
+          <span>just in</span>
+        </li>
+      ) : null}
+      {from !== null ? (
+        <li>
+          <b>{`$${from.toLocaleString("en-CA", { maximumFractionDigits: 0 })}`}</b>
+          <span>from</span>
+        </li>
+      ) : null}
+    </ul>
+  );
+}
+
+async function CollectionBrowser() {
+  return <InventoryBrowser items={await loadCollection()} />;
 }

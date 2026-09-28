@@ -5,18 +5,51 @@ import { newId } from "@/lib/inventory/types";
 import { partSchema, type Part, type PartCategory } from "./types";
 import { SEED_PARTS } from "./seed";
 
-const PARTS_FILE = path.join(DATA_DIR, "parts.json");
+export const PARTS_FILE = path.join(DATA_DIR, "parts.json");
 
+/**
+ * `{ seeded: true, items }` is the catalogue, empty or not. An unflagged file
+ * with no lines (`{}`, `{ items: [] }`) is a first run. Anything else (an
+ * array or null, items that are not a list, unflagged lines) would be lost to
+ * the demo seed, so it is unreadable rather than unseeded.
+ */
+export function isPartsFile(value: unknown): boolean {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+  const { seeded, items } = value as { seeded?: unknown; items?: unknown };
+  if (items !== undefined && !Array.isArray(items)) return false;
+  if (seeded === true) return true;
+  const noLines = items === undefined || (Array.isArray(items) && items.length === 0);
+  return noLines && Object.keys(value).every((k) => k === "seeded" || k === "items");
+}
+
+/**
+ * The lines in a file that has been seeded, or null when it never has been.
+ * `seeded: true` with no items is a catalogue staff emptied on purpose (the
+ * demo lines retired), not a first run, so it stays empty. A file that is
+ * there but unreadable throws StoreReadError: pages show the error page, and
+ * seeding and every write, which read through here, are refused.
+ */
+async function readSeeded(): Promise<Part[] | null> {
+  const raw = await readJson<{ items?: unknown[]; seeded?: unknown } | null>(
+    PARTS_FILE,
+    null,
+    isPartsFile,
+  );
+  if (raw?.seeded !== true) return null;
+  const entries = raw.items ?? [];
+  return entries.flatMap((entry) => {
+    const parsed = partSchema.safeParse(entry);
+    return parsed.success ? [parsed.data] : [];
+  });
+}
+
+/**
+ * Writes the demo catalogue on first run only: no file yet, or an unflagged
+ * one with no lines. Callers hold the write queue.
+ */
 async function ensureSeeded(): Promise<Part[]> {
-  const raw = await readJson<{ items?: unknown[]; seeded?: boolean }>(PARTS_FILE, {});
-  if (raw.seeded && Array.isArray(raw.items) && raw.items.length > 0) {
-    const items: Part[] = [];
-    for (const entry of raw.items) {
-      const parsed = partSchema.safeParse(entry);
-      if (parsed.success) items.push(parsed.data);
-    }
-    return items;
-  }
+  const existing = await readSeeded();
+  if (existing) return existing;
   const now = new Date().toISOString();
   const items = SEED_PARTS.map((p) =>
     partSchema.parse({
@@ -30,11 +63,16 @@ async function ensureSeeded(): Promise<Part[]> {
   return items;
 }
 
+/**
+ * Reads skip the write queue: writes are atomic renames, so a read sees the
+ * old file or the new one, never half of either. Only first-run seeding goes
+ * through the queue, and an empty seeded catalogue is read like any other.
+ * This keeps page renders (the header reads parts whenever the tray has
+ * lines) from waiting behind CRM or inventory writes.
+ */
 export async function listParts(): Promise<Part[]> {
-  return serialize(async () => {
-    const items = await ensureSeeded();
-    return items.sort((a, b) => a.title.localeCompare(b.title));
-  });
+  const items = (await readSeeded()) ?? (await serialize(ensureSeeded));
+  return items.sort((a, b) => a.title.localeCompare(b.title));
 }
 
 export async function listPartsByCategory(category: PartCategory): Promise<Part[]> {

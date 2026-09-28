@@ -1,24 +1,8 @@
 import { z } from "zod";
+import { PART_CATEGORIES } from "./categories";
 
-export const PART_CATEGORIES = [
-  {
-    value: "rough-gems",
-    label: "Rough Gems",
-    blurb: "Uncut crystals and mine-run parcels for cutters, setters and collectors.",
-  },
-  {
-    value: "loose-diamonds",
-    label: "Loose Diamonds",
-    blurb: "Loose brilliants and step cuts, quoted with the grading we hold on file.",
-  },
-  { value: "watch-parts", label: "Watch Parts", blurb: "Hands, stems, crowns, springs and case parts." },
-  { value: "movements", label: "Watch Movements", blurb: "Mechanical and quartz calibres for repair and build." },
-  { value: "crystals", label: "Watch Crystals", blurb: "Mineral, acrylic and sapphire crystals." },
-  { value: "batteries", label: "Batteries", blurb: "Watch batteries including Renata cells." },
-  { value: "straps", label: "Straps", blurb: "Leather and specialty straps." },
-] as const;
-
-export type PartCategory = (typeof PART_CATEGORIES)[number]["value"];
+// Labels live in a zod-free module so client components can import them cheaply.
+export { PART_CATEGORIES, partCategoryLabel, type PartCategory } from "./categories";
 
 const enumValues = <T extends readonly { value: string }[]>(list: T) =>
   list.map((x) => x.value) as [T[number]["value"], ...T[number]["value"][]];
@@ -48,7 +32,3 @@ export const partSchema = z.object({
 });
 
 export type Part = z.infer<typeof partSchema>;
-
-export function partCategoryLabel(value: string): string {
-  return PART_CATEGORIES.find((c) => c.value === value)?.label ?? value;
-}

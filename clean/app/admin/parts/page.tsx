@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { listParts } from "@/lib/parts/store";
 import { PART_CATEGORIES } from "@/lib/parts/types";
+import { totalsByCurrency } from "@/lib/crm/types";
 import { formatMoney } from "@/lib/format";
 import { PartCard } from "@/components/parts/PartCard";
 import { stockTone } from "@/lib/parts/visuals";
@@ -25,13 +26,18 @@ export default async function AdminPartsPage({
   const csrf = h.get("x-csrf-token") ?? "";
   const parts = await listParts();
   const low = parts.filter((p) => stockTone(p.stockQty, p.reorderPoint) !== "ok");
-  const value = parts.reduce((sum, p) => sum + (p.price ?? 0) * p.stockQty, 0);
+  // Stock value per currency; CAD and USD lines are never added together.
+  const priced = totalsByCurrency(
+    parts.map((p) => ({ qty: p.stockQty, unitPrice: p.price, currency: p.currency })),
+  );
+  const values = priced.length > 0 ? priced : [{ currency: "CAD" as const, amount: 0 }];
   const trays = new Set(parts.map((p) => p.category)).size;
+  const demoLines = parts.filter((p) => p.demo).length;
 
   return (
     <AdminShell csrf={csrf} title="Parts inventory" msg={one(params.msg)} error={one(params.error)}>
       <p className="lede">
-        Demo seed catalogue behind the parts storefront. Lines at or below their reorder point create
+        The catalogue behind the parts storefront. Lines at or below their reorder point create
         follow-up tasks.
       </p>
 
@@ -41,6 +47,10 @@ export default async function AdminPartsPage({
           <span>lines</span>
         </li>
         <li>
+          <b>{demoLines}</b>
+          <span>demo lines</span>
+        </li>
+        <li>
           <b>{low.length}</b>
           <span>at reorder</span>
         </li>
@@ -48,11 +58,56 @@ export default async function AdminPartsPage({
           <b>{trays}</b>
           <span>of {PART_CATEGORIES.length} trays</span>
         </li>
-        <li>
-          <b>{formatMoney(value, "CAD")}</b>
-          <span>stock at list</span>
-        </li>
+        {values.map((v) => (
+          <li key={v.currency}>
+            <b>{formatMoney(v.amount, v.currency)}</b>
+            <span>stock at list</span>
+          </li>
+        ))}
       </ul>
+
+      <div className="admin-panels">
+        <div className="aside-card" style={{ gridColumn: "1 / -1" }}>
+          <h3>Demo catalogue</h3>
+          {demoLines > 0 ? (
+            <>
+              <p>
+                {demoLines === parts.length
+                  ? "Every line here is a demo listing"
+                  : `${demoLines} of ${parts.length} lines are demo listings`}{" "}
+                from the seed catalogue: placeholder SKUs, brands and prices, marked “Demo” on the
+                public counter. A line counts as demo unless it is saved with <code>demo</code> set
+                to false.
+              </p>
+              <p>
+                Retiring deletes every demo line. The seed catalogue is not written back afterwards,
+                so a tray with nothing left asks customers to send a reference or a photograph
+                instead. Quotes already received keep their lines, and a customer&apos;s tray lists
+                a retired line as no longer on the counter. This cannot be undone from here.
+              </p>
+              <form
+                action="/api/admin/parts/retire-demo"
+                method="post"
+                style={{ display: "grid", gap: 12, justifyItems: "start" }}
+              >
+                <input type="hidden" name="csrf" value={csrf} />
+                <label style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <input type="checkbox" name="confirm" value="on" required />
+                  I understand the demo lines will be removed from the public counter
+                </label>
+                <button className="btn btn-primary" type="submit">
+                  Retire {demoLines === 1 ? "1 demo line" : `${demoLines} demo lines`}
+                </button>
+              </form>
+            </>
+          ) : (
+            <p>
+              No demo lines are left. The seed catalogue is written only when there is no parts
+              file yet, so it does not come back on its own.
+            </p>
+          )}
+        </div>
+      </div>
 
       {low.length > 0 ? (
         <div className="shop-head" style={{ marginTop: 34 }}>
@@ -81,11 +136,18 @@ export default async function AdminPartsPage({
           Open the storefront
         </Link>
       </div>
-      <div className="part-grid">
-        {parts.map((p) => (
-          <PartCard key={p.id} part={p} variant="admin" />
-        ))}
-      </div>
+      {parts.length === 0 ? (
+        <p className="muted">
+          The catalogue is empty. The public counter asks customers to send a reference or a
+          photograph instead.
+        </p>
+      ) : (
+        <div className="part-grid">
+          {parts.map((p) => (
+            <PartCard key={p.id} part={p} variant="admin" />
+          ))}
+        </div>
+      )}
     </AdminShell>
   );
 }

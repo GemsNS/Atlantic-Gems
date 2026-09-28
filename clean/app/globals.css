@@ -715,6 +715,13 @@ p {
 .section-alt {
   background: linear-gradient(180deg, var(--paper-2), var(--paper));
 }
+/* Sections well below the fold skip style, layout and paint until they come
+   near the viewport (plan item U11). `auto` keeps the real height once a
+   section has rendered, so the scrollbar settles after the first pass. */
+.section-defer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1000px;
+}
 
 /* House strip */
 .house {
@@ -1298,6 +1305,9 @@ p {
   background: var(--paper-2);
   color: var(--ink-2);
   font-size: 0.9rem;
+  /* Rendered when it nears the viewport, like .section-defer. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 .footer-grid {
   display: grid;
@@ -2208,7 +2218,7 @@ p {
   font-size: 0.64rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  font-weight: 800;
+  font-weight: 700;
   background: rgba(255, 255, 255, 0.94);
   color: var(--ink-2);
   border: 1px solid var(--rule);
@@ -2307,7 +2317,7 @@ p {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--brand-green);
-  font-weight: 800;
+  font-weight: 700;
 }
 .inv-eyebrow em {
   font-style: normal;
@@ -2375,6 +2385,9 @@ p {
   padding: 12px 10px;
   border-bottom: 1px solid var(--rule);
   transition: background-color 0.25s var(--ease);
+  /* A long price list only lays out and paints the rows near the viewport. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
 }
 .led-row:hover {
   background: rgba(16, 85, 184, 0.04);
@@ -2524,6 +2537,22 @@ p {
 .skel-line.w-40 { width: 40%; }
 .skel-line.w-70 { width: 70%; }
 .skel-line.w-55 { width: 55%; }
+.shop-stats .skel-stat {
+  width: 2.2ch;
+  height: clamp(1.6rem, 2.6vw, 2.1rem);
+}
+.shop-stats span.skel {
+  height: 0.72rem;
+  margin-top: 6px;
+}
+.skel-cart-sheet {
+  min-height: 320px;
+  border-radius: var(--tray-r);
+}
+.skel-cart-quote {
+  min-height: 420px;
+  border-radius: var(--tray-r);
+}
 @keyframes shimmer {
   from { background-position: 100% 0; }
   to { background-position: 0 0; }
@@ -2602,7 +2631,7 @@ p {
   font-size: 0.7rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--brand-green);
 }
 .piece-price-row {
@@ -2923,7 +2952,7 @@ p {
 }
 .parts-cat-count {
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--brand-green);
@@ -2980,7 +3009,7 @@ p {
   bottom: 8px;
   z-index: 1;
   font-size: 0.6rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   opacity: 0.8;
@@ -3076,11 +3105,23 @@ p {
   box-shadow: var(--shadow-rest);
   overflow: hidden;
   transition: transform 0.42s var(--ease), box-shadow 0.42s var(--ease);
+  /* A long tray only lays out and paints the cards near the viewport. The card
+     already clips its contents, so the paint containment changes nothing. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 440px;
 }
 .part-card:hover,
 .part-card:focus-within {
   transform: translateY(-5px);
   box-shadow: var(--shadow-lift);
+}
+/* The first cards are on screen as soon as the list is: they are laid out with
+   the page instead of on the first scroll or tap. The rest stay deferred. The
+   containment is what `auto` applies to a card on screen, so these four paint
+   and stack exactly as before. */
+.part-grid > .part-card:nth-child(-n + 4) {
+  content-visibility: visible;
+  contain: layout style paint;
 }
 .part-card.is-out {
   opacity: 0.8;
@@ -3120,7 +3161,7 @@ p {
   letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--brand-green);
-  font-weight: 800;
+  font-weight: 700;
 }
 .part-card-sku {
   font-family: var(--mono);
@@ -3195,7 +3236,7 @@ p {
   font-size: 0.66rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-weight: 800;
+  font-weight: 700;
 }
 .stock-inline {
   display: inline-flex;
@@ -3212,7 +3253,7 @@ p {
   padding: 4px 9px;
   border-radius: 999px;
   font-size: 0.62rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   background: rgba(255, 255, 255, 0.94);
@@ -3468,7 +3509,7 @@ p {
   font-size: 0.64rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--muted);
 }
 .cart-sheet-head span:nth-child(4) {
@@ -3656,6 +3697,53 @@ p {
   margin-top: 8px;
   border-radius: var(--tray-r-sm);
 }
+.cart-quote .admin-form .error {
+  display: block;
+  margin: -6px 0 12px;
+  color: #b3122e;
+  font-size: 0.82rem;
+}
+.cart-quote .admin-form [aria-invalid="true"] {
+  border-color: #b3122e;
+}
+.cart-quote .form-status {
+  margin: 4px 0 8px;
+  font-size: 0.89rem;
+}
+.cart-quote .form-status:focus-visible,
+.form-status:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 2px;
+}
+.cart-unavailable {
+  margin-bottom: 18px;
+  border-radius: var(--tray-r-sm);
+  font-size: 0.92rem;
+}
+.cart-unavailable p {
+  margin: 0;
+}
+.cart-unavailable ul {
+  list-style: none;
+  margin: 10px 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.cart-unavailable li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  border-top: 1px solid var(--rule);
+}
+.cart-unavailable a {
+  font-weight: 600;
+}
+.field [aria-invalid="true"] {
+  border-color: #b3122e;
+}
 .cart-steps {
   list-style: none;
   margin: 18px 0 0;
@@ -3684,7 +3772,7 @@ p {
   border-radius: 50%;
   border: 1px solid var(--rule);
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--brand-blue);
 }
 
@@ -3943,6 +4031,39 @@ p {
 }
 .admin-tablewrap {
   overflow-x: auto;
+}
+.admin-table .sku {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.admin-lookup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px 14px;
+  margin: 0 0 20px;
+}
+.admin-lookup label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+.admin-lookup input {
+  font: inherit;
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  width: 12ch;
 }
 .table,
 .admin-table {

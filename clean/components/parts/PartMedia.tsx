@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { PartCategory } from "@/lib/parts/types";
 import { partArt } from "@/lib/parts/art";
 import { PartPlate } from "@/components/parts/PartPlate";
@@ -35,20 +34,19 @@ export function PartMedia({
 
   return (
     <div className={`part-media part-media-${size} ${className}`.trim()}>
-      <Image
-        src={art.src}
-        width={art.width}
-        height={art.height}
+      {/* The markup next/image gave these drawings (unoptimized SVG, so no
+          srcset or sizes), written out so the counter's cards do not ship the
+          image component to the browser (plan item U11). */}
+      {/* eslint-disable-next-line @next/next/no-img-element -- a static SVG, nothing to optimise */}
+      <img
         alt={alt ? `${alt} — ${art.alt}` : ""}
         aria-hidden={alt ? undefined : true}
-        unoptimized
-        sizes={
-          size === "hero"
-            ? "(max-width: 900px) 92vw, 520px"
-            : size === "sm"
-              ? "160px"
-              : "(max-width: 700px) 46vw, 320px"
-        }
+        loading="lazy"
+        width={art.width}
+        height={art.height}
+        decoding="async"
+        style={{ color: "transparent" }}
+        src={art.src}
       />
     </div>
   );

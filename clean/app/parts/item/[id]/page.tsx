@@ -26,7 +26,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const part = await getPart(id);
-  return { title: part?.title ?? "Part" };
+  // Hidden and trade-only lines must not leak their titles through <title>.
+  return { title: part && isPublicPart(part) ? part.title : "Part" };
 }
 
 export default async function PartDetailPage({
@@ -68,8 +69,9 @@ export default async function PartDetailPage({
             <div className="part-detail-stage">
               <PartMedia category={part.category} artKey={part.art} seed={part.sku} size="hero" alt={part.title} />
               <p className="gallery-hint">
-                Drawn plate — {visual.label.toLowerCase()}. The picture stands in for the line while
-                the demo catalogue is up; photographs follow as lines are confirmed.
+                {part.demo
+                  ? `Drawn plate — ${visual.label.toLowerCase()}. The picture stands in for the line while the demo catalogue is up; photographs follow as lines are confirmed.`
+                  : `Drawn plate — ${visual.label.toLowerCase()}. Ask us for a photograph of the line.`}
               </p>
             </div>
 

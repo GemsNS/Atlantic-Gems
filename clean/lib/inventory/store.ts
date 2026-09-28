@@ -1,6 +1,14 @@
 import "server-only";
 import path from "node:path";
-import { DATA_DIR, readJson, serialize, writeJsonAtomic } from "@/lib/json-store";
+import {
+  DATA_DIR,
+  isListFile,
+  quarantine,
+  readJson,
+  serialize,
+  StoreReadError,
+  writeJsonAtomic,
+} from "@/lib/json-store";
 import { detectMode, modePages, PAGE_KEYS, type PageKey, type SiteMode } from "@/lib/site-pages";
 import {
   itemSchema,
@@ -9,14 +17,35 @@ import {
   type Settings,
 } from "./types";
 
-const ITEMS_FILE = path.join(DATA_DIR, "inventory.json");
-const SETTINGS_FILE = path.join(DATA_DIR, "settings.json");
+export const ITEMS_FILE = path.join(DATA_DIR, "inventory.json");
+export const SETTINGS_FILE = path.join(DATA_DIR, "settings.json");
 export const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
 
+/** Read errors that mean settings.json itself is unusable. */
+const QUARANTINE_CODES = new Set(["EJSON", "ESHAPE", "EISDIR"]);
+
+/** No file means the defaults; one that fails the schema is unreadable. */
+async function readSettings(): Promise<Settings> {
+  const raw = await readJson<unknown>(
+    SETTINGS_FILE,
+    {},
+    (value) => settingsSchema.safeParse(value).success,
+  );
+  return settingsSchema.parse(raw);
+}
+
+/**
+ * Read on nearly every page, so an unreadable settings.json (logged by
+ * readJson) gives the defaults rather than taking the site down. The file is
+ * left alone until an admin saves settings.
+ */
 export async function getSettings(): Promise<Settings> {
-  const raw = await readJson<unknown>(SETTINGS_FILE, {});
-  const parsed = settingsSchema.safeParse(raw);
-  return parsed.success ? parsed.data : settingsSchema.parse({});
+  try {
+    return await readSettings();
+  } catch (err) {
+    if (err instanceof StoreReadError) return settingsSchema.parse({});
+    throw err;
+  }
 }
 
 export async function updateSettings(patch: Partial<{
@@ -26,7 +55,22 @@ export async function updateSettings(patch: Partial<{
   ebay: Partial<Settings["ebay"]>;
 }>): Promise<Settings> {
   return serialize(async () => {
-    const current = await getSettings();
+    let current: Settings;
+    try {
+      current = await readSettings();
+    } catch (err) {
+      // Only a file that is itself wrong is moved aside: not JSON, the wrong
+      // shape, or a directory in its place. Any other code (EBUSY while a
+      // scanner or backup holds it, EMFILE, EIO, a permission error) says
+      // nothing about its content, so the save is refused and the admin tries
+      // again, rather than a good file being replaced by the defaults.
+      if (!(err instanceof StoreReadError) || !QUARANTINE_CODES.has(err.code)) throw err;
+      // The site has run on the defaults since the file became unreadable, and
+      // the defaults are what the admin saw. Keep the file as evidence and
+      // apply this change to them.
+      await quarantine(SETTINGS_FILE);
+      current = settingsSchema.parse({});
+    }
     let siteMode = patch.siteMode ?? current.siteMode;
     let pages = { ...current.pages };
 
@@ -70,8 +114,13 @@ export async function updateSettings(patch: Partial<{
   });
 }
 
+/**
+ * An unreadable inventory.json throws StoreReadError: pages show the error
+ * page, and writes, which read through here inside `serialize`, are refused
+ * with the file kept as it is.
+ */
 export async function listItems(): Promise<InventoryItem[]> {
-  const raw = await readJson<{ items?: unknown[] }>(ITEMS_FILE, { items: [] });
+  const raw = await readJson<{ items?: unknown[] }>(ITEMS_FILE, { items: [] }, isListFile);
   const items: InventoryItem[] = [];
   for (const entry of raw.items ?? []) {
     const parsed = itemSchema.safeParse(entry);
